@@ -1,5 +1,5 @@
 {
-  "name": "resume",
+  "name": "yunsl-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,10 +9,33 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "eslint": "8.45.0",
-    "eslint-config-next": "13.4.12",
-    "next": "13.4.12",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@prisma/client": "5.0.0",
+    "@unly/utils": "^1.0.3",
+    "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
+    "crypto": "^1.0.1",
+    "date-fns": "^2.30.0",
+    "dotenv-webpack": "^8.0.1",
+    "eslint": "8.42.0",
+    "eslint-config-next": "13.4.4",
+    "formik": "^2.4.2",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.1",
+    "next": "13.4.4",
+    "nodemailer": "^6.9.3",
+    "prop-types": "^15.8.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.2",
+    "react-toastify": "^9.1.3",
+    "sqlite3": "^5.1.6",
+    "webfontloader": "^1.6.28",
+    "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.0.0",
+    "sass": "^1.63.3"
   }
 }

@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id           Int           @id @default(autoincrement())
+  userid       String        @unique
+  password     String
+  educations   education[]
+  certificates certificate[]
+  skills       skill[]
+  careers      career[]
+}
+
+model education {
+  id         Int    @id @default(autoincrement())
+  school     String
+  major      String
+  category   String
+  status     String
+  start_date String
+  end_date   String
+  user_id    Int?
+  user       user?  @relation(fields: [user_id], references: [id])
+}
+
+model certificate {
+  id               Int    @id @default(autoincrement())
+  certificate_name String
+  organization     String
+  issue_date       String
+  certificate_num  String
+  user_id          Int?
+  user             user?  @relation(fields: [user_id], references: [id])
+}
+
+model skill {
+  id           Int    @id @default(autoincrement())
+  skill_name   String
+  skill_level  String
+  skill_career String
+  user_id      Int?
+  user         user?  @relation(fields: [user_id], references: [id])
+}
+
+model career {
+  id         Int       @id @default(autoincrement())
+  org_name   String
+  team       String
+  role       String
+  occupation String
+  start_date String
+  end_date   String
+  user_id    Int?
+  user       user?     @relation(fields: [user_id], references: [id])
+  projects   project[]
+}
+
+model project {
+  id           Int     @id @default(autoincrement())
+  project_name String
+  start_date   String
+  end_date     String
+  description  String
+  career_id    Int?
+  career       career? @relation(fields: [career_id], references: [id])
+}
