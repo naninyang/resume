@@ -13,20 +13,22 @@ datasource db {
 model user {
   id           Int           @id @default(autoincrement())
   userid       String        @unique
-  password     String
+  username     String        @unique
+  password     String        @unique
   educations   education[]
   certificates certificate[]
   skills       skill[]
+  urls         url[]
   careers      career[]
 }
 
 model education {
   id         Int    @id @default(autoincrement())
-  school     String
-  major      String
-  category   String
-  status     String
-  start_date String
+  school     String @unique
+  major      String @unique
+  category   String @unique
+  status     String @unique
+  start_date String @unique
   end_date   String
   user_id    Int?
   user       user?  @relation(fields: [user_id], references: [id])
@@ -34,30 +36,38 @@ model education {
 
 model certificate {
   id               Int    @id @default(autoincrement())
-  certificate_name String
-  organization     String
-  issue_date       String
-  certificate_num  String
+  certificate_name String @unique
+  organization     String @unique
+  issue_date       String @unique
+  certificate_num  String @unique
   user_id          Int?
   user             user?  @relation(fields: [user_id], references: [id])
 }
 
 model skill {
   id           Int    @id @default(autoincrement())
-  skill_name   String
-  skill_level  String
-  skill_career String
+  skill_name   String @unique
+  skill_level  String @unique
+  skill_career String @unique
   user_id      Int?
   user         user?  @relation(fields: [user_id], references: [id])
 }
 
+model url {
+  id      Int    @id @default(autoincrement())
+  github  String
+  blog    String
+  user_id Int?
+  user    user?  @relation(fields: [user_id], references: [id])
+}
+
 model career {
   id         Int       @id @default(autoincrement())
-  org_name   String
-  team       String
-  role       String
-  occupation String
-  start_date String
+  org_name   String    @unique
+  team       String    @unique
+  role       String    @unique
+  occupation String    @unique
+  start_date String    @unique
   end_date   String
   user_id    Int?
   user       user?     @relation(fields: [user_id], references: [id])
@@ -66,8 +76,8 @@ model career {
 
 model project {
   id           Int     @id @default(autoincrement())
-  project_name String
-  start_date   String
+  project_name String  @unique
+  start_date   String  @unique
   end_date     String
   description  String
   career_id    Int?
