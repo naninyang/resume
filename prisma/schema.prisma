@@ -11,15 +11,19 @@ datasource db {
 }
 
 model user {
-  id           Int           @id @default(autoincrement())
-  userid       String        @unique
-  username     String        @unique
-  password     String        @unique
-  educations   education[]
-  certificates certificate[]
-  skills       skill[]
-  urls         url[]
-  careers      career[]
+  id            Int           @id @default(autoincrement())
+  userid        String        @unique
+  username      String        @unique
+  email         String        @unique
+  password      String        @unique
+  address       String?
+  username_show Boolean?      @default(false)
+  email_show    Boolean?      @default(false)
+  educations    education[]
+  certificates  certificate[]
+  skills        skill[]
+  urls          url[]
+  careers       career[]
 }
 
 model education {

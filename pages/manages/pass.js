@@ -5,8 +5,6 @@ import Confirm from '@/components/features/confirm';
 import useConfirm from '@/components/hooks/useConfirm';
 import { useAuth } from '@/components/hooks/authContext';
 import LinkButton from '@/components/hooks/linkButton';
-import styled from '@emotion/styled';
-import { Rem, hex } from '@/styles/designSystem';
 import { ButtonGroup, Container, Content, FieldGroup, FindUtil, SessionUtil, Util } from '@/styles/manageSystem';
 import IsSession from './isSession';
 
@@ -35,7 +33,7 @@ export default function SignIn() {
       const result = response.data;
       if (result.status === 'success') {
         login(result.token);
-        router.push('/device-monitoring');
+        router.push('./education');
       }
     } catch (error) {
       handleOpen();

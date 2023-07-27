@@ -23,10 +23,10 @@ export const FormGroup = styled.div({
 export const FieldGroup = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  gap: Rem(10),
+  gap: Rem(5),
   position: 'relative',
-  height: Rem(92),
-  '& input': {
+  height: Rem(97),
+  '& > input': {
     backgroundColor: hex.light,
     padding: `${Rem(18)} ${Rem(15)}`,
     borderRadius: Rem(5),
@@ -36,7 +36,7 @@ export const FieldGroup = styled.div({
     fontSize: Rem(24),
     fontWeight: '700',
     lineHeight: 1,
-    color: hex.light,
+    color: hex.dark,
     transition: 'all .15s ease-in-out,box-shadow .15s ease-in-out',
     appearance: 'none',
     '&::placeholder': {
@@ -48,11 +48,11 @@ export const FieldGroup = styled.div({
         padding: `${Rem(8)} ${Rem(15)}`,
         transform: `scale(.5) translateY(-.${Rem(10)})`,
         fontSize: Rem(12),
-        color: `rgba(${rgba.light})`,
+        color: `rgba(${rgba.dark70})`,
       },
     },
   },
-  '& label': {
+  '& > label': {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -66,10 +66,54 @@ export const FieldGroup = styled.div({
     lineHeight: 1,
   },
   '& p': {
+    display: 'flex',
+    gap: Rem(2),
+    alignItems: 'center',
     fontSize: Rem(12),
     fontWeight: '900',
     lineHeight: 1,
     color: hex.yellow,
+    '& label': {
+      color: hex.mint,
+    },
+  },
+})
+
+export const DefinitionGroup = styled.dl({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: Rem(5),
+  position: 'relative',
+})
+
+export const ItemGroup = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: Rem(10),
+  position: 'relative',
+  height: Rem(97),
+  '& dd': {
+    padding: `${Rem(28)} ${Rem(15)} ${Rem(8)}`,
+    borderRadius: Rem(5),
+    width: '100%',
+    height: Rem(60),
+    fontSize: Rem(24),
+    fontWeight: '700',
+    lineHeight: 1,
+    color: hex.light,
+    transition: 'all .15s ease-in-out,box-shadow .15s ease-in-out',
+    appearance: 'none',
+  },
+  '& dt': {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    padding: `${Rem(8)} ${Rem(15)}`,
+    pointerEvents: 'none',
+    color: `rgba(${rgba.light70})`,
+    fontSize: Rem(12),
+    fontWeight: '700',
+    lineHeight: 1,
   },
 })
 

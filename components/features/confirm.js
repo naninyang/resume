@@ -23,7 +23,7 @@ const ConfirmBackdrop = styled.div({
   left: 0,
   width: '100%',
   height: '100%',
-  backgroundColor: `rgba(${rgba.Dark70})`,
+  backgroundColor: `rgba(${rgba.dark70})`,
 })
 
 const ConfirmContent = styled.div({
@@ -35,7 +35,7 @@ const ConfirmContent = styled.div({
   padding: `${Rem(75)} ${Rem(25)} ${Rem(25)}`,
   width: Rem(510),
   pointerEvents: 'auto',
-  backgroundColor: hex.White,
+  backgroundColor: hex.light,
   borderRadius: Rem(10),
   outline: 0,
 })
@@ -70,11 +70,11 @@ const ConfirmFooter = styled.div({
     borderRadius: Rem(2),
     '&.button-close': {
       boxShadow: `0px 0px 5px rgba(0, 0, 0, 0.20)`,
-      backgroundColor: hex.White,
+      backgroundColor: hex.light,
       '&:last-of-type': {
-        backgroundColor: hex.Primary,
+        backgroundColor: hex.mint,
         fontWeight: '700',
-        color: hex.White,
+        color: hex.dark,
       },
     },
   },

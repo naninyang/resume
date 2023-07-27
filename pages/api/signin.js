@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '@/components/utilities/envs';
+import { JWT_SECRET } from '@/components/hooks/envs';
 
 const prisma = new PrismaClient();
 
@@ -19,7 +19,6 @@ export default async function handler(req, res) {
       const match = await bcrypt.compare(password, user.password);
 
       if (match) {
-        // User is authenticated, generate a token and send it
         const payload = { userid: user.userid };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '14d' });
 

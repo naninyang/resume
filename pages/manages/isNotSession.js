@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import LinkButton from '@/components/hooks/linkButton';
 import { Rem, hex } from '@/styles/designSystem';
 
 const Container = styled.div({
@@ -17,10 +16,10 @@ const Container = styled.div({
   },
 })
 
-export default function IsSession() {
+export default function IsNotSession() {
   return (
     <Container>
-      <p>로그인 중</p>
+      <p>로그인 필요</p>
     </Container>
   )
 }
