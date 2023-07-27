@@ -11,7 +11,9 @@ export const hex = {
   light: '#eaffff',
   yellow: '#ffd800',
   mint: '#89ddff',
-  background: '#212121'
+  background: '#212121',
+  danger: '#C14848',
+  warning: '#F3B3BC',
 };
 
 export const rgba = {

@@ -50,7 +50,11 @@ export default function Profile() {
                 <dd>{userProfile.email}</dd>
               </ItemGroup>
               <ItemGroup>
-                <dt>주소 - 이력서에 공개하고 싶지 않으면 주소를 지우세요</dt>
+                <dt>
+                  주소
+                  {' '}
+                  {userProfile.address && '- 이력서에 공개하고 싶지 않으면 주소를 지우세요'}
+                </dt>
                 <dd>{userProfile.address ? userProfile.address : '주소 미등록'}</dd>
               </ItemGroup>
             </DefinitionGroup>

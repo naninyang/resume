@@ -4,7 +4,6 @@ import { Rem, hex, rgba } from './designSystem';
 export const Container = styled.main({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
   alignItems: 'center',
   background: 'fixed linear-gradient(225deg, #CD313A 0%, #000 37.55%, #000 57.70%, #0047A0 100%)',
   height: '100vh',
@@ -12,7 +11,6 @@ export const Container = styled.main({
 
 export const Content = styled.div({
   padding: `${Rem(50)} ${Rem(25)}`,
-  width: Rem(370),
 })
 
 export const FormGroup = styled.div({
@@ -140,6 +138,58 @@ export const ButtonGroup = styled.div({
     width: Rem(370),
     lineHeight: Rem(70),
   }
+})
+
+export const ArrayContainer = styled.div({
+  '& fieldset': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: Rem(50),
+  },
+  '& .form-group': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: Rem(25),
+  },
+  '& .item-add': {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    '& button': {
+      backgroundColor: hex.dark,
+      padding: `0 ${Rem(15)}`,
+      borderRadius: Rem(5),
+      border: `1px rgba(${rgba.dark20}) solid`,
+      width: 'auto',
+      height: Rem(50),
+      fontSize: Rem(16),
+      lineHeight: 1,
+      color: hex.light,
+    },
+  },
+})
+
+export const Fragment = styled.div({
+  display: 'grid',
+  gridTemplateColumns: 'auto auto auto auto',
+  width: 'max-content',
+  gap: Rem(15),
+  '& > div': {
+    width: Rem(230),
+    '&:nth-of-type(3)': {
+      gridColumn: 'span 2',
+    },
+  },
+  '& button': {
+    backgroundColor: hex.danger,
+    padding: `0 ${Rem(15)}`,
+    borderRadius: Rem(5),
+    border: `1px rgba(${rgba.light20}) solid`,
+    width: 'auto',
+    height: Rem(60),
+    fontSize: Rem(24),
+    lineHeight: 1,
+    color: hex.light,
+  },
 })
 
 export const Util = styled.div({
