@@ -45,10 +45,22 @@ export default function Education() {
     });
   };
 
-  const handleDeleteEducation = (index) => {
-    setEducations((prevEducations) =>
-      prevEducations.filter((_, idx) => idx !== index)
-    );
+  const handleDeleteEducation = async (index) => {
+    try {
+      const education = educations[index];
+      if (education.id) {
+        await axios.delete(`/api/education/${education.id}`);
+      }
+      setEducations((prevEducations) =>
+        prevEducations.filter((_, idx) => idx !== index)
+      );
+      toast.success('학력 정보가 성공적으로 삭제되었습니다.', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+    } catch (error) {
+      console.error('Failed to delete education:', error);
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -56,7 +68,6 @@ export default function Education() {
     try {
       const response = await axios.put('/api/education', educations);
       console.log('Educations saved successfully:', response.data);
-      console.log('response: ', response)
 
       if (response.status === 200) {
         toast.success('학력 업데이트에 성공했습니다.', {
