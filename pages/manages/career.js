@@ -33,10 +33,18 @@ export default function Career() {
     setCareers(newCareers);
   }
 
-  const removeCareer = (careerIndex) => {
-    const newCareers = [...careers];
-    newCareers.splice(careerIndex, 1);
-    setCareers(newCareers);
+  const removeCareer = async (careerIndex) => {
+    try {
+      const careerId = careers[careerIndex].id;
+      await axios.delete(`/api/career/${careerId}`);
+
+      const newCareers = [...careers];
+      newCareers.splice(careerIndex, 1);
+      setCareers(newCareers);
+    } catch (error) {
+      console.error(error);
+      toast.error("경력을 삭제하는 중에 문제가 발생했습니다.");
+    }
   }
 
   const removeProject = (careerIndex, projectIndex) => {
