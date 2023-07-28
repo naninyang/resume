@@ -129,7 +129,6 @@ export default function Certificate() {
                           required
                         />
                         <label htmlFor='issue_date'>발행일자</label>
-                        <p>특성화 고등학교, 전문대학 등</p>
                       </FieldGroup>
                       <FieldGroup>
                         <input
@@ -142,14 +141,13 @@ export default function Certificate() {
                           required
                         />
                         <label htmlFor='certificate_num'>자격증번호</label>
-                        <p>재학 중, 졸업, 휴학 중, 중퇴 등</p>
                       </FieldGroup>
                       <button type="button" onClick={() => handleDeleteCertificate(index)}>삭제</button>
                     </Fragment>
                   ))}
                 </FormGroup>
                 <ButtonGroup>
-                  <button type='submit' onClick={handleSubmit}>학력 업데이트</button>
+                  <button type='submit' onClick={handleSubmit}>자격증 업데이트</button>
                 </ButtonGroup>
               </fieldset>
             </form>

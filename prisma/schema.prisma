@@ -22,20 +22,20 @@ model user {
   educations    education[]
   certificates  certificate[]
   skills        skill[]
-  urls          url[]
+  references    reference[]
   careers       career[]
 }
 
 model education {
-  id         Int    @id @default(autoincrement())
-  school     String @unique
+  id         Int     @id @default(autoincrement())
+  school     String  @unique
   major      String
   category   String
   stats      String
   start_date String
-  end_date   String
+  end_date   String?
   user_id    Int?
-  user       user?  @relation(fields: [user_id], references: [id])
+  user       user?   @relation(fields: [user_id], references: [id])
 }
 
 model certificate {
@@ -57,7 +57,7 @@ model skill {
   user         user?  @relation(fields: [user_id], references: [id])
 }
 
-model url {
+model reference {
   id      Int    @id @default(autoincrement())
   github  String
   blog    String
@@ -72,7 +72,7 @@ model career {
   role       String
   occupation String
   start_date String
-  end_date   String
+  end_date   String?
   user_id    Int?
   user       user?     @relation(fields: [user_id], references: [id])
   projects   project[]
@@ -82,7 +82,7 @@ model project {
   id           Int     @id @default(autoincrement())
   project_name String  @unique
   start_date   String
-  end_date     String
+  end_date     String?
   description  String
   career_id    Int?
   career       career? @relation(fields: [career_id], references: [id])

@@ -91,7 +91,7 @@ export default function Education() {
           <ArrayContainer>
             <form>
               <fieldset>
-                <legend>프로필 수정 양식</legend>
+                <legend>학력 수정 양식</legend>
                 <FormGroup className='form-group'>
                   <div className='item-add'>
                     <button type="button" onClick={handleAddEducation}>학력 추가</button>

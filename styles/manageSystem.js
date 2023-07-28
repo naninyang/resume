@@ -191,6 +191,12 @@ export const Fragment = styled.div({
       },
     },
   },
+  '&.array-skill': {
+    gridTemplateColumns: 'auto auto auto auto',
+    '& > div': {
+      width: Rem(230),
+    },
+  },
   '& button': {
     backgroundColor: hex.danger,
     padding: `0 ${Rem(15)}`,
