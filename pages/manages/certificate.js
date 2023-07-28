@@ -41,10 +41,22 @@ export default function Certificate() {
     });
   };
 
-  const handleDeleteCertificate = (index) => {
-    setCertificates((prevCertificates) =>
-      prevCertificates.filter((_, idx) => idx !== index)
-    );
+  const handleDeleteCertificate = async (index) => {
+    try {
+      const certificate = certificates[index];
+      if (certificate.id) {
+        await axios.delete(`/api/certificate/${certificate.id}`);
+      }
+      setCertificates((prevCertificates) =>
+        prevCertificates.filter((_, idx) => idx !== index)
+      );
+      toast.success('학력 정보가 성공적으로 삭제되었습니다.', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+    } catch (error) {
+      console.error('Failed to delete certificate:', error);
+    }
   };
 
   const handleSubmit = async (event) => {
