@@ -50,7 +50,7 @@ export default function Certificate() {
       setCertificates((prevCertificates) =>
         prevCertificates.filter((_, idx) => idx !== index)
       );
-      toast.success('학력 정보가 성공적으로 삭제되었습니다.', {
+      toast.success('자격증 정보가 성공적으로 삭제되었습니다.', {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 5000,
       });

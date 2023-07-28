@@ -39,10 +39,22 @@ export default function Skill() {
     });
   };
 
-  const handleDeleteSkill = (index) => {
-    setSkills((prevSkills) =>
-      prevSkills.filter((_, idx) => idx !== index)
-    );
+  const handleDeleteSkill = async (index) => {
+    try {
+      const skill = skills[index];
+      if (skill.id) {
+        await axios.delete(`/api/skill/${skill.id}`);
+      }
+      setSkills((prevSkills) =>
+        prevSkills.filter((_, idx) => idx !== index)
+      );
+      toast.success('보유기술 정보가 성공적으로 삭제되었습니다.', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+    } catch (error) {
+      console.error('Failed to delete skill:', error);
+    }
   };
 
   const handleSubmit = async (event) => {
