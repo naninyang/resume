@@ -83,7 +83,7 @@ model project {
   project_name String  @unique
   start_date   String
   end_date     String?
-  description  String
+  description  String?
   career_id    Int?
   career       career? @relation(fields: [career_id], references: [id])
 }

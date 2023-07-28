@@ -6,7 +6,7 @@ export const Container = styled.main({
   flexDirection: 'column',
   alignItems: 'center',
   background: 'fixed linear-gradient(225deg, #CD313A 0%, #000 37.55%, #000 57.70%, #0047A0 100%)',
-  height: '100vh',
+  minHeight: '100vh',
 })
 
 export const Content = styled.div({
@@ -25,12 +25,17 @@ export const FieldGroup = styled.div({
   position: 'relative',
   height: Rem(97),
   '& > input': {
+    height: Rem(60),
+  },
+  '& > textarea': {
+    height: Rem(270),
+  },
+  '& > input, & > textarea': {
     backgroundColor: hex.light,
     padding: `${Rem(18)} ${Rem(15)}`,
     borderRadius: Rem(5),
     border: `1px rgba(${rgba.light20}) solid`,
     width: '100%',
-    height: Rem(60),
     fontSize: Rem(24),
     fontWeight: '700',
     lineHeight: 1,
@@ -163,6 +168,7 @@ export const ArrayContainer = styled.div({
       width: 'auto',
       height: Rem(50),
       fontSize: Rem(16),
+      fontWeight: '700',
       lineHeight: 1,
       color: hex.light,
     },
@@ -196,6 +202,51 @@ export const Fragment = styled.div({
     '& > div': {
       width: Rem(230),
     },
+  },
+  '&.array-career': {
+    display: 'block',
+    '& .array-career': {
+      display: 'grid',
+      gridTemplateColumns: 'auto auto auto auto',
+      gap: Rem(15),
+      '& > div': {
+        width: Rem(230),
+        '&:nth-of-type(3)': {
+          gridColumn: 'span 2',
+        },
+      },
+    },
+    '& .project-add': {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      '& button': {
+        backgroundColor: hex.yellow,
+        padding: `0 ${Rem(15)}`,
+        borderRadius: Rem(5),
+        border: `1px rgba(${rgba.dark20}) solid`,
+        width: 'auto',
+        height: Rem(50),
+        fontSize: Rem(16),
+        fontWeight: '700',
+        lineHeight: 1,
+        color: hex.dark,
+      },
+    },
+  },
+  '&.array-projects': {
+    gridTemplateColumns: 'auto auto auto auto',
+    '& > div': {
+      width: Rem(230),
+      '&:last-of-type': {
+        gridColumn: 'span 3',
+        width: '100%',
+      },
+    },
+  },
+  '& .projects-list': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: Rem(50),
   },
   '& button': {
     backgroundColor: hex.danger,
