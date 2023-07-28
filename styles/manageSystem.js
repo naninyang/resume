@@ -120,6 +120,7 @@ export const ButtonGroup = styled.div({
   flexDirection: 'column',
   gap: Rem(15),
   '& button[type="submit"], & > a': {
+    padding: `0 ${Rem(35)}`,
     borderRadius: Rem(5),
     border: 0,
     width: '100%',
@@ -170,13 +171,24 @@ export const ArrayContainer = styled.div({
 
 export const Fragment = styled.div({
   display: 'grid',
-  gridTemplateColumns: 'auto auto auto auto',
   width: 'max-content',
   gap: Rem(15),
-  '& > div': {
-    width: Rem(230),
-    '&:nth-of-type(3)': {
-      gridColumn: 'span 2',
+  '&.array-education': {
+    gridTemplateColumns: 'auto auto auto auto',
+    '& > div': {
+      width: Rem(230),
+      '&:nth-of-type(3)': {
+        gridColumn: 'span 2',
+      },
+    },
+  },
+  '&.array-certificate': {
+    gridTemplateColumns: 'auto auto auto',
+    '& > div': {
+      width: Rem(230),
+      '&:nth-of-type(2)': {
+        gridColumn: 'span 2',
+      },
     },
   },
   '& button': {

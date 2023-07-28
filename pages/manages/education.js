@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/components/hooks/authContext'
-import { ArrayContainer, ButtonGroup, Container, Content, EducationContainer, FieldGroup, FormGroup, Fragment } from '@/styles/manageSystem';
+import { ArrayContainer, ButtonGroup, Container, Content, FieldGroup, FormGroup, Fragment } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
 
 export default function Education() {
@@ -97,7 +97,7 @@ export default function Education() {
                     <button type="button" onClick={handleAddEducation}>학력 추가</button>
                   </div>
                   {educations.map((education, index) => (
-                    <Fragment key={index}>
+                    <Fragment key={index} className='array-education'>
                       <FieldGroup>
                         <input
                           type="text"
