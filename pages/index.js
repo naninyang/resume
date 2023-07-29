@@ -83,11 +83,14 @@ export default function Home() {
   }
 
   return (
-    <Container>
+    <Container className='css-0'>
       {loggedIn ? (
         <>
           <h1>이력서 정보</h1>
-          <blockquote>사용하실 때는 웹브라우저의 <code>인쇄</code> 기능을 사용해 주세요. <code>Mac: command + p / Win: ctrl + p</code></blockquote>
+          <blockquote>
+            <p>프린트는 프린트 전용 화면으로 이동하신 뒤에 프린트 해주세요.</p>
+            <LinkButton href='/print'>프린트 화면으로 이동</LinkButton>
+          </blockquote>
           <section>
             <h2>인적사항</h2>
             <dl>

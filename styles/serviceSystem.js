@@ -10,72 +10,78 @@ export const ServicePage = styled.div({
 })
 
 export const Container = styled.main({
-  display: 'flex',
-  flexDirection: 'column',
-  flexGrow: 1,
-  gap: Rem(50),
-  padding: `${Rem(50)} ${Rem(25)}`,
-  width: Rem(992),
-  color: hex.light,
-  '& blockquote': {
-    margin: 0,
-    padding: Rem(15),
-    backgroundColor: hex.dark,
-  },
-  '& section': {
+  '&.css-0': {
     display: 'flex',
     flexDirection: 'column',
-    gap: Rem(25),
-  },
-  '& code': {
-    display: 'inline-block',
-    borderRadius: Rem(5),
-    margin: `0 ${Rem(2)}`,
-    padding: `${Rem(2)} ${Rem(5)}`,
-    backgroundColor: hex.mint,
-    color: hex.dark,
-  },
-  '& h1': {
-    fontSize: Rem(64),
-    fontWeight: '900',
-    lineHeight: 1,
-  },
-  '& h2': {
-    fontSize: Rem(36),
-    fontWeight: '700',
-    lineHeight: 1,
-  },
-  '& a': {
+    flexGrow: 1,
+    gap: Rem(50),
+    padding: `${Rem(50)} ${Rem(25)}`,
+    width: Rem(992),
     color: hex.light,
-  },
-  '& dl:not(.array)': {
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& dt, & dd': {
-      padding: `${Rem(5)} 0`,
+    '& blockquote': {
+      margin: 0,
+      padding: Rem(15),
+      backgroundColor: hex.dark,
+      '& a': {
+        color: hex.mint,
+        textDecoration: 'underline',
+      },
     },
-    '& dt': {
-      ...mixin.colAuto,
-      width: Rem(170),
-      fontWeight: '700',
+    '& section': {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: Rem(25),
     },
-    '& dd': {
-      ...mixin.colAuto,
-      width: `calc(100% - ${Rem(170)})`,
-    },
-  },
-  '& section > dl': {
-    padding: `${Rem(5)} 0`,
-    borderTop: `${Rem(5)} solid ${hex.yellow}`,
-    borderBottom: `${Rem(5)} solid ${hex.yellow}`,
-    '& strong': {
+    '& code': {
       display: 'inline-block',
-      paddingLeft: Rem(25),
-      fontWeight: '700',
-      color: hex.warning,
+      borderRadius: Rem(5),
+      margin: `0 ${Rem(2)}`,
+      padding: `${Rem(2)} ${Rem(5)}`,
+      backgroundColor: hex.mint,
+      color: hex.dark,
     },
-    '& p strong': {
-      textIndent: Rem(-25),
+    '& h1': {
+      fontSize: Rem(64),
+      fontWeight: '900',
+      lineHeight: 1,
+    },
+    '& h2': {
+      fontSize: Rem(36),
+      fontWeight: '700',
+      lineHeight: 1,
+    },
+    '& a': {
+      color: hex.light,
+    },
+    '& dl:not(.array)': {
+      display: 'flex',
+      flexWrap: 'wrap',
+      '& dt, & dd': {
+        padding: `${Rem(5)} 0`,
+      },
+      '& dt': {
+        ...mixin.colAuto,
+        width: Rem(170),
+        fontWeight: '700',
+      },
+      '& dd': {
+        ...mixin.colAuto,
+        width: `calc(100% - ${Rem(170)})`,
+      },
+    },
+    '& section > dl': {
+      padding: `${Rem(5)} 0`,
+      borderTop: `${Rem(5)} solid ${hex.yellow}`,
+      borderBottom: `${Rem(5)} solid ${hex.yellow}`,
+      '& strong': {
+        display: 'inline-block',
+        paddingLeft: Rem(25),
+        fontWeight: '700',
+        color: hex.warning,
+      },
+      '& p strong': {
+        textIndent: Rem(-25),
+      },
     },
   },
 })

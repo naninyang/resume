@@ -1,0 +1,326 @@
+.print-only
+  display: flex
+  flex-direction: column
+  flex-grow: 1
+  width: 720px
+  color: white
+
+  @media print
+    color: black
+
+  h1
+    margin: 32px 0
+    font-size: 32px
+    line-height: 1
+
+  blockquote
+    margin: 25px 0
+    padding: 15px
+    border-radius: 5px
+    background-color: black
+
+    @media print
+      display: none
+
+    a
+      color: aqua
+      text-decoration: underline
+
+    code
+      display: inline-block
+      border-radius: 5px
+      margin: 0 2px
+      padding: 2px 5px
+      background-color: aqua
+      color: black
+
+  section
+    padding-top: 25px
+    display: flex
+    gap: 25px
+
+    h2
+      flex: 0 0 auto
+      border-bottom: 2px solid
+      padding: 10px
+      width: 150px
+      font-size: 16px
+      line-height: 1
+
+    &:last-of-type
+      h2
+        border-bottom: 0
+
+    dt, dd
+      font-size: 14px
+
+    &.profile
+      dl
+        display: flex
+        flex-wrap: wrap
+        border-bottom: 2px solid
+
+        dt, dd
+          padding: 10px 0
+          border-bottom: 1px solid
+
+          &:last-of-type
+            border-bottom: 0
+
+        dt
+          flex: 0 0 auto
+          width: 170px
+          font-weight: 700
+
+        dd
+          flex: 0 0 auto
+          width: calc(100% - 170px)
+
+    &.education
+      ul
+        flex: 1 0 0%
+        border-bottom: 2px solid
+
+        li
+          border-bottom: 1px solid
+          padding: 25px 0 5px
+
+          &:first-of-type
+            padding-top: 5px
+
+          &:last-of-type
+            border-bottom: 0
+
+          p
+            padding: 5px 0
+            display: flex
+            justify-content: space-between
+
+          dl
+            display: flex
+            flex-wrap: wrap
+
+            dt, dd
+              padding: 5px 0
+              border-bottom: 1px solid
+
+              &:last-of-type
+                border-bottom: 0
+
+            dt
+              flex: 0 0 auto
+              width: 170px
+              font-weight: 700
+
+            dd
+              flex: 0 0 auto
+              width: calc(100% - 170px)
+
+    &.certificate
+      dl
+        display: flex
+        flex: 1 0 0%
+        flex-direction: column
+        border-bottom: 2px solid
+
+        > div
+          display: flex
+
+          &:last-of-type div
+            border-bottom: 0
+
+          div
+            flex: 0 0 auto
+            border-bottom: 1px solid
+
+            &:nth-of-type(1)
+              flex: 1 0 0%
+              width: 100%
+              max-width: 100%
+
+              dd
+                padding-right: 15px
+
+            &:nth-of-type(2)
+              width: 150px
+
+              dd
+                padding-right: 15px
+
+            &:nth-of-type(3)
+              width: 110px
+
+              dd
+                text-align: center
+
+            &:nth-of-type(4)
+              width: 120px
+
+              dd
+                text-align: center
+
+          dt, dd
+            padding: 10px 0
+
+          dt
+            display: none
+
+          &:first-of-type dt
+            border-bottom: 1px solid
+            display: block
+            font-weight: 700
+            text-align: center
+
+    &.skill
+      dl
+        display: flex
+        flex: 1 0 0%
+        flex-direction: column
+        border-bottom: 2px solid
+
+        > div
+          display: flex
+
+          &:last-of-type div
+            border-bottom: 0
+
+          div
+            flex: 1 0 0%
+            width: 100%
+            max-width: 100%
+            border-bottom: 1px solid
+
+          dt, dd
+            padding: 10px 0
+
+          dt
+            display: none
+
+          dd
+            padding-top: 15px
+            padding-bottom: 17px
+            line-height: 1
+
+            span
+              display: flex
+              justify-content: center
+              gap: 10px
+
+              i
+                display: block
+                width: 16px
+                height: 16px
+                border-radius: 16px
+                background-color: white!important
+                opacity: .2
+                -webkit-print-color-adjust: exact
+
+                @media print
+                  background-color: black!important
+
+                &.circle
+                  opacity: 1
+
+          &:first-of-type dt
+            border-bottom: 1px solid
+            display: block
+            font-weight: 700
+            text-align: center
+
+    &.reference
+      dl
+        display: flex
+        flex-wrap: wrap
+        border-bottom: 2px solid
+
+        dt, dd
+          padding: 10px 0
+          border-bottom: 1px solid
+
+          &:last-of-type
+            border-bottom: 0
+
+        dt
+          flex: 0 0 auto
+          width: 170px
+          font-weight: 700
+
+        dd
+          flex: 0 0 auto
+          width: calc(100% - 170px)
+
+          a
+            color: white
+
+            @media print
+              color: black
+
+    &.career
+      > dl
+        display: flex
+        flex: 1 0 0%
+        flex-direction: column
+
+        > div
+          display: flex
+          flex-direction: column
+          padding-top: 25px
+
+          &:first-of-type
+            padding-top: 0
+
+          .career-item
+            display: flex
+            flex-wrap: wrap
+            flex-direction: column
+            border-bottom: 2px solid
+            position: relative
+            padding-bottom: 10px
+
+            > dt, > dd
+              padding: 5px 0
+              border-bottom: 1px solid
+
+              &:last-of-type
+                border-bottom: 0
+
+            dt
+              font-weight: 700
+
+            dd
+              display: flex
+              flex-direction: column
+
+            time
+              position: absolute
+              top: 10px
+              right: 0
+
+          .project-list
+            margin-left: 170px
+
+            .project-item
+              position: relative
+              padding: 5px 0
+              border-bottom: 1px solid
+
+              dt
+                padding: 5px 0
+
+              p
+                padding: 5px 0
+
+              time
+                position: absolute
+                top: 10px
+                right: 0
+
+          &:last-of-type
+            .project-list .project-item
+              border-bottom: 0
+
+    &:first-of-type
+      border-top: 5px solid
+
+    &:last-of-type
+      border-bottom: 5px solid
