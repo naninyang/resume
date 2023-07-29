@@ -150,7 +150,7 @@ export default function Education() {
                         <input
                           type="text"
                           name="stats"
-                          id='status'
+                          id='stats'
                           value={education.stats}
                           onChange={(e) => handleChange(e, index)}
                           placeholder="상태"

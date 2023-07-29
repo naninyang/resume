@@ -40,10 +40,6 @@ export default function Reference() {
     }
   };
 
-  useEffect(() => {
-    fetchReferences();
-  }, []);
-
   return (
     <Container>
       <Content>

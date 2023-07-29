@@ -1,12 +1,55 @@
 import styled from '@emotion/styled';
 import { Rem, hex, rgba } from './designSystem';
 
+export const ManagementPage = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  background: 'fixed linear-gradient(225deg, #CD313A 0%, #000 37.55%, #000 57.70%, #0047A0 100%)',
+  minHeight: '100vh',
+})
+
+export const Nav = styled.nav({
+  flexFlow: 1,
+  display: 'flex',
+  justifyContent: 'center',
+  backdropFilter: 'saturate(1.8) blur(20px)',
+  backgroundColor: 'rgba(22, 22, 23, 0.8)',
+  height: Rem(52),
+  '& ol': {
+    display: 'flex',
+    width: Rem(992),
+    justifyContent: 'space-between',
+  },
+  '& li': {
+    '& p': {
+      display: 'flex',
+      alignItems: 'center',
+      padding: `0 ${Rem(25)}`,
+      height: '100%',
+      fontSize: Rem(16),
+      color: hex.yellow,
+    },
+  },
+  '& a, & button': {
+    padding: `0 ${Rem(25)}`,
+    height: '100%',
+    fontSize: Rem(16),
+    color: hex.light,
+  },
+  '& a': {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  '& button': {
+    backgroundColor: 'transparent',
+  },
+})
+
 export const Container = styled.main({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  background: 'fixed linear-gradient(225deg, #CD313A 0%, #000 37.55%, #000 57.70%, #0047A0 100%)',
-  minHeight: '100vh',
+  flexGrow: 1,
 })
 
 export const Content = styled.div({
