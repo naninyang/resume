@@ -57,6 +57,14 @@ export default function Profile() {
                 </dt>
                 <dd>{userProfile.address ? userProfile.address : '주소 미등록'}</dd>
               </ItemGroup>
+              <ItemGroup>
+                <dt>
+                  연락처
+                  {' '}
+                  {userProfile.telephone && '- 이력서에 공개하고 싶지 않으면 연락처를 지우세요'}
+                </dt>
+                <dd>{userProfile.telephone ? userProfile.telephone : '연락처 미등록'}</dd>
+              </ItemGroup>
             </DefinitionGroup>
             <ButtonGroup>
               <LinkButton href='/manages/profile-edit'>프로필 업데이트하러 가기</LinkButton>

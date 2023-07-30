@@ -17,6 +17,9 @@ export default function Education() {
     major: '',
     category: '',
     stats: '',
+    degree: '',
+    degree_num: '',
+    record: '',
     start_date: '',
     end_date: '',
   });
@@ -40,6 +43,9 @@ export default function Education() {
       major: '',
       category: '',
       stats: '',
+      degree: '',
+      degree_num: '',
+      record: '',
       start_date: '',
       end_date: '',
     });
@@ -67,8 +73,6 @@ export default function Education() {
     event.preventDefault();
     try {
       const response = await axios.put('/api/education', educations);
-      console.log('Educations saved successfully:', response.data);
-
       if (response.status === 200) {
         toast.success('학력 업데이트에 성공했습니다.', {
           position: toast.POSITION.TOP_CENTER,
@@ -87,7 +91,19 @@ export default function Education() {
   const fetchEducations = async () => {
     try {
       const response = await axios.get('/api/education');
-      setEducations(response.data);
+      const data = response.data.map(education => ({
+        ...education,
+        school: education.school || '',
+        major: education.major || '',
+        category: education.category || '',
+        stats: education.stats || '',
+        degree: education.degree || '',
+        degree_num: education.degree_num || '',
+        record: education.record || '',
+        start_date: education.start_date || '',
+        end_date: education.end_date || '',
+      }));
+      setEducations(data);
     } catch (error) {
       console.error('Failed to fetch educations:', error);
     }
@@ -158,6 +174,41 @@ export default function Education() {
                         />
                         <label htmlFor='stats'>상태</label>
                         <p>재학 중, 졸업, 휴학 중, 중퇴 등</p>
+                      </FieldGroup>
+                      <FieldGroup>
+                        <input
+                          type="text"
+                          name="degree"
+                          id='degree'
+                          value={education.degree}
+                          onChange={(e) => handleChange(e, index)}
+                          placeholder="학위"
+                        />
+                        <label htmlFor='degree'>학위</label>
+                        <p>석사, 학사, 박사 등</p>
+                      </FieldGroup>
+                      <FieldGroup>
+                        <input
+                          type="text"
+                          name="degree_num"
+                          id='degree_num'
+                          value={education.degree_num}
+                          onChange={(e) => handleChange(e, index)}
+                          placeholder="학위등록번호"
+                        />
+                        <label htmlFor='degree_num'>학위등록번호</label>
+                      </FieldGroup>
+                      <FieldGroup>
+                        <input
+                          type="text"
+                          name="record"
+                          id='record'
+                          value={education.record}
+                          onChange={(e) => handleChange(e, index)}
+                          placeholder="성적"
+                        />
+                        <label htmlFor='record'>성적</label>
+                        <p>점수</p>
                       </FieldGroup>
                       <FieldGroup>
                         <input

@@ -30,9 +30,11 @@ export default async function handler(req, res) {
         username: user.username,
         email: user.email,
         address: user.address,
+        telephone: user.telephone,
         username_show: user.username_show,
         email_show: user.email_show,
       });
+
     } catch (error) {
       console.error("Token verification failed with error: ", error);
 
@@ -40,7 +42,7 @@ export default async function handler(req, res) {
     }
   } else if (req.method === 'PUT') {
     const token = req.headers.authorization?.split(' ')[1];
-    const { username, email, address, username_show, email_show } = req.body;
+    const { username, email, address, telephone, username_show, email_show } = req.body;
 
     if (!token) {
       res.status(401).send({ message: 'Unauthorized' });
@@ -61,7 +63,7 @@ export default async function handler(req, res) {
 
       await prisma.user.update({
         where: { userid: payload.userid },
-        data: { username, email, address, username_show, email_show },
+        data: { username, email, address, telephone, username_show, email_show },
       });
 
       res.status(200).json({ message: 'profile updated successfully', status: 'success' });

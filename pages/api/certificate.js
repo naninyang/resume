@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-  console.log('req: ', req.method)
   if (req.method === 'GET') {
     try {
       const userId = 1;

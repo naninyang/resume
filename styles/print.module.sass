@@ -1,3 +1,7 @@
+@media print
+  @page
+    margin: 0
+
 .print-only
   display: flex
   flex-direction: column
@@ -35,7 +39,7 @@
       color: black
 
   section
-    padding-top: 25px
+    padding: 10px 0
     display: flex
     gap: 25px
 
@@ -95,6 +99,7 @@
             padding: 5px 0
             display: flex
             justify-content: space-between
+            font-size: 14px
 
           dl
             display: flex
@@ -306,6 +311,7 @@
 
               dt
                 padding: 5px 0
+                font-weight: 700
 
               p
                 padding: 5px 0
@@ -320,7 +326,9 @@
               border-bottom: 0
 
     &:first-of-type
+      padding-top: 15px
       border-top: 5px solid
 
     &:last-of-type
+      padding-bottom: 15px
       border-bottom: 5px solid

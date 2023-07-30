@@ -11,19 +11,24 @@ datasource db {
 }
 
 model user {
-  id            Int           @id @default(autoincrement())
-  userid        String        @unique
-  username      String
-  email         String        @unique
-  password      String
-  address       String?
-  username_show Boolean?      @default(false)
-  email_show    Boolean?      @default(false)
-  educations    education[]
-  certificates  certificate[]
-  skills        skill[]
-  references    reference[]
-  careers       career[]
+  id                Int                @id @default(autoincrement())
+  userid            String             @unique
+  username          String
+  email             String             @unique
+  telephone         String?            @unique
+  password          String
+  address           String?
+  username_show     Boolean?           @default(false)
+  email_show        Boolean?           @default(false)
+  educations        education[]
+  military_services military_service[]
+  activities        activity[]
+  languages         language[]
+  awards            award[]
+  certificates      certificate[]
+  skills            skill[]
+  references        reference[]
+  careers           career[]
 }
 
 model education {
@@ -32,10 +37,62 @@ model education {
   major      String
   category   String
   stats      String
+  degree     String?
+  degree_num String?
+  record     String?
   start_date String
   end_date   String?
   user_id    Int?
   user       user?   @relation(fields: [user_id], references: [id])
+}
+
+model military_service {
+  id                     Int      @id @default(autoincrement())
+  military_stats         Boolean? @default(false)
+  military_show          Boolean? @default(false)
+  conscription_exemption String?
+  military_group         String?
+  start_date             String?
+  end_date               String?
+  rank                   String?
+  discharge              String?
+  veteran_stats          Boolean? @default(false)
+  disability_stats       Boolean? @default(false)
+  user_id                Int?
+  user                   user?    @relation(fields: [user_id], references: [id])
+}
+
+model activity {
+  id             Int     @id @default(autoincrement())
+  organization   String?
+  position       String?
+  description    String?
+  classification String?
+  start_date     String?
+  start_time     String?
+  end_date       String?
+  end_time       String?
+  user_id        Int?
+  user           user?   @relation(fields: [user_id], references: [id])
+}
+
+model language {
+  id        Int     @id @default(autoincrement())
+  lang_name String?
+  exam_name String?
+  point     String?
+  user_id   Int?
+  user      user?   @relation(fields: [user_id], references: [id])
+}
+
+model award {
+  id           Int     @id @default(autoincrement())
+  award_name   String?
+  description  String?
+  issue_date   String?
+  organization String?
+  user_id      Int?
+  user         user?   @relation(fields: [user_id], references: [id])
 }
 
 model certificate {

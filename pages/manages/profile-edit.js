@@ -16,6 +16,7 @@ export default function Profile() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
+  const [telephone, setTelephone] = useState('');
   const [usernameShow, setUsernameShow] = useState(false);
   const [emailShow, setEmailShow] = useState(false);
 
@@ -30,10 +31,11 @@ export default function Profile() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const { username, email, address, username_show, email_show } = response.data;
+      const { username, email, address, username_show, email_show, telephone } = response.data;
       setUsername(username || '');
       setEmail(email || '');
       setAddress(address || '');
+      setTelephone(telephone || '');
       setUsernameShow(username_show || false);
       setEmailShow(email_show || false);
     } catch (error) {
@@ -41,7 +43,7 @@ export default function Profile() {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const token = localStorage.getItem('token');
@@ -51,6 +53,7 @@ export default function Profile() {
           username,
           email,
           address,
+          telephone,
           username_show: usernameShow,
           email_show: emailShow,
         },
@@ -60,6 +63,7 @@ export default function Profile() {
       const response = await axios.get(`/api/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       if (response.status === 200) {
         toast.success('프로필 업데이트에 성공했습니다.', {
           position: toast.POSITION.TOP_CENTER,
@@ -132,6 +136,17 @@ export default function Profile() {
                       onChange={(e) => setAddress(e.target.value)}
                     />
                     <label htmlFor='address'>주소</label>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="tel"
+                      id='telephone'
+                      placeholder='연락처'
+                      value={telephone}
+                      pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                      onChange={(e) => setTelephone(e.target.value)}
+                    />
+                    <label htmlFor='telephone'>연락처</label>
                   </FieldGroup>
                 </FormGroup>
                 <ButtonGroup>
