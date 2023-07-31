@@ -65,6 +65,22 @@ export default function Profile() {
                 </dt>
                 <dd>{userProfile.telephone ? userProfile.telephone : '연락처 미등록'}</dd>
               </ItemGroup>
+              <ItemGroup>
+                <dt>
+                  보훈대상
+                  {' '}
+                  {userProfile.veteran && '- 이력서에 공개하고 싶지 않거나 보훈대상자가 아니라면 지우세요'}
+                </dt>
+                <dd>{userProfile.veteran ? userProfile.veteran : '보훈대상 여부 미등록 또는 보훈대상 아님'}</dd>
+              </ItemGroup>
+              <ItemGroup>
+                <dt>
+                  장애대상
+                  {' '}
+                  {userProfile.disability && '- 이력서에 공개하고 싶지 않거나 비장애인이라면 지우세요'}
+                </dt>
+                <dd>{userProfile.disability ? userProfile.disability : '장애대상 여부 미등록 또는 비장애인'}</dd>
+              </ItemGroup>
             </DefinitionGroup>
             <ButtonGroup>
               <LinkButton href='/manages/profile-edit'>프로필 업데이트하러 가기</LinkButton>

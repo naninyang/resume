@@ -18,6 +18,8 @@ model user {
   telephone         String?            @unique
   password          String
   address           String?
+  veteran           String?
+  disability        String?
   username_show     Boolean?           @default(false)
   email_show        Boolean?           @default(false)
   educations        education[]
@@ -56,8 +58,6 @@ model military_service {
   end_date               String?
   rank                   String?
   discharge              String?
-  veteran_stats          Boolean? @default(false)
-  disability_stats       Boolean? @default(false)
   user_id                Int?
   user                   user?    @relation(fields: [user_id], references: [id])
 }

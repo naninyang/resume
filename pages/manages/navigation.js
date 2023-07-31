@@ -22,10 +22,14 @@ export default function Navigation() {
         {loggedIn ? (
           <>
             <li><LinkButton href='/manages/profile'>프로필</LinkButton></li>
+            <li><LinkButton href='/manages/military-service'>병역사항</LinkButton></li>
+            <li><LinkButton href='/manages/reference'>레퍼런스</LinkButton></li>
             <li><LinkButton href='/manages/education'>학력</LinkButton></li>
             <li><LinkButton href='/manages/certificate'>자격증</LinkButton></li>
             <li><LinkButton href='/manages/skill'>보유기술</LinkButton></li>
-            <li><LinkButton href='/manages/reference'>레퍼런스</LinkButton></li>
+            <li><LinkButton href='/manages/activity'>대외활동</LinkButton></li>
+            <li><LinkButton href='/manages/language'>외국어능력</LinkButton></li>
+            <li><LinkButton href='/manages/award'>수상기록</LinkButton></li>
             <li><LinkButton href='/manages/career'>경력</LinkButton></li>
             <li><LinkButton href='/'>이력서보기</LinkButton></li>
             <li><button type='button' onClick={handleSignOut}>로그아웃</button></li>

@@ -17,6 +17,8 @@ export default function Profile() {
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
   const [telephone, setTelephone] = useState('');
+  const [veteran, setVeteran] = useState('');
+  const [disability, setDisability] = useState('');
   const [usernameShow, setUsernameShow] = useState(false);
   const [emailShow, setEmailShow] = useState(false);
 
@@ -31,11 +33,13 @@ export default function Profile() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const { username, email, address, username_show, email_show, telephone } = response.data;
+      const { username, email, address, telephone, veteran, disability, username_show, email_show } = response.data;
       setUsername(username || '');
       setEmail(email || '');
       setAddress(address || '');
       setTelephone(telephone || '');
+      setVeteran(veteran || '');
+      setDisability(disability || '');
       setUsernameShow(username_show || false);
       setEmailShow(email_show || false);
     } catch (error) {
@@ -54,6 +58,8 @@ export default function Profile() {
           email,
           address,
           telephone,
+          veteran,
+          disability,
           username_show: usernameShow,
           email_show: emailShow,
         },
@@ -147,6 +153,26 @@ export default function Profile() {
                       onChange={(e) => setTelephone(e.target.value)}
                     />
                     <label htmlFor='telephone'>연락처</label>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='veteran'
+                      placeholder='보훈대상'
+                      value={veteran}
+                      onChange={(e) => setVeteran(e.target.value)}
+                    />
+                    <label htmlFor='veteran'>보훈대상</label>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='disability'
+                      placeholder='장애대상'
+                      value={disability}
+                      onChange={(e) => setDisability(e.target.value)}
+                    />
+                    <label htmlFor='disability'>장애대상</label>
                   </FieldGroup>
                 </FormGroup>
                 <ButtonGroup>
