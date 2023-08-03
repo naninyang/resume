@@ -1,92 +1,112 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import Head from 'next/head'
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/components/hooks/authContext'
-import { ArrayContainer, ButtonGroup, Container, Content, FieldGroup, FormGroup, Fragment } from '@/styles/manageSystem';
+import { ArrayContainer, ButtonGroup, Container, Content, DefinitionGroup, FieldGroup, FindUtil, FormGroup, ItemGroup, SessionUtil, Util } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
 
 export default function Skill() {
   const { loggedIn } = useAuth();
 
-  const [skills, setSkills] = useState([]);
-  const [newSkill, setNewSkill] = useState({
+  const [isAdding, setIsAdding] = useState(false);
+
+  const [skill, setSkill] = useState({
     skill_name: '',
     skill_level: '',
     skill_career: '',
   });
+  const [skills, setSkills] = useState([]);
 
-  const handleChange = (e, index) => {
-    const { name, value } = e.target;
-    setSkills((prevSkills) => {
-      const updatedSkills = [...prevSkills];
-      updatedSkills[index] = {
-        ...updatedSkills[index],
-        [name]: value,
-      };
-      return updatedSkills;
-    });
-  };
+  useEffect(() => {
+    fetchSkill();
+  }, []);
 
-  const handleAddSkill = () => {
-    setSkills((prevSkills) => [...prevSkills, newSkill]);
-    setNewSkill({
-      skill_name: '',
-      skill_level: '',
-      skill_career: '',
-    });
-  };
-
-  const handleDeleteSkill = async (index) => {
+  const fetchSkill = async () => {
     try {
-      const skill = skills[index];
-      if (skill.id) {
-        await axios.delete(`/api/skill/${skill.id}`);
-      }
-      setSkills((prevSkills) =>
-        prevSkills.filter((_, idx) => idx !== index)
-      );
-      toast.success('보유기술 정보가 성공적으로 삭제되었습니다.', {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`/api/skill`, { headers: { Authorization: `Bearer ${token}` } });
+      setSkills(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleAddChange = (e) => {
+    const { name, value } = e.target;
+    setSkill({
+      ...skill,
+      [name]: value
+    });
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`/api/skill/${skill.id}`, skill, { headers: { Authorization: `Bearer ${token}` } })
+      toast.success('보유기술 정보가 성공적으로 추가되었습니다', {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 5000,
       });
+      fetchSkill();
+      setIsAdding(false)
     } catch (error) {
-      console.error('Failed to delete skill:', error);
+      console.error(error);
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleDelete = async (skillId) => {
     try {
-      const response = await axios.put('/api/skill', skills);
-      console.log('Skills saved successfully:', response.data);
-      console.log('response: ', response)
-
-      if (response.status === 200) {
-        toast.success('보유기술 업데이트에 성공했습니다.', {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 5000,
-        });
-      }
+      const token = localStorage.getItem('token');
+      await axios.delete(`/api/skill/${skillId}`, { headers: { Authorization: `Bearer ${token}` } })
+      toast.error('보유기술 정보가 성공적으로 삭제되었습니다', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      fetchSkill();
     } catch (error) {
-      console.error('Failed to save skills:', error);
+      console.error(error);
     }
   };
 
-  useEffect(() => {
-    fetchSkills();
-  }, []);
+  const [skillEdit, setFormData] = useState({ ...skill });
+  const [editingSkill, setEditingSkill] = useState(null);
 
-  const fetchSkills = async () => {
+  const handleEditClick = (ski) => {
+    setEditingSkill(ski.id);
+    setFormData(ski);
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...skillEdit,
+      [name]: value,
+    });
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.get('/api/skill');
-      setSkills(response.data);
+      const token = localStorage.getItem('token');
+      await axios.put(`/api/skill/${skill.id}`, skillEdit, { headers: { Authorization: `Bearer ${token}` } });
+      toast.success('보유기술 정보가 성공적으로 수정되었습니다', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      setEditingSkill(false);
+      fetchSkill();
     } catch (error) {
-      console.error('Failed to fetch skills:', error);
+      console.error('Failed to update skill: ', error);
     }
   };
+
+  const handleCancelClick = () => {
+    setEditingSkill(false);
+  }
+
+  const pageTitle = '보유기술'
 
   return (
     <Container>
@@ -95,65 +115,170 @@ export default function Skill() {
           <IsNotSession />
         ) : (
           <ArrayContainer>
-            <form>
-              <fieldset>
-                <legend>보유기술 수정 양식</legend>
-                <FormGroup className='form-group'>
-                  <div className='item-add'>
-                    <button type="button" onClick={handleAddSkill}>보유기술 추가</button>
+            <Head>
+              <title>레주메 {pageTitle}</title>
+            </Head>
+            <h1>{pageTitle}</h1>
+            <div className='data-group'>
+              <div className='list'>
+                {skills.map((ski) => (
+                  <div key={ski.id} className='item'>
+                    {editingSkill === ski.id ? (
+                      <form onSubmit={handleEditSubmit}>
+                        <fieldset>
+                          <legend>{pageTitle} 갱신</legend>
+                          <FormGroup>
+                            <div>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="skill_name"
+                                  id={`skill_name-${ski.id}`}
+                                  value={skillEdit.skill_name}
+                                  onChange={handleEditChange}
+                                  placeholder="기술명"
+                                />
+                                <label htmlFor={`skill_name-${ski.id}`}>기술명</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="skill_level"
+                                  id={`skill_level-${ski.id}`}
+                                  value={skillEdit.skill_level}
+                                  onChange={handleEditChange}
+                                  placeholder="숙련도"
+                                />
+                                <label htmlFor={`skill_level-${ski.id}`}>숙련도</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="skill_career"
+                                  id={`skill_career-${ski.id}`}
+                                  value={skillEdit.skill_career}
+                                  onChange={handleEditChange}
+                                  placeholder="경험"
+                                />
+                                <label htmlFor={`skill_career-${ski.id}`}>경험</label>
+                              </FieldGroup>
+                            </div>
+                          </FormGroup>
+                          <ButtonGroup>
+                            <button type="submit">{pageTitle} 갱신</button>
+                            <Util>
+                              <SessionUtil />
+                              <FindUtil>
+                                <button type='button' onClick={handleCancelClick}>취소하기</button>
+                              </FindUtil>
+                            </Util>
+                          </ButtonGroup>
+                        </fieldset>
+                      </form>
+                    ) : (
+                      <div className='view'>
+                        <DefinitionGroup>
+                          <div>
+                            <ItemGroup>
+                              <dt>기술명</dt>
+                              <dd>
+                                <span>{ski.skill_name}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>숙련도</dt>
+                              <dd>
+                                <span>{ski.skill_level}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>경험</dt>
+                              <dd>
+                                <span>{ski.skill_career}</span>
+                              </dd>
+                            </ItemGroup>
+                          </div>
+                        </DefinitionGroup>
+                        <div className='item-management'>
+                          <button type='button' className='edit' onClick={() => handleEditClick(ski)}>수정</button>
+                          <button type='button' className='del' onClick={() => handleDelete(ski.id)}>삭제</button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {skills.map((skill, index) => (
-                    <Fragment key={index} className='array-skill'>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="skill_name"
-                          id='skill_name'
-                          value={skill.skill_name}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="기술명"
-                          required
-                        />
-                        <label htmlFor='skill_name'>기술명</label>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="skill_level"
-                          id='skill_level'
-                          value={skill.skill_level}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="숙련도"
-                          required
-                        />
-                        <label htmlFor='skill_level'>숙련도</label>
-                        <p>초급, 중급, 고급...</p>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="skill_career"
-                          id='skill_career'
-                          value={skill.skill_career}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="경험"
-                          required
-                        />
-                        <label htmlFor='skill_career'>경험</label>
-                        <p>1년 미만, 2년 이상, 5년 이상...</p>
-                      </FieldGroup>
-                      <button type="button" onClick={() => handleDeleteSkill(index)}>삭제</button>
-                    </Fragment>
-                  ))}
-                </FormGroup>
+                ))}
+              </div>
+              {!isAdding && (
                 <ButtonGroup>
-                  <button type='submit' onClick={handleSubmit}>보유기술 업데이트</button>
+                  <button type='button' onClick={() => {
+                    setIsAdding(true);
+                    setSkill({
+                      skill_name: '',
+                      skill_level: '',
+                      skill_career: '',
+                    })
+                  }}>
+                    {pageTitle} 추가
+                  </button>
                 </ButtonGroup>
-              </fieldset>
-            </form>
+              )}
+              {isAdding && (
+                <form onSubmit={handleAddSubmit}>
+                  <fieldset>
+                    <legend>{pageTitle} 갱신</legend>
+                    <FormGroup>
+                      <div>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="skill_name"
+                            id='skill_name'
+                            value={skill.skill_name}
+                            onChange={handleAddChange}
+                            placeholder="기술명"
+                          />
+                          <label htmlFor='skill_name'>기술명</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="skill_level"
+                            id="skill_level"
+                            value={skill.skill_level}
+                            onChange={handleAddChange}
+                            placeholder="숙련도"
+                          />
+                          <label htmlFor='skill_level'>숙련도</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="skill_career"
+                            id="skill_career"
+                            value={skill.skill_career}
+                            onChange={handleAddChange}
+                            placeholder="경험"
+                          />
+                          <label htmlFor='skill_career'>경험</label>
+                        </FieldGroup>
+                      </div>
+                    </FormGroup>
+                    <ButtonGroup>
+                      <button type="submit">{pageTitle} 추가</button>
+                      <Util>
+                        <SessionUtil />
+                        <FindUtil>
+                          <button type='button' onClick={() => { setIsAdding(false) }}>취소하기</button>
+                        </FindUtil>
+                      </Util>
+                    </ButtonGroup>
+                  </fieldset>
+                </form>
+              )}
+            </div>
           </ArrayContainer>
         )}
       </Content>
-    </Container>
+    </Container >
   );
 }

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Head from 'next/head'
 import axios from 'axios';
 import { useAuth } from '@/components/hooks/authContext'
-import { ProfileContainer } from '@/styles/sectionSystem';
 import LinkButton from '@/components/hooks/linkButton';
 import { Container, Fragment, IsNotSession } from '@/styles/serviceSystem';
 

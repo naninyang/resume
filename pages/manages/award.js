@@ -1,94 +1,113 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import Head from 'next/head'
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/components/hooks/authContext'
-import { ArrayContainer, ButtonGroup, Container, Content, FieldGroup, FormGroup, Fragment } from '@/styles/manageSystem';
+import { ArrayContainer, ButtonGroup, Container, Content, DefinitionGroup, FieldGroup, FindUtil, FormGroup, ItemGroup, SessionUtil, Util } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
 
 export default function Award() {
   const { loggedIn } = useAuth();
 
-  const [awards, setAwards] = useState([]);
-  const [newAward, setNewAward] = useState({
+  const [isAdding, setIsAdding] = useState(false);
+
+  const [award, setAward] = useState({
     award_name: '',
     description: '',
     issue_date: '',
     organization: '',
   });
+  const [awards, setAwards] = useState([]);
 
-  const handleChange = (e, index) => {
-    const { name, value } = e.target;
-    setAwards((prevAwards) => {
-      const updatedAwards = [...prevAwards];
-      updatedAwards[index] = {
-        ...updatedAwards[index],
-        [name]: value,
-      };
-      return updatedAwards;
-    });
-  };
+  useEffect(() => {
+    fetchAward();
+  }, []);
 
-  const handleAddAward = () => {
-    setAwards((prevAwards) => [...prevAwards, newAward]);
-    setNewAward({
-      award_name: '',
-      description: '',
-      issue_date: '',
-      organization: '',
-    });
-  };
-
-  const handleDeleteAward = async (index) => {
+  const fetchAward = async () => {
     try {
-      const award = awards[index];
-      if (award.id) {
-        await axios.delete(`/api/award/${award.id}`);
-      }
-      setAwards((prevAwards) =>
-        prevAwards.filter((_, idx) => idx !== index)
-      );
-      toast.success('보유기술 정보가 성공적으로 삭제되었습니다.', {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`/api/award`, { headers: { Authorization: `Bearer ${token}` } });
+      setAwards(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleAddChange = (e) => {
+    const { name, value } = e.target;
+    setAward({
+      ...award,
+      [name]: value
+    });
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`/api/award/${award.id}`, award, { headers: { Authorization: `Bearer ${token}` } })
+      toast.success('수상기록 정보가 성공적으로 추가되었습니다', {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 5000,
       });
+      fetchAward();
+      setIsAdding(false)
     } catch (error) {
-      console.error('Failed to delete award:', error);
+      console.error(error);
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleDelete = async (awardId) => {
     try {
-      const response = await axios.put('/api/award', awards);
-      console.log('Awards saved successfully:', response.data);
-      console.log('response: ', response)
-
-      if (response.status === 200) {
-        toast.success('보유기술 업데이트에 성공했습니다.', {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 5000,
-        });
-      }
+      const token = localStorage.getItem('token');
+      await axios.delete(`/api/award/${awardId}`, { headers: { Authorization: `Bearer ${token}` } })
+      toast.error('수상기록 정보가 성공적으로 삭제되었습니다', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      fetchAward();
     } catch (error) {
-      console.error('Failed to save awards:', error);
+      console.error(error);
     }
   };
 
-  useEffect(() => {
-    fetchAwards();
-  }, []);
+  const [awardEdit, setFormData] = useState({ ...award });
+  const [editingAward, setEditingAward] = useState(null);
 
-  const fetchAwards = async () => {
+  const handleEditClick = (awa) => {
+    setEditingAward(awa.id);
+    setFormData(awa);
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...awardEdit,
+      [name]: value,
+    });
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.get('/api/award');
-      setAwards(response.data);
+      const token = localStorage.getItem('token');
+      await axios.put(`/api/award/${award.id}`, awardEdit, { headers: { Authorization: `Bearer ${token}` } });
+      toast.success('수상기록 정보가 성공적으로 수정되었습니다', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      setEditingAward(false);
+      fetchAward();
     } catch (error) {
-      console.error('Failed to fetch awards:', error);
+      console.error('Failed to update award: ', error);
     }
   };
+
+  const handleCancelClick = () => {
+    setEditingAward(false);
+  }
+
+  const pageTitle = '수상기록'
 
   return (
     <Container>
@@ -97,78 +116,199 @@ export default function Award() {
           <IsNotSession />
         ) : (
           <ArrayContainer>
-            <form>
-              <fieldset>
-                <legend>수상기록 수정 양식</legend>
-                <FormGroup className='form-group'>
-                  <div className='item-add'>
-                    <button type="button" onClick={handleAddAward}>수상기록 추가</button>
+            <Head>
+              <title>레주메 {pageTitle}</title>
+            </Head>
+            <h1>{pageTitle}</h1>
+            <div className='data-group'>
+              <div className='list'>
+                {awards.map((awa) => (
+                  <div key={awa.id} className='item'>
+                    {editingAward === awa.id ? (
+                      <form onSubmit={handleEditSubmit}>
+                        <fieldset>
+                          <legend>{pageTitle} 갱신</legend>
+                          <FormGroup>
+                            <div>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="award_name"
+                                  id={`award_name-${awa.id}`}
+                                  value={awardEdit.award_name}
+                                  onChange={handleEditChange}
+                                  placeholder="수상명"
+                                />
+                                <label htmlFor={`award_name-${awa.id}`}>수상명</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="description"
+                                  id={`description-${awa.id}`}
+                                  value={awardEdit.description}
+                                  onChange={handleEditChange}
+                                  placeholder="수상내용"
+                                />
+                                <label htmlFor={`description-${awa.id}`}>수상내용</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="organization"
+                                  id={`organization-${awa.id}`}
+                                  value={awardEdit.organization}
+                                  onChange={handleEditChange}
+                                  placeholder="발행기관"
+                                />
+                                <label htmlFor={`organization-${awa.id}`}>발행기관</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="date"
+                                  name="issue_date"
+                                  id={`issue_date-${awa.id}`}
+                                  value={awardEdit.issue_date}
+                                  onChange={handleEditChange}
+                                  placeholder="취득일"
+                                />
+                                <label htmlFor={`issue_date-${awa.id}`}>취득일</label>
+                              </FieldGroup>
+                            </div>
+                          </FormGroup>
+                          <ButtonGroup>
+                            <button type="submit">{pageTitle} 갱신</button>
+                            <Util>
+                              <SessionUtil />
+                              <FindUtil>
+                                <button type='button' onClick={handleCancelClick}>취소하기</button>
+                              </FindUtil>
+                            </Util>
+                          </ButtonGroup>
+                        </fieldset>
+                      </form>
+                    ) : (
+                      <div className='view'>
+                        <DefinitionGroup>
+                          <div>
+                            <ItemGroup>
+                              <dt>수상명</dt>
+                              <dd>
+                                <span>{awa.award_name}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>수상내용</dt>
+                              <dd>
+                                <span>{awa.description}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>발행기관</dt>
+                              <dd>
+                                <span>{awa.organization}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>취득일</dt>
+                              <dd>
+                                <span>{awa.issue_date}</span>
+                              </dd>
+                            </ItemGroup>
+                          </div>
+                        </DefinitionGroup>
+                        <div className='item-management'>
+                          <button type='button' className='edit' onClick={() => handleEditClick(awa)}>수정</button>
+                          <button type='button' className='del' onClick={() => handleDelete(awa.id)}>삭제</button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {awards.map((award, index) => (
-                    <Fragment key={index} className='array-award'>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="award_name"
-                          id='award_name'
-                          value={award.award_name}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="수상명"
-                          required
-                        />
-                        <label htmlFor='award_name'>수상명</label>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="description"
-                          id='description'
-                          value={award.description}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="수상내용"
-                          required
-                        />
-                        <label htmlFor='description'>수상내용</label>
-                        <p>초급, 중급, 고급...</p>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="date"
-                          name="issue_date"
-                          id='issue_date'
-                          value={award.issue_date}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="취득일"
-                          required
-                        />
-                        <label htmlFor='issue_date'>취득일</label>
-                        <p>1년 미만, 2년 이상, 5년 이상...</p>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="organization"
-                          id='organization'
-                          value={award.organization}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="발행기관"
-                          required
-                        />
-                        <label htmlFor='organization'>발행기관</label>
-                        <p>1년 미만, 2년 이상, 5년 이상...</p>
-                      </FieldGroup>
-                      <button type="button" onClick={() => handleDeleteAward(index)}>삭제</button>
-                    </Fragment>
-                  ))}
-                </FormGroup>
+                ))}
+              </div>
+              {!isAdding && (
                 <ButtonGroup>
-                  <button type='submit' onClick={handleSubmit}>수상기록 업데이트</button>
+                  <button type='button' onClick={() => {
+                    setIsAdding(true);
+                    setAward({
+                      award_name: '',
+                      description: '',
+                      issue_date: '',
+                      organization: '',
+                    })
+                  }}>
+                    {pageTitle} 추가
+                  </button>
                 </ButtonGroup>
-              </fieldset>
-            </form>
+              )}
+              {isAdding && (
+                <form onSubmit={handleAddSubmit}>
+                  <fieldset>
+                    <legend>{pageTitle} 갱신</legend>
+                    <FormGroup>
+                      <div>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="award_name"
+                            id='award_name'
+                            value={award.award_name}
+                            onChange={handleAddChange}
+                            placeholder="수상명"
+                          />
+                          <label htmlFor='award_name'>수상명</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="description"
+                            id="description"
+                            value={award.description}
+                            onChange={handleAddChange}
+                            placeholder="수상내용"
+                          />
+                          <label htmlFor='description'>수상내용</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="organization"
+                            id="organization"
+                            value={award.organization}
+                            onChange={handleAddChange}
+                            placeholder="발행기관"
+                          />
+                          <label htmlFor='organization'>발행기관</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="date"
+                            name="issue_date"
+                            id="issue_date"
+                            value={award.issue_date}
+                            onChange={handleAddChange}
+                            placeholder="경험"
+                          />
+                          <label htmlFor='award_career'>취득일</label>
+                        </FieldGroup>
+                      </div>
+                    </FormGroup>
+                    <ButtonGroup>
+                      <button type="submit">{pageTitle} 추가</button>
+                      <Util>
+                        <SessionUtil />
+                        <FindUtil>
+                          <button type='button' onClick={() => { setIsAdding(false) }}>취소하기</button>
+                        </FindUtil>
+                      </Util>
+                    </ButtonGroup>
+                  </fieldset>
+                </form>
+              )}
+            </div>
           </ArrayContainer>
         )}
       </Content>
-    </Container>
+    </Container >
   );
 }

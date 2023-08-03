@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Rem, hex, rgba } from './designSystem';
+import { Rem, hex, mixin, rgba } from './designSystem';
 
 export const ManagementPage = styled.div({
   display: 'flex',
@@ -17,7 +17,6 @@ export const Nav = styled.nav({
   height: Rem(52),
   '& ol': {
     display: 'flex',
-    width: Rem(992),
     justifyContent: 'space-between',
   },
   '& li': {
@@ -56,9 +55,27 @@ export const Content = styled.div({
   padding: `${Rem(50)} ${Rem(25)}`,
 })
 
+export const ManagementContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: Rem(50),
+  '& h1': {
+    fontSize: Rem(32),
+    fontWeight: '900',
+    color: hex.light,
+  },
+})
+
 export const FormGroup = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  '& > div': {
+    display: 'flex',
+    gap: Rem(15),
+    '& > div': {
+      ...mixin.col,
+    },
+  },
 })
 
 export const FieldGroup = styled.div({
@@ -128,27 +145,22 @@ export const FieldGroup = styled.div({
 export const DefinitionGroup = styled.dl({
   display: 'flex',
   flexDirection: 'column',
-  gap: Rem(5),
-  position: 'relative',
+  width: `calc(100vw - ${Rem(50)})`,
+  '& > div': {
+    display: 'flex',
+    gap: Rem(15),
+  },
 })
 
 export const ItemGroup = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: Rem(10),
+  ...mixin.col,
   position: 'relative',
   height: Rem(97),
-  '& dd': {
-    padding: `${Rem(28)} ${Rem(15)} ${Rem(8)}`,
-    borderRadius: Rem(5),
-    width: '100%',
-    height: Rem(60),
-    fontSize: Rem(24),
-    fontWeight: '700',
-    lineHeight: 1,
-    color: hex.light,
-    transition: 'all .15s ease-in-out,box-shadow .15s ease-in-out',
-    appearance: 'none',
+  '& dt, & dd': {
+    whiteSpace: 'nowrap',
   },
   '& dt': {
     position: 'absolute',
@@ -161,13 +173,36 @@ export const ItemGroup = styled.div({
     fontWeight: '700',
     lineHeight: 1,
   },
+  '& dd': {
+    display: 'block',
+    padding: `${Rem(28)} ${Rem(15)} ${Rem(8)}`,
+    borderRadius: Rem(5),
+    width: '100%',
+    height: Rem(60),
+    fontWeight: '700',
+    lineHeight: 1,
+    appearance: 'none',
+    position: 'relative',
+    '& span': {
+      fontSize: Rem(24),
+      color: hex.light,
+    },
+    '& p': {
+      position: 'absolute',
+      bottom: Rem(-15),
+      left: Rem(15),
+      fontSize: Rem(12),
+      fontWeight: '900',
+      color: hex.yellow,
+    },
+  },
 })
 
 export const ButtonGroup = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: Rem(15),
-  '& button[type="submit"], & > a': {
+  '& > button, & > a': {
     padding: `0 ${Rem(35)}`,
     borderRadius: Rem(5),
     border: 0,
@@ -190,6 +225,14 @@ export const ButtonGroup = styled.div({
 })
 
 export const ArrayContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: Rem(50),
+  '& h1': {
+    fontSize: Rem(32),
+    fontWeight: '900',
+    color: hex.light,
+  },
   '& fieldset': {
     display: 'flex',
     flexDirection: 'column',
@@ -200,20 +243,49 @@ export const ArrayContainer = styled.div({
     flexDirection: 'column',
     gap: Rem(25),
   },
-  '& .item-add': {
+  '& .data-group': {
     display: 'flex',
-    justifyContent: 'flex-end',
-    '& button': {
-      backgroundColor: hex.dark,
-      padding: `0 ${Rem(15)}`,
-      borderRadius: Rem(5),
-      border: `1px rgba(${rgba.dark20}) solid`,
-      width: 'auto',
-      height: Rem(50),
-      fontSize: Rem(16),
-      fontWeight: '700',
-      lineHeight: 1,
-      color: hex.light,
+    flexDirection: 'column',
+    gap: Rem(50),
+    '& .list': {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: Rem(15),
+      border: `${Rem(1)} solid ${hex.light}`,
+      borderRight: 0,
+      borderLeft: 0,
+      '& .item': {
+        position: 'relative',
+        paddingTop: Rem(25),
+        borderTop: `${Rem(1)} solid ${hex.light}`,
+        '&:first-of-type': {
+          borderTop: 0,
+        },
+        '& .item-management': {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: Rem(15),
+          position: 'absolute',
+          top: Rem(15),
+          right: 0,
+          '& button': {
+            borderRadius: Rem(2),
+            width: Rem(50),
+            height: Rem(30),
+            fontSize: Rem(16),
+            fontWeight: '700',
+            lineHeight: 1,
+            '&.edit': {
+              backgroundColor: hex.mint,
+              color: hex.dark,
+            },
+            '&.del': {
+              backgroundColor: hex.danger,
+              color: hex.light,
+            },
+          },
+        },
+      },
     },
   },
 })
@@ -325,7 +397,10 @@ export const SessionUtil = styled.div({
 
 export const FindUtil = styled.div({
   display: 'flex',
-  '& a': {
+  '& button': {
+    background: 'none',
+  },
+  '& a, & button': {
     padding: `${Rem(5)} ${Rem(10)}`,
     fontSize: Rem(14),
     lineHeight: '1.42857143',

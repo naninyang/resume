@@ -1,15 +1,25 @@
 import { PrismaClient } from '@prisma/client';
+import { verify } from 'jsonwebtoken';
+import { JWT_SECRET } from '@/components/hooks/envs';
 
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    res.status(401).send({ message: 'Unauthorized' });
+    return;
+  }
+
+  const payload = verify(token, JWT_SECRET);
+  const userId = payload.id;
+
   if (req.method === 'GET') {
     try {
-      const userId = 1;
-
       const educations = await prisma.education.findMany({
         where: {
-          user_id: userId,
+          userId: userId,
         },
       });
 
@@ -17,37 +27,6 @@ export default async function handler(req, res) {
     } catch (error) {
       console.error('Failed to fetch educations:', error);
       res.status(500).json({ message: 'Failed to fetch educations' });
-    }
-  } else if (req.method === 'PUT') {
-    try {
-      const educations = req.body;
-
-      const userId = 1;
-
-      for (const education of educations) {
-        const data = { ...education, user_id: userId };
-        if (education.id) {
-          await prisma.education.update({
-            where: { id: education.id },
-            data,
-          });
-        } else {
-          await prisma.education.create({
-            data,
-          });
-        }
-      }
-
-      const updatedData = await prisma.education.findMany({
-        where: {
-          user_id: userId,
-        },
-      });
-
-      res.status(200).json(updatedData);
-    } catch (error) {
-      console.error('Failed to save educations:', error);
-      res.status(500).json({ message: 'Failed to save educations' });
     }
   } else {
     res.status(405).send({ message: 'Only GET and PUT methods are allowed' });

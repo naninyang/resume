@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Rem, hex } from '@/styles/designSystem';
+import Head from 'next/head';
 
 const Container = styled.div({
   display: 'flex',
@@ -19,6 +20,9 @@ const Container = styled.div({
 export default function IsNotSession() {
   return (
     <Container>
+      <Head>
+        <title>레주메</title>
+      </Head>
       <p>로그인 필요</p>
     </Container>
   )

@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       const payload = verify(token, JWT_SECRET);
 
       const user = await prisma.user.findUnique({
-        where: { userid: payload.userid },
+        where: { id: payload.id },
       });
 
       if (!user) {
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
       const payload = verify(token, JWT_SECRET);
 
       const user = await prisma.user.findUnique({
-        where: { userid: payload.userid },
+        where: { id: payload.id },
       });
 
       if (!user) {
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
       }
 
       await prisma.user.update({
-        where: { userid: payload.userid },
+        where: { id: payload.id },
         data: { username, email, address, telephone, veteran, disability, username_show, email_show },
       });
 

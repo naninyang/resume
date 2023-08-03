@@ -1,15 +1,25 @@
 import { PrismaClient } from '@prisma/client';
+import { verify } from 'jsonwebtoken';
+import { JWT_SECRET } from '@/components/hooks/envs';
 
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    res.status(401).send({ message: 'Unauthorized' });
+    return;
+  }
+
+  const payload = verify(token, JWT_SECRET);
+  const userId = payload.id;
+
   if (req.method === 'GET') {
     try {
-      const userId = 1;
-
       const activities = await prisma.activity.findMany({
         where: {
-          user_id: userId,
+          userId: userId,
         },
       });
 
@@ -17,37 +27,6 @@ export default async function handler(req, res) {
     } catch (error) {
       console.error('Failed to fetch activities:', error);
       res.status(500).json({ message: 'Failed to fetch activities' });
-    }
-  } else if (req.method === 'PUT') {
-    try {
-      const activities = req.body;
-
-      const userId = 1;
-
-      for (const activity of activities) {
-        const data = { ...activity, user_id: userId };
-        if (activity.id) {
-          await prisma.activity.update({
-            where: { id: activity.id },
-            data,
-          });
-        } else {
-          await prisma.activity.create({
-            data,
-          });
-        }
-      }
-
-      const updatedData = await prisma.activity.findMany({
-        where: {
-          user_id: userId,
-        },
-      });
-
-      res.status(200).json(updatedData);
-    } catch (error) {
-      console.error('Failed to save activities:', error);
-      res.status(500).json({ message: 'Failed to save activities' });
     }
   } else {
     res.status(405).send({ message: 'Only GET and PUT methods are allowed' });

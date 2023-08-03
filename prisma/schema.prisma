@@ -44,8 +44,8 @@ model education {
   record     String?
   start_date String
   end_date   String?
-  user_id    Int?
-  user       user?   @relation(fields: [user_id], references: [id])
+  userId     Int?
+  user       user?   @relation(fields: [userId], references: [id])
 }
 
 model military_service {
@@ -57,9 +57,10 @@ model military_service {
   start_date             String?
   end_date               String?
   rank                   String?
+  branch                 String?
   discharge              String?
-  user_id                Int?
-  user                   user?    @relation(fields: [user_id], references: [id])
+  userId                 Int?     @unique
+  user                   user?    @relation(fields: [userId], references: [id])
 }
 
 model activity {
@@ -72,8 +73,8 @@ model activity {
   start_time     String?
   end_date       String?
   end_time       String?
-  user_id        Int?
-  user           user?   @relation(fields: [user_id], references: [id])
+  userId         Int?
+  user           user?   @relation(fields: [userId], references: [id])
 }
 
 model language {
@@ -81,8 +82,8 @@ model language {
   lang_name String?
   exam_name String?
   point     String?
-  user_id   Int?
-  user      user?   @relation(fields: [user_id], references: [id])
+  userId    Int?
+  user      user?   @relation(fields: [userId], references: [id])
 }
 
 model award {
@@ -91,8 +92,8 @@ model award {
   description  String?
   issue_date   String?
   organization String?
-  user_id      Int?
-  user         user?   @relation(fields: [user_id], references: [id])
+  userId       Int?
+  user         user?   @relation(fields: [userId], references: [id])
 }
 
 model certificate {
@@ -101,8 +102,8 @@ model certificate {
   organization     String
   issue_date       String
   certificate_num  String
-  user_id          Int?
-  user             user?  @relation(fields: [user_id], references: [id])
+  userId           Int?
+  user             user?  @relation(fields: [userId], references: [id])
 }
 
 model skill {
@@ -110,16 +111,16 @@ model skill {
   skill_name   String @unique
   skill_level  String
   skill_career String
-  user_id      Int?
-  user         user?  @relation(fields: [user_id], references: [id])
+  userId       Int?
+  user         user?  @relation(fields: [userId], references: [id])
 }
 
 model reference {
-  id      Int    @id @default(autoincrement())
-  github  String
-  blog    String
-  user_id Int?
-  user    user?  @relation(fields: [user_id], references: [id])
+  id     Int    @id @default(autoincrement())
+  github String
+  blog   String
+  userId Int?   @unique
+  user   user?  @relation(fields: [userId], references: [id])
 }
 
 model career {
@@ -130,8 +131,8 @@ model career {
   occupation String
   start_date String
   end_date   String?
-  user_id    Int?
-  user       user?     @relation(fields: [user_id], references: [id])
+  userId     Int?
+  user       user?     @relation(fields: [userId], references: [id])
   projects   project[]
 }
 
@@ -141,6 +142,6 @@ model project {
   start_date   String
   end_date     String?
   description  String?
-  career_id    Int?
-  career       career? @relation(fields: [career_id], references: [id])
+  careerId     Int?
+  career       career? @relation(fields: [careerId], references: [id])
 }

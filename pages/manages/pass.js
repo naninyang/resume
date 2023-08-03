@@ -33,7 +33,11 @@ export default function SignIn() {
       const result = response.data;
       if (result.status === 'success') {
         login(result.token);
-        router.push('./education');
+        router.push('./profile');
+        toast.success('로그인에 성공했습니다.', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
       }
     } catch (error) {
       handleOpen();

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import Head from 'next/head'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/components/hooks/authContext'
-import { ButtonGroup, Container, Content, FieldGroup, FormGroup } from '@/styles/manageSystem';
+import useConfirm from '@/components/hooks/useConfirm';
+import { ButtonGroup, Container, Content, FieldGroup, FormGroup, ManagementContainer } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
-import { ProfileContainer } from '@/styles/sectionSystem';
+import Confirm from '@/components/features/confirm';
 
 export default function Profile() {
   const router = useRouter();
   const { loggedIn } = useAuth();
+  const { isOpen, handleOpen, handleClose } = useConfirm();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -76,11 +77,19 @@ export default function Profile() {
           autoClose: 5000,
         });
         router.push('/manages/profile');
+      } else {
+        toast.error('프로필 업데이트에 실패했습니다', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
       }
     } catch (error) {
+      handleOpen();
       console.error('Failed to update profile:', error);
     }
   };
+
+  const pageTitle = '인적사항 업데이트'
 
   return (
     <Container>
@@ -88,10 +97,14 @@ export default function Profile() {
         {!loggedIn ? (
           <IsNotSession />
         ) : (
-          <ProfileContainer>
-            <form>
+          <ManagementContainer>
+            <Head>
+              <title>레주메 {pageTitle}</title>
+            </Head>
+            <h1>{pageTitle}</h1>
+            <form onSubmit={handleSubmit}>
               <fieldset>
-                <legend>프로필 수정 양식</legend>
+                <legend>{pageTitle} 양식</legend>
                 <FormGroup>
                   <FieldGroup>
                     <input
@@ -149,7 +162,7 @@ export default function Profile() {
                       id='telephone'
                       placeholder='연락처'
                       value={telephone}
-                      pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                      pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
                       onChange={(e) => setTelephone(e.target.value)}
                     />
                     <label htmlFor='telephone'>연락처</label>
@@ -176,11 +189,17 @@ export default function Profile() {
                   </FieldGroup>
                 </FormGroup>
                 <ButtonGroup>
-                  <button type='submit' onClick={handleSubmit}>프로필 업데이트</button>
+                  <button type='submit'>{pageTitle}</button>
                 </ButtonGroup>
+                <Confirm
+                  isOpen={isOpen}
+                  title='업데이트 실패'
+                  onClose={handleClose}
+                  message='필드를 확인하세요'
+                />
               </fieldset>
             </form>
-          </ProfileContainer>
+          </ManagementContainer>
         )}
       </Content>
     </Container>

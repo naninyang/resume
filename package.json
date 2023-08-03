@@ -11,7 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "@prisma/client": "5.0.0",
+    "@prisma/client": "5.1.0",
     "@unly/utils": "^1.0.3",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
@@ -35,7 +35,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
-    "prisma": "^5.0.0",
+    "prisma": "5.1.0",
     "sass": "^1.63.3"
   }
 }

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import Head from 'next/head'
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/components/hooks/authContext'
-import { ArrayContainer, ButtonGroup, Container, Content, FieldGroup, FormGroup, Fragment } from '@/styles/manageSystem';
+import { ArrayContainer, ButtonGroup, Container, Content, DefinitionGroup, FieldGroup, FindUtil, FormGroup, ItemGroup, SessionUtil, Util } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
 
 export default function Education() {
   const { loggedIn } = useAuth();
 
-  const [educations, setEducations] = useState([]);
-  const [newEducation, setNewEducation] = useState({
+  const [isAdding, setIsAdding] = useState(false);
+
+  const [education, setEducation] = useState({
     school: '',
     major: '',
     category: '',
@@ -23,91 +22,96 @@ export default function Education() {
     start_date: '',
     end_date: '',
   });
+  const [educations, setEducations] = useState([]);
 
-  const handleChange = (e, index) => {
-    const { name, value } = e.target;
-    setEducations((prevEducations) => {
-      const updatedEducations = [...prevEducations];
-      updatedEducations[index] = {
-        ...updatedEducations[index],
-        [name]: value,
-      };
-      return updatedEducations;
-    });
-  };
+  useEffect(() => {
+    fetchEducation();
+  }, []);
 
-  const handleAddEducation = () => {
-    setEducations((prevEducations) => [...prevEducations, newEducation]);
-    setNewEducation({
-      school: '',
-      major: '',
-      category: '',
-      stats: '',
-      degree: '',
-      degree_num: '',
-      record: '',
-      start_date: '',
-      end_date: '',
-    });
-  };
-
-  const handleDeleteEducation = async (index) => {
+  const fetchEducation = async () => {
     try {
-      const education = educations[index];
-      if (education.id) {
-        await axios.delete(`/api/education/${education.id}`);
-      }
-      setEducations((prevEducations) =>
-        prevEducations.filter((_, idx) => idx !== index)
-      );
-      toast.success('학력 정보가 성공적으로 삭제되었습니다.', {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`/api/education`, { headers: { Authorization: `Bearer ${token}` } });
+      setEducations(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleAddChange = (e) => {
+    const { name, value } = e.target;
+    setEducation({
+      ...education,
+      [name]: value
+    });
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`/api/education/${education.id}`, education, { headers: { Authorization: `Bearer ${token}` } })
+      toast.success('학력 정보가 성공적으로 추가되었습니다', {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 5000,
       });
+      fetchEducation();
     } catch (error) {
-      console.error('Failed to delete education:', error);
+      console.error(error);
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleDelete = async (educationId) => {
     try {
-      const response = await axios.put('/api/education', educations);
-      if (response.status === 200) {
-        toast.success('학력 업데이트에 성공했습니다.', {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 5000,
-        });
-      }
+      const token = localStorage.getItem('token');
+      await axios.delete(`/api/education/${educationId}`, { headers: { Authorization: `Bearer ${token}` } })
+      toast.error('학력 정보가 성공적으로 삭제되었습니다', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      fetchEducation();
     } catch (error) {
-      console.error('Failed to save educations:', error);
+      console.error(error);
     }
   };
 
-  useEffect(() => {
-    fetchEducations();
-  }, []);
+  const [educationEdit, setFormData] = useState({ ...education });
+  const [editingEducation, setEditingEducation] = useState(null);
 
-  const fetchEducations = async () => {
+  const handleEditClick = (edu) => {
+    setEditingEducation(edu.id);
+    setFormData(edu);
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...educationEdit,
+      [name]: value,
+    });
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.get('/api/education');
-      const data = response.data.map(education => ({
-        ...education,
-        school: education.school || '',
-        major: education.major || '',
-        category: education.category || '',
-        stats: education.stats || '',
-        degree: education.degree || '',
-        degree_num: education.degree_num || '',
-        record: education.record || '',
-        start_date: education.start_date || '',
-        end_date: education.end_date || '',
-      }));
-      setEducations(data);
+      const token = localStorage.getItem('token');
+      await axios.put(`/api/education/${education.id}`, educationEdit, { headers: { Authorization: `Bearer ${token}` } });
+      toast.success('학력 정보가 성공적으로 수정되었습니다', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      setEditingEducation(false);
+      fetchEducation();
     } catch (error) {
-      console.error('Failed to fetch educations:', error);
+      console.error('Failed to update education: ', error);
     }
   };
+
+  const handleCancelClick = () => {
+    setEditingEducation(false);
+  }
+
+  const pageTitle = '학력사항'
 
   return (
     <Container>
@@ -116,136 +120,360 @@ export default function Education() {
           <IsNotSession />
         ) : (
           <ArrayContainer>
-            <form>
-              <fieldset>
-                <legend>학력 수정 양식</legend>
-                <FormGroup className='form-group'>
-                  <div className='item-add'>
-                    <button type="button" onClick={handleAddEducation}>학력 추가</button>
+            <Head>
+              <title>레주메 {pageTitle}</title>
+            </Head>
+            <h1>{pageTitle}</h1>
+            <div className='data-group'>
+              <div className='list'>
+                {educations.map((edu) => (
+                  <div key={edu.id} className='item'>
+                    {editingEducation === edu.id ? (
+                      <form onSubmit={handleEditSubmit}>
+                        <fieldset>
+                          <legend>{pageTitle} 갱신</legend>
+                          <FormGroup>
+                            <div>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="school"
+                                  id={`school-${edu.id}`}
+                                  value={educationEdit.school}
+                                  onChange={handleEditChange}
+                                  placeholder="학교명"
+                                  required
+                                />
+                                <label htmlFor={`school-${edu.id}`}>학교명</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="category"
+                                  id={`category-${edu.id}`}
+                                  value={educationEdit.category}
+                                  onChange={handleEditChange}
+                                  placeholder="분류"
+                                  required
+                                />
+                                <label htmlFor={`category-${edu.id}`}>분류</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="major"
+                                  id={`major-${edu.id}`}
+                                  value={educationEdit.major}
+                                  onChange={handleEditChange}
+                                  placeholder="전공"
+                                  required
+                                />
+                                <label htmlFor={`major-${edu.id}`}>전공</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="record"
+                                  id={`record-${edu.id}`}
+                                  value={educationEdit.record}
+                                  onChange={handleEditChange}
+                                  placeholder="학점"
+                                />
+                                <label htmlFor={`record-${edu.id}`}>학점</label>
+                              </FieldGroup>
+                            </div>
+                            <div>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="degree"
+                                  id={`degree-${edu.id}`}
+                                  value={educationEdit.degree}
+                                  onChange={handleEditChange}
+                                  placeholder="학위명"
+                                />
+                                <label htmlFor={`degree-${edu.id}`}>학위명</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="degree_num"
+                                  id={`degree_num-${edu.id}`}
+                                  value={educationEdit.degree_num}
+                                  onChange={handleEditChange}
+                                  placeholder="학위등록번호"
+                                />
+                                <label htmlFor={`degree_num-${edu.id}`}>학위등록번호</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="text"
+                                  name="stats"
+                                  id={`stats-${edu.id}`}
+                                  value={educationEdit.stats}
+                                  onChange={handleEditChange}
+                                  placeholder="상태"
+                                  required
+                                />
+                                <label htmlFor={`stats-${edu.id}`}>상태</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="month"
+                                  name="start_date"
+                                  id={`start_date-${edu.id}`}
+                                  value={educationEdit.start_date}
+                                  onChange={handleEditChange}
+                                  placeholder="입학일"
+                                  required
+                                />
+                                <label htmlFor={`start_date-${edu.id}`}>입학일</label>
+                              </FieldGroup>
+                              <FieldGroup>
+                                <input
+                                  type="month"
+                                  name="end_date"
+                                  id={`end_date-${edu.id}`}
+                                  value={educationEdit.end_date}
+                                  onChange={handleEditChange}
+                                  placeholder="졸업일"
+                                />
+                                <label htmlFor={`end_date-${edu.id}`}>졸업일</label>
+                              </FieldGroup>
+                            </div>
+                          </FormGroup>
+                          <ButtonGroup>
+                            <button type="submit">{pageTitle} 갱신</button>
+                            <Util>
+                              <SessionUtil />
+                              <FindUtil>
+                                <button type='button' onClick={handleCancelClick}>취소하기</button>
+                              </FindUtil>
+                            </Util>
+                          </ButtonGroup>
+                        </fieldset>
+                      </form>
+                    ) : (
+                      <div className='view'>
+                        <DefinitionGroup>
+                          <div>
+                            <ItemGroup>
+                              <dt>학교명</dt>
+                              <dd>
+                                <span>{edu.school}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>분류</dt>
+                              <dd>
+                                <span>{edu.category}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>전공</dt>
+                              <dd>
+                                <span>{edu.major}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>학점</dt>
+                              <dd>
+                                <span>{edu.record}</span>
+                              </dd>
+                            </ItemGroup>
+                          </div>
+                          <div>
+                            <ItemGroup>
+                              <dt>학위명</dt>
+                              <dd>
+                                <span>{edu.degree}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>학위등록번호</dt>
+                              <dd>
+                                <span>{edu.degree_num}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>상태</dt>
+                              <dd>
+                                <span>{edu.stats}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>입학일</dt>
+                              <dd>
+                                <span>{edu.start_date}</span>
+                              </dd>
+                            </ItemGroup>
+                            <ItemGroup>
+                              <dt>졸업일</dt>
+                              <dd>
+                                <span>{edu.end_date}</span>
+                              </dd>
+                            </ItemGroup>
+                          </div>
+                        </DefinitionGroup>
+                        <div className='item-management'>
+                          <button type='button' className='edit' onClick={() => handleEditClick(edu)}>수정</button>
+                          <button type='button' className='del' onClick={() => handleDelete(edu.id)}>삭제</button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {educations.map((education, index) => (
-                    <Fragment key={index} className='array-education'>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="school"
-                          id='school'
-                          value={education.school}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="학교명"
-                          required
-                        />
-                        <label htmlFor='school'>학교명</label>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="major"
-                          id='major'
-                          value={education.major}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="전공"
-                          required
-                        />
-                        <label htmlFor='major'>전공</label>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="category"
-                          id='category'
-                          value={education.category}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="분류"
-                          required
-                        />
-                        <label htmlFor='category'>분류</label>
-                        <p>특성화 고등학교, 전문대학 등</p>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="stats"
-                          id='stats'
-                          value={education.stats}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="상태"
-                          required
-                        />
-                        <label htmlFor='stats'>상태</label>
-                        <p>재학 중, 졸업, 휴학 중, 중퇴 등</p>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="degree"
-                          id='degree'
-                          value={education.degree}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="학위"
-                        />
-                        <label htmlFor='degree'>학위</label>
-                        <p>석사, 학사, 박사 등</p>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="degree_num"
-                          id='degree_num'
-                          value={education.degree_num}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="학위등록번호"
-                        />
-                        <label htmlFor='degree_num'>학위등록번호</label>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="record"
-                          id='record'
-                          value={education.record}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="성적"
-                        />
-                        <label htmlFor='record'>성적</label>
-                        <p>점수</p>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="month"
-                          name="start_date"
-                          id='start_date'
-                          value={education.start_date}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="입학일"
-                          required
-                        />
-                        <label htmlFor='start_date'>입학일</label>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="month"
-                          name="end_date"
-                          id='end_date'
-                          value={education.end_date}
-                          onChange={(e) => handleChange(e, index)}
-                          placeholder="졸업일"
-                        />
-                        <label htmlFor='end_date'>졸업일</label>
-                        <p>재학 중, 휴학 중, 중퇴인 경우 비워두세요</p>
-                      </FieldGroup>
-                      <button type="button" onClick={() => handleDeleteEducation(index)}>삭제</button>
-                    </Fragment>
-                  ))}
-                </FormGroup>
+                ))}
+              </div>
+              {!isAdding && (
                 <ButtonGroup>
-                  <button type='submit' onClick={handleSubmit}>학력 업데이트</button>
+                  <button type='button' onClick={() => {
+                    setIsAdding(true);
+                    setEducation({
+                      school: '',
+                      major: '',
+                      category: '',
+                      stats: '',
+                      degree: '',
+                      degree_num: '',
+                      record: '',
+                      start_date: '',
+                      end_date: ''
+                    })
+                  }}>
+                    {pageTitle} 추가
+                  </button>
                 </ButtonGroup>
-              </fieldset>
-            </form>
+              )}
+              {isAdding && (
+                <form onSubmit={handleAddSubmit}>
+                  <fieldset>
+                    <legend>{pageTitle} 추가</legend>
+                    <FormGroup>
+                      <div>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="school"
+                            id='school'
+                            value={education.school}
+                            onChange={handleAddChange}
+                            placeholder="학교명"
+                            required
+                          />
+                          <label htmlFor='school'>학교명</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="category"
+                            id="category"
+                            value={education.category}
+                            onChange={handleAddChange}
+                            placeholder="분류"
+                            required
+                          />
+                          <label htmlFor='category'>분류</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="major"
+                            id="major"
+                            value={education.major}
+                            onChange={handleAddChange}
+                            placeholder="전공"
+                            required
+                          />
+                          <label htmlFor='major'>전공</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="record"
+                            id="record"
+                            value={education.record}
+                            onChange={handleAddChange}
+                            placeholder="학점"
+                          />
+                          <label htmlFor='record'>학점</label>
+                        </FieldGroup>
+                      </div>
+                      <div>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="degree"
+                            id="degree"
+                            value={education.degree}
+                            onChange={handleAddChange}
+                            placeholder="학위명"
+                          />
+                          <label htmlFor='degree'>학위명</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="degree_num"
+                            id="degree_num"
+                            value={education.degree_num}
+                            onChange={handleAddChange}
+                            placeholder="학위등록번호"
+                          />
+                          <label htmlFor='degree_num'>학위등록번호</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="text"
+                            name="stats"
+                            id="stats"
+                            value={education.stats}
+                            onChange={handleAddChange}
+                            placeholder="상태"
+                            required
+                          />
+                          <label htmlFor='stats'>상태</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="month"
+                            name="start_date"
+                            id="start_date"
+                            value={education.start_date}
+                            onChange={handleAddChange}
+                            placeholder="입학일"
+                            required
+                          />
+                          <label htmlFor='start_date'>입학일</label>
+                        </FieldGroup>
+                        <FieldGroup>
+                          <input
+                            type="month"
+                            name="end_date"
+                            id="end_date"
+                            value={education.end_date}
+                            onChange={handleAddChange}
+                            placeholder="졸업일"
+                          />
+                          <label htmlFor='end_date'>졸업일</label>
+                        </FieldGroup>
+                      </div>
+                    </FormGroup>
+                    <ButtonGroup>
+                      <button type="submit">{pageTitle} 추가</button>
+                      <Util>
+                        <SessionUtil />
+                        <FindUtil>
+                          <button type='button' onClick={() => { setIsAdding(false) }}>취소하기</button>
+                        </FindUtil>
+                      </Util>
+                    </ButtonGroup>
+                  </fieldset>
+                </form>
+              )}
+            </div>
           </ArrayContainer>
         )}
       </Content>
-    </Container>
+    </Container >
   );
 }

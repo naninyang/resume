@@ -25,13 +25,18 @@ const ToastProvider = styled.div({
       minWidth: Rem(320),
       width: 'auto',
       minHeight: Rem(78),
+      '& .Toastify__toast--success': {
+        backgroundColor: hex.light,
+      },
+      '& .Toastify__toast--error': {
+        backgroundColor: hex.danger,
+      },
       '& .Toastify__toast': {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         padding: `${Rem(10)} ${Rem(15)}`,
-        backgroundColor: hex.light,
         textAlign: 'center',
         borderRadius: Rem(10),
         '& .Toastify__toast-body': {
@@ -41,6 +46,7 @@ const ToastProvider = styled.div({
           zIndex: 99999,
           '& div': {
             fontSize: Rem(16),
+            fontWeight: '700',
             lineHeight: '1.625',
             color: hex.dark,
           },

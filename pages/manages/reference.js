@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import Head from 'next/head'
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/components/hooks/authContext'
-import { ArrayContainer, ButtonGroup, Container, Content, FieldGroup, FormGroup, Fragment } from '@/styles/manageSystem';
+import useModal from '@/components/hooks/useModal';
+import Modal from '@/components/features/modal';
+import { ArrayContainer, ButtonGroup, Container, Content, FieldGroup, FormGroup } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
+import { Rem, hex } from '@/styles/designSystem';
 
 export default function Reference() {
   const { loggedIn } = useAuth();
 
+  const { isOpen, handleOpen, handleClose } = useModal();
+
   const [github, setGithub] = useState('');
   const [blog, setBlog] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const [errResponseData, setErrResponseData] = useState('');
+  const [errResponseStats, setErrResponseStats] = useState('');
+  const [errResponseStatsTxt, setErrResponseStatsTxt] = useState('');
 
   useEffect(() => {
     fetchReferences();
@@ -31,14 +38,44 @@ export default function Reference() {
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      await axios.post('/api/reference', { github, blog });
-      console.log('Reference created successfully');
-    } catch (error) {
-      console.error('Failed to create reference:', error);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (github === '' && blog === '') {
+      toast.error('최소 한개 이상의 항목을 입력하셔야 합니다', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+    } else {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post('/api/reference', { github, blog }, { headers: { Authorization: `Bearer ${token}` } });
+        if (response.status === 200) {
+          toast.success('레퍼런스 업데이트에 성공했습니다', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 5000,
+          });
+        } else {
+          toast.error('레퍼런스 업데이트에 실패했습니다', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 5000,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to create reference:', error);
+        toast.error('서버 오류입니다', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
+        setErrMsg(error.message)
+        setErrResponseData(error.response.data.message)
+        setErrResponseStats(error.response.status)
+        setErrResponseStatsTxt(error.response.statusText)
+        handleOpen()
+      }
     }
   };
+
+  const pageTitle = '레퍼런스 업데이트'
 
   return (
     <Container>
@@ -47,7 +84,11 @@ export default function Reference() {
           <IsNotSession />
         ) : (
           <ArrayContainer>
-            <form>
+            <Head>
+              <title>레주메 {pageTitle}</title>
+            </Head>
+            <h1>{pageTitle}</h1>
+            <form onSubmit={handleSubmit}>
               <fieldset>
                 <legend>레퍼런스 수정 양식</legend>
                 <FormGroup className='form-group reference-group'>
@@ -75,10 +116,21 @@ export default function Reference() {
                   </FieldGroup>
                 </FormGroup>
                 <ButtonGroup>
-                  <button type='submit' onClick={handleSubmit}>레퍼런스 업데이트</button>
+                  <button type='submit'>{pageTitle}</button>
                 </ButtonGroup>
               </fieldset>
             </form>
+            <Modal
+              isOpen={isOpen}
+              title={'console.log summary'}
+              onClose={handleClose}
+            >
+              <div style={{ fontSize: Rem(20), fontWeight: '700', color: hex.danger }}>
+                <p>{errMsg}</p>
+                <p>{errResponseData}</p>
+                <p>{errResponseStats} {errResponseStatsTxt}</p>
+              </div>
+            </Modal>
           </ArrayContainer>
         )}
       </Content>

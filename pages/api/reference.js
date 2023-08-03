@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { verify } from 'jsonwebtoken';
+import { JWT_SECRET } from '@/components/hooks/envs';
 
 const prisma = new PrismaClient();
 
@@ -13,19 +15,40 @@ export default async function handler(req, res) {
     }
   } else if (req.method === 'POST') {
     try {
+      const token = req.headers.authorization?.split(' ')[1];
+
+      if (!token) {
+        res.status(401).send({ message: 'Unauthorized' });
+        return;
+      }
+
+      const payload = verify(token, JWT_SECRET);
+
       const { github, blog } = req.body;
 
-      const userId = 1;
-
-      const createdReference = await prisma.reference.create({
-        data: {
-          github,
-          blog,
-          user: { connect: { id: userId } },
-        },
+      const reference = await prisma.reference.findUnique({
+        where: { userId: payload.id },
       });
 
-      res.status(200).json(createdReference);
+      if (!reference) {
+        await prisma.reference.create({
+          data: {
+            github,
+            blog,
+            user: { connect: { id: payload.id } },
+          },
+        });
+      } else {
+        await prisma.reference.update({
+          where: { userId: payload.id },
+          data: {
+            github,
+            blog,
+          },
+        });
+      }
+
+      res.status(200).json({ message: 'Reference updated successfully', status: 'success' });
     } catch (error) {
       console.error('Failed to create reference:', error);
       res.status(500).json({ message: 'Failed to create reference' });

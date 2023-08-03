@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       const match = await bcrypt.compare(password, user.password);
 
       if (match) {
-        const payload = { userid: user.userid };
+        const payload = { id: user.id };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '14d' });
 
         res.status(200).json({ status: 'success', token });

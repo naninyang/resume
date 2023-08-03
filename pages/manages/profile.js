@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import Head from 'next/head'
 import axios from 'axios';
 import { useAuth } from '@/components/hooks/authContext'
-import { ButtonGroup, Container, Content, DefinitionGroup, ItemGroup } from '@/styles/manageSystem';
+import { ButtonGroup, Container, Content, DefinitionGroup, ItemGroup, ManagementContainer } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
-import { ProfileContainer } from '@/styles/sectionSystem';
 import LinkButton from '@/components/hooks/linkButton';
 
 export default function Profile() {
@@ -27,65 +25,67 @@ export default function Profile() {
     }
   };
 
+  const pageTitle = '인적사항'
+
   return (
     <Container>
       <Content>
         {!loggedIn ? (
           <IsNotSession />
         ) : (
-          <ProfileContainer>
+          <ManagementContainer>
+            <Head>
+              <title>레주메 {pageTitle}</title>
+            </Head>
+            <h1>{pageTitle}</h1>
             <DefinitionGroup>
               <ItemGroup>
-                <dt>
-                  이름
-                  - {userProfile.username_show ? '이력서 이름 공개' : '이력서 이름 미공개'}
-                </dt>
-                <dd>{userProfile.username}</dd>
+                <dt>이름</dt>
+                <dd>
+                  <span>{userProfile.username}</span>
+                  <p>{userProfile.username_show ? '이력서에 이름이 공개됩니다' : '이력서에 이름이 공개되지 않습니다'}</p>
+                </dd>
               </ItemGroup>
               <ItemGroup>
-                <dt>
-                  이메일
-                  - {userProfile.email_show ? '이력서 이메일 공개' : '이력서 이메일 미공개'}
-                </dt>
-                <dd>{userProfile.email}</dd>
+                <dt>이메일</dt>
+                <dd>
+                  <span>{userProfile.email}</span>
+                  <p>{userProfile.email_show ? '이력서 이메일 주소가 공개됩니다' : '이력서에 이메일 주소가 공개되지 않습니다'}</p>
+                </dd>
               </ItemGroup>
               <ItemGroup>
-                <dt>
-                  주소
-                  {' '}
-                  {userProfile.address && '- 이력서에 공개하고 싶지 않으면 주소를 지우세요'}
-                </dt>
-                <dd>{userProfile.address ? userProfile.address : '주소 미등록'}</dd>
+                <dt>주소</dt>
+                <dd>
+                  <span>{userProfile.address ? userProfile.address : '주소를 입력하지 않았습니다'}</span>
+                  {userProfile.address && <p>이력서에 공개하고 싶지 않으면 주소를 비워두세요</p>}
+                </dd>
               </ItemGroup>
               <ItemGroup>
-                <dt>
-                  연락처
-                  {' '}
-                  {userProfile.telephone && '- 이력서에 공개하고 싶지 않으면 연락처를 지우세요'}
-                </dt>
-                <dd>{userProfile.telephone ? userProfile.telephone : '연락처 미등록'}</dd>
+                <dt>연락처</dt>
+                <dd>
+                  <span>{userProfile.telephone ? userProfile.telephone : '연락처를 입력하지 않았습니다'}</span>
+                  {userProfile.telephone && <p>이력서에 공개하고 싶지 않으면 연락처를 비워두세요</p>}
+                </dd>
               </ItemGroup>
               <ItemGroup>
-                <dt>
-                  보훈대상
-                  {' '}
-                  {userProfile.veteran && '- 이력서에 공개하고 싶지 않거나 보훈대상자가 아니라면 지우세요'}
-                </dt>
-                <dd>{userProfile.veteran ? userProfile.veteran : '보훈대상 여부 미등록 또는 보훈대상 아님'}</dd>
+                <dt>보훈대상</dt>
+                <dd>
+                  <span>{userProfile.veteran ? userProfile.veteran : '보훈대상 여부를 입력하지 않았습니다'}</span>
+                  {userProfile.veteran && <p>이력서에 공개하고 싶지 않거나 보훈대상자가 아니라면 비워두세요</p>}
+                </dd>
               </ItemGroup>
               <ItemGroup>
-                <dt>
-                  장애대상
-                  {' '}
-                  {userProfile.disability && '- 이력서에 공개하고 싶지 않거나 비장애인이라면 지우세요'}
-                </dt>
-                <dd>{userProfile.disability ? userProfile.disability : '장애대상 여부 미등록 또는 비장애인'}</dd>
+                <dt>장애대상</dt>
+                <dd>
+                  <span>{userProfile.disability ? userProfile.disability : '장애대상 여부를 입력하지 않았습니다'}</span>
+                  <p>{userProfile.disability && '이력서에 공개하고 싶지 않거나 비장애인이라면 비워두세요'}</p>
+                </dd>
               </ItemGroup>
             </DefinitionGroup>
             <ButtonGroup>
-              <LinkButton href='/manages/profile-edit'>프로필 업데이트하러 가기</LinkButton>
+              <LinkButton href='/manages/profile-edit'>{pageTitle} 업데이트하러 가기</LinkButton>
             </ButtonGroup>
-          </ProfileContainer>
+          </ManagementContainer>
         )}
       </Content>
     </Container>
