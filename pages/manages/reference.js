@@ -50,12 +50,12 @@ export default function Reference() {
         const token = localStorage.getItem('token');
         const response = await axios.post('/api/reference', { github, blog }, { headers: { Authorization: `Bearer ${token}` } });
         if (response.status === 200) {
-          toast.success('레퍼런스 업데이트에 성공했습니다', {
+          toast.success('레퍼런스 갱신에 성공했습니다', {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 5000,
           });
         } else {
-          toast.error('레퍼런스 업데이트에 실패했습니다', {
+          toast.error('레퍼런스 갱신에 실패했습니다', {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 5000,
           });
@@ -75,7 +75,7 @@ export default function Reference() {
     }
   };
 
-  const pageTitle = '레퍼런스 업데이트'
+  const pageTitle = '레퍼런스 갱신'
 
   return (
     <Container>

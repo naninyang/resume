@@ -142,6 +142,7 @@ export default function Activity() {
                                   value={activityEdit.organization}
                                   onChange={handleEditChange}
                                   placeholder="기관명"
+                                  required
                                 />
                                 <label htmlFor={`organization-${act.id}`}>기관명</label>
                               </FieldGroup>
@@ -153,6 +154,7 @@ export default function Activity() {
                                   value={activityEdit.position}
                                   onChange={handleEditChange}
                                   placeholder="직책/담당업무"
+                                  required
                                 />
                                 <label htmlFor={`position-${act.id}`}>직책/담당업무</label>
                               </FieldGroup>
@@ -164,6 +166,7 @@ export default function Activity() {
                                   value={activityEdit.description}
                                   onChange={handleEditChange}
                                   placeholder="활동내용"
+                                  required
                                 />
                                 <label htmlFor={`description-${act.id}`}>활동내용</label>
                               </FieldGroup>
@@ -175,6 +178,7 @@ export default function Activity() {
                                   value={activityEdit.classification}
                                   onChange={handleEditChange}
                                   placeholder="활동구분"
+                                  required
                                 />
                                 <label htmlFor={`classification-${act.id}`}>활동구분</label>
                               </FieldGroup>
@@ -188,6 +192,7 @@ export default function Activity() {
                                   value={activityEdit.start_date}
                                   onChange={handleEditChange}
                                   placeholder="시작일시"
+                                  required
                                 />
                                 <label htmlFor={`start_date-${act.id}`}>시작일시</label>
                               </FieldGroup>
@@ -335,6 +340,7 @@ export default function Activity() {
                             value={activity.organization}
                             onChange={handleAddChange}
                             placeholder="기관명"
+                            required
                           />
                           <label htmlFor="organization">기관명</label>
                         </FieldGroup>
@@ -346,6 +352,7 @@ export default function Activity() {
                             value={activity.position}
                             onChange={handleAddChange}
                             placeholder="직책/담당업무"
+                            required
                           />
                           <label htmlFor="position">직책/담당업무</label>
                         </FieldGroup>
@@ -357,6 +364,7 @@ export default function Activity() {
                             value={activity.description}
                             onChange={handleAddChange}
                             placeholder="활동내용"
+                            required
                           />
                           <label htmlFor="description">활동내용</label>
                         </FieldGroup>
@@ -368,6 +376,7 @@ export default function Activity() {
                             value={activity.classification}
                             onChange={handleAddChange}
                             placeholder="활동구분"
+                            required
                           />
                           <label htmlFor="classification">활동구분</label>
                         </FieldGroup>
@@ -381,6 +390,7 @@ export default function Activity() {
                             value={activity.start_date}
                             onChange={handleAddChange}
                             placeholder="시작일시"
+                            required
                           />
                           <label htmlFor="start_date">시작일시</label>
                         </FieldGroup>

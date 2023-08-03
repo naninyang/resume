@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import Head from 'next/head'
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/components/hooks/authContext'
-import { ButtonGroup, Container, Content, FieldGroup, FormGroup } from '@/styles/manageSystem';
+import useModal from '@/components/hooks/useModal';
+import Modal from '@/components/features/modal';
+import { ArrayContainer, ButtonGroup, Container, Content, FieldGroup, FormGroup } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
-import { ProfileContainer } from '@/styles/sectionSystem';
-import styled from '@emotion/styled';
 import { Rem, hex } from '@/styles/designSystem';
+import styled from '@emotion/styled';
 
 const CheckboxGroup = styled.div({
   paddingBottom: Rem(25),
@@ -41,67 +40,97 @@ const CheckboxGroup = styled.div({
 export default function MilitaryService() {
   const { loggedIn } = useAuth();
 
-  const [militaryService, setMilitaryService] = useState({
-    military_stats: false,
-    military_show: false,
-    conscription_exemption: '',
-    military_group: '',
-    start_date: '',
-    end_date: '',
-    rank: '',
-    discharge: '',
-  });
+  const { isOpen, handleOpen, handleClose } = useModal();
 
-  const handleChange = (e) => {
-    const { name, checked } = e.target;
+  const [militaryStats, setMilitaryStats] = useState(false);
+  const [militaryShow, setMilitaryShow] = useState(false);
+  const [conscriptionExemption, setConscriptionExemption] = useState('');
+  const [militaryGroup, setMilitaryGroup] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [rank, setRank] = useState('');
+  const [discharge, setDischarge] = useState('');
+  const [branch, setBranch] = useState('');
 
-    if (name === 'military_stats') {
-      setMilitaryService((prev) => ({
-        ...prev,
-        military_group: checked ? '' : prev.military_group,
-        start_date: checked ? '' : prev.start_date,
-        end_date: checked ? '' : prev.end_date,
-        rank: checked ? '' : prev.rank,
-        discharge: checked ? '' : prev.discharge,
-        conscription_exemption: checked ? prev.conscription_exemption : '',
-        military_stats: checked,
-      }));
-    } else if (name === 'military_show') {
-      setMilitaryService((prev) => ({ ...prev, military_show: checked }));
+  const [errMsg, setErrMsg] = useState('');
+  const [errResponseData, setErrResponseData] = useState('');
+  const [errResponseStats, setErrResponseStats] = useState('');
+  const [errResponseStatsTxt, setErrResponseStatsTxt] = useState('');
+
+  const handleMilitaryStatsChange = (e) => {
+    setMilitaryStats(e.target.checked);
+  };
+
+  const handleMilitaryShowChange = (e) => {
+    setMilitaryShow(e.target.checked);
+  };
+
+  useEffect(() => {
+    fetchMilitaryServices();
+  }, []);
+
+  const fetchMilitaryServices = async () => {
+    try {
+      const response = await axios.get('/api/military-service');
+      const militaryServices = response.data;
+      if (militaryServices.length > 0) {
+        setMilitaryStats(militaryServices[0].military_stats);
+        setMilitaryShow(militaryServices[0].military_show);
+        setConscriptionExemption(militaryServices[0].conscription_exemption);
+        setMilitaryGroup(militaryServices[0].military_group);
+        setStartDate(militaryServices[0].start_date);
+        setEndDate(militaryServices[0].end_date);
+        setRank(militaryServices[0].rank);
+        setDischarge(militaryServices[0].discharge);
+        setBranch(militaryServices[0].branch);
+      }
+      console.log('militaryServices: ', militaryServices)
+    } catch (error) {
+      console.error('Failed to fetch militaryServices:', error);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put('/api/military-service', militaryService);
-      alert('업데이트 성공!');
+      const token = localStorage.getItem('token');
+      const response = await axios.post('/api/military-service', {
+        militaryStats,
+        militaryShow,
+        conscriptionExemption,
+        militaryGroup,
+        branch,
+        rank,
+        discharge,
+        startDate,
+        endDate,
+      }, { headers: { Authorization: `Bearer ${token}` } });
+      if (response.status === 200) {
+        toast.success('병역사항 갱신에 성공했습니다', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
+      } else {
+        toast.error('병역사항 갱신에 실패했습니다', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
+      }
     } catch (error) {
-      console.error('Failed to update military service:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('/api/military-service');
-      setMilitaryService(response.data || {
-        military_stats: false,
-        military_show: false,
-        conscription_exemption: '',
-        military_group: '',
-        start_date: '',
-        end_date: '',
-        rank: '',
-        discharge: '',
+      console.error('Failed to create military service:', error);
+      toast.error('서버 오류입니다', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
       });
-    } catch (error) {
-      console.error('Failed to fetch military service:', error);
+      setErrMsg(error.message)
+      setErrResponseData(error.response.data.message)
+      setErrResponseStats(error.response.status)
+      setErrResponseStatsTxt(error.response.statusText)
+      handleOpen()
     }
   };
+
+  const pageTitle = '병역사항 갱신'
 
   return (
     <Container>
@@ -109,34 +138,51 @@ export default function MilitaryService() {
         {!loggedIn ? (
           <IsNotSession />
         ) : (
-          <ProfileContainer>
-            <form>
+          <ArrayContainer>
+            <Head>
+              <title>레주메 {pageTitle}</title>
+            </Head>
+            <h1>{pageTitle}</h1>
+            <form onSubmit={handleSubmit}>
               <fieldset>
-                <legend>병역사항 수정 양식</legend>
-                <FormGroup>
+                <legend>{pageTitle} 양식</legend>
+                <FormGroup className='form-group militaryService-group'>
                   <CheckboxGroup>
                     <div>
                       <input
                         type="checkbox"
-                        name="military_stats"
+                        name='military_stats'
                         id='military_stats'
-                        checked={militaryService.military_stats}
-                        onChange={handleChange}
+                        checked={militaryStats}
+                        onChange={handleMilitaryStatsChange}
                       />
                       <label htmlFor='military_stats'>병역여부</label>
                     </div>
                     <div>
                       <input
                         type="checkbox"
-                        name="military_show"
+                        name='military_show'
                         id='military_show'
-                        checked={militaryService.military_show}
-                        onChange={handleChange}
+                        checked={militaryShow}
+                        onChange={handleMilitaryShowChange}
                       />
                       <label htmlFor='military_show'>공개여부</label>
                     </div>
                   </CheckboxGroup>
-                  {militaryService.military_stats ? (
+                  {!militaryStats ? (
+                    <FieldGroup>
+                      <input
+                        type="text"
+                        name="conscription_exemption"
+                        id='conscription_exemption'
+                        placeholder='면제사유'
+                        value={conscriptionExemption}
+                        onChange={(e) => setConscriptionExemption(e.target.value)}
+                      />
+                      <label htmlFor='conscription_exemption'>면제사유</label>
+                      <p>미필(입영대상자), 비대상(여성, 장애인 등) 선택</p>
+                    </FieldGroup>
+                  ) : (
                     <>
                       <FieldGroup>
                         <input
@@ -144,32 +190,22 @@ export default function MilitaryService() {
                           name="military_group"
                           id='military_group'
                           placeholder='군별'
-                          value={militaryService.military_group}
-                          onChange={handleChange}
+                          value={militaryGroup}
+                          onChange={(e) => setMilitaryGroup(e.target.value)}
                         />
                         <label htmlFor='military_group'>군별</label>
+                        <p>해군, 공군, 육군, 해병대 등</p>
                       </FieldGroup>
                       <FieldGroup>
                         <input
                           type="text"
-                          name="start_date"
-                          id='start_date'
-                          placeholder='복무 시작일'
-                          value={militaryService.start_date}
-                          onChange={handleChange}
+                          name="branch"
+                          id='branch'
+                          placeholder='병과'
+                          value={branch}
+                          onChange={(e) => setBranch(e.target.value)}
                         />
-                        <label htmlFor='start_date'>복무 시작일</label>
-                      </FieldGroup>
-                      <FieldGroup>
-                        <input
-                          type="text"
-                          name="end_date"
-                          id='end_date'
-                          placeholder='전역/제대일'
-                          value={militaryService.end_date}
-                          onChange={handleChange}
-                        />
-                        <label htmlFor='end_date'>전역/제대일</label>
+                        <label htmlFor='branch'>병과</label>
                       </FieldGroup>
                       <FieldGroup>
                         <input
@@ -177,10 +213,11 @@ export default function MilitaryService() {
                           name="rank"
                           id='rank'
                           placeholder='계급'
-                          value={militaryService.rank}
-                          onChange={handleChange}
+                          value={rank}
+                          onChange={(e) => setRank(e.target.value)}
                         />
                         <label htmlFor='rank'>계급</label>
+                        <p>최종 취득 계급을 입력하세요</p>
                       </FieldGroup>
                       <FieldGroup>
                         <input
@@ -188,32 +225,55 @@ export default function MilitaryService() {
                           name="discharge"
                           id='discharge'
                           placeholder='병역'
-                          value={militaryService.discharge}
-                          onChange={handleChange}
+                          value={discharge}
+                          onChange={(e) => setDischarge(e.target.value)}
                         />
                         <label htmlFor='discharge'>병역</label>
+                        <p>현역, 의병 전역, 만기 전역 등</p>
+                      </FieldGroup>
+                      <FieldGroup>
+                        <input
+                          type="month"
+                          name="start_date"
+                          id='start_date'
+                          placeholder='복무 시작일'
+                          value={startDate}
+                          onChange={(e) => setStartDate(e.target.value)}
+                        />
+                        <label htmlFor='start_date'>복무 시작일</label>
+                      </FieldGroup>
+                      <FieldGroup>
+                        <input
+                          type="month"
+                          name="end_date"
+                          id='end_date'
+                          placeholder='전역/제대일'
+                          value={endDate}
+                          onChange={(e) => setEndDate(e.target.value)}
+                        />
+                        <label htmlFor='end_date'>전역/제대일</label>
+                        <p>현역병인 경우에는 비워두세요</p>
                       </FieldGroup>
                     </>
-                  ) : (
-                    <FieldGroup>
-                      <input
-                        type="text"
-                        name="conscription_exemption"
-                        id='conscription_exemption'
-                        placeholder='면제사유'
-                        value={militaryService.conscription_exemption}
-                        onChange={handleChange}
-                      />
-                      <label>면제사유</label>
-                    </FieldGroup>
                   )}
                 </FormGroup>
                 <ButtonGroup>
-                  <button type='submit' onClick={handleSubmit}>병역사항 업데이트</button>
+                  <button type='submit'>{pageTitle}</button>
                 </ButtonGroup>
               </fieldset>
             </form>
-          </ProfileContainer>
+            <Modal
+              isOpen={isOpen}
+              title={'console.log summary'}
+              onClose={handleClose}
+            >
+              <div style={{ fontSize: Rem(20), fontWeight: '700', color: hex.danger }}>
+                <p>{errMsg}</p>
+                <p>{errResponseData}</p>
+                <p>{errResponseStats} {errResponseStatsTxt}</p>
+              </div>
+            </Modal>
+          </ArrayContainer>
         )}
       </Content>
     </Container>
