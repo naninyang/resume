@@ -9,79 +9,37 @@ import styles from '@/styles/print.module.sass';
 export default function Home() {
   const { loggedIn } = useAuth();
 
-  const [userProfile, setUserProfile] = useState({});
-  const [educations, setEducations] = useState([]);
-  const [certificates, setCertificates] = useState([]);
-  const [skills, setSkills] = useState([]);
-  const [github, setGithub] = useState('');
-  const [blog, setBlog] = useState('');
-  const [reference, serReference] = useState('');
-  const [careers, setCareers] = useState([]);
+  const [resumeData, setResumeData] = useState('');
 
-  useEffect(() => {
-    fetchProfile();
-    fetchEducations();
-    fetchCertificates();
-    fetchSkills();
-    fetchReferences();
-    fetchData();
-  }, []);
-
-  const fetchProfile = async () => {
+  const fetchResume = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`/api/profile`, { headers: { Authorization: `Bearer ${token}` } });
-      setUserProfile(response.data);
+      const response = await axios.get('/api/resume', { headers: { Authorization: `Bearer ${token}` } });
+      setResumeData(response.data);
     } catch (error) {
-      console.error('Failed to fetch profile:', error);
+      console.error('Failed to fetch resume:', error);
     }
   };
 
-  const fetchEducations = async () => {
-    try {
-      const response = await axios.get('/api/education');
-      setEducations(response.data);
-    } catch (error) {
-      console.error('Failed to fetch educations:', error);
-    }
-  };
+  useEffect(() => {
+    fetchResume();
+  }, []);
 
-  const fetchCertificates = async () => {
-    try {
-      const response = await axios.get('/api/certificate');
-      setCertificates(response.data);
-    } catch (error) {
-      console.error('Failed to fetch certificates:', error);
+  function RenderDescription({ description }) {
+    if (description.includes('\n')) {
+      return (
+        <div>
+          {description.split('\n').map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </div>
+      );
+    } else {
+      return <div>{description}</div>;
     }
-  };
-
-  const fetchSkills = async () => {
-    try {
-      const response = await axios.get('/api/skill');
-      setSkills(response.data);
-    } catch (error) {
-      console.error('Failed to fetch skills:', error);
-    }
-  };
-
-  const fetchReferences = async () => {
-    try {
-      const response = await axios.get('/api/reference');
-      const references = response.data;
-      if (references.length > 0) {
-        setGithub(references[0].github);
-        setBlog(references[0].blog);
-      } else {
-        serReference(0)
-      }
-    } catch (error) {
-      console.error('Failed to fetch references:', error);
-    }
-  };
-
-  async function fetchData() {
-    const careerResponse = await axios.get('/api/career');
-    setCareers(careerResponse.data || []);
   }
 
   return (
@@ -89,7 +47,11 @@ export default function Home() {
       {loggedIn ? (
         <>
           <Head>
-            <title>{userProfile.username} 이력서</title>
+            {resumeData.username_show ?
+              <title>{resumeData.username} 이력서</title>
+              :
+              <title>이력서</title>
+            }
           </Head>
           <h1>이력서</h1>
           <blockquote>
@@ -99,34 +61,52 @@ export default function Home() {
           <section className={styles.profile}>
             <h2>인적사항</h2>
             <dl>
-              {userProfile.username_show &&
+              {resumeData.username_show &&
                 <>
                   <dt>성명</dt>
-                  <dd>{userProfile.username}</dd>
+                  <dd>{resumeData.username}</dd>
                 </>
               }
-              {userProfile.address &&
-                <>
-                  <dt>주소</dt>
-                  <dd>{userProfile.address}</dd>
-                </>
-              }
-              {userProfile.username_show &&
+              {resumeData.username_show &&
                 <>
                   <dt>이메일</dt>
-                  <dd>{userProfile.email}</dd>
+                  <dd>{resumeData.email}</dd>
+                </>
+              }
+              {resumeData.address &&
+                <>
+                  <dt>주소</dt>
+                  <dd>{resumeData.address}</dd>
+                </>
+              }
+              {resumeData.telephone &&
+                <>
+                  <dt>연락처</dt>
+                  <dd>{resumeData.telephone}</dd>
+                </>
+              }
+              {resumeData.veteran &&
+                <>
+                  <dt>보훈대상</dt>
+                  <dd>{resumeData.veteran}</dd>
+                </>
+              }
+              {resumeData.disability &&
+                <>
+                  <dt>장애대상</dt>
+                  <dd>{resumeData.disability}</dd>
                 </>
               }
             </dl>
           </section>
-          {educations.length > 0 && (
+          {resumeData?.educations?.length > 0 && (
             <section className={styles.education}>
               <h2>학력사항</h2>
               <ul className={styles.array}>
-                {educations.map((education, index) => (
-                  <li key={index}>
+                {resumeData?.educations?.map((education) => (
+                  <li key={education.id}>
                     <p>
-                      <strong>{education.school} {education.major} {education.stats}</strong>
+                      <strong>{education.school} {education.major} {education.degree} {education.stats}</strong>
                       {' '}
                       <span>{education.start_date} ~ {education.end_date}</span>
                     </p>
@@ -134,17 +114,23 @@ export default function Home() {
                       <dt>분류</dt>
                       <dd>{education.category}</dd>
                     </dl>
+                    {education.degree_num &&
+                      <dl>
+                        <dt>학위등록번호</dt>
+                        <dd>{education.degree_num}</dd>
+                      </dl>
+                    }
                   </li>
                 ))}
               </ul>
             </section>
           )}
-          {certificates.length > 0 && (
+          {resumeData?.certificates?.length > 0 && (
             <section className={styles.certificate}>
               <h2>자격증</h2>
               <dl>
-                {certificates.map((certificate, index) => (
-                  <div key={index}>
+                {resumeData?.certificates?.map((certificate) => (
+                  <div key={certificate.id}>
                     <div>
                       <dt>자격증명</dt>
                       <dd>{certificate.certificate_name}</dd>
@@ -154,24 +140,24 @@ export default function Home() {
                       <dd>{certificate.organization}</dd>
                     </div>
                     <div>
-                      <dt>발행일자</dt>
-                      <dd>{certificate.issue_date}</dd>
-                    </div>
-                    <div>
                       <dt>자격증번호</dt>
                       <dd>{certificate.certificate_num}</dd>
+                    </div>
+                    <div>
+                      <dt>발행일자</dt>
+                      <dd>{certificate.issue_date}</dd>
                     </div>
                   </div>
                 ))}
               </dl>
             </section>
           )}
-          {skills.length > 0 && (
+          {resumeData?.skills?.length > 0 && (
             <section className={styles.skill}>
               <h2>기술</h2>
               <dl className={styles.array}>
-                {skills.map((skill, index) => (
-                  <div key={index}>
+                {resumeData?.skills.map((skill) => (
+                  <div key={skill.id}>
                     <div>
                       <dt>기술명</dt>
                       <dd>{skill.skill_name}</dd>
@@ -193,35 +179,35 @@ export default function Home() {
               </dl>
             </section>
           )}
-          {!reference && (
+          {resumeData?.references?.length > 0 && (
             <section className={styles.reference}>
               <h2>레퍼런스</h2>
               <dl>
-                {github && (
+                {resumeData?.references?.[0].github && (
                   <>
                     <dt>깃헙</dt>
                     <dd>
-                      <LinkButton href={`https://github.com/${github}`}>{`https://github.com/${github}`}</LinkButton>
+                      <LinkButton href={`https://github.com/${resumeData?.references?.[0].github}`}>{`https://github.com/${resumeData?.references?.[0].github}`}</LinkButton>
                     </dd>
                   </>
                 )}
-                {blog && (
+                {resumeData?.references?.[0].blog && (
                   <>
                     <dt>블로그</dt>
                     <dd>
-                      <LinkButton href={blog}>{blog}</LinkButton>
+                      <LinkButton href={resumeData?.references?.[0].blog}>{resumeData?.references?.[0].blog}</LinkButton>
                     </dd>
                   </>
                 )}
               </dl>
             </section>
           )}
-          {careers.length > 0 && (
+          {resumeData?.careers?.length > 0 && (
             <section className={styles.career}>
               <h2>경력사항</h2>
               <dl>
-                {careers.map((career, careerIndex) => (
-                  <div key={`career-${careerIndex}`}>
+                {resumeData?.careers?.map((career) => (
+                  <div key={`career-${career.id}`}>
                     <div className={styles['career-item']}>
                       <dt>{career.org_name}</dt>
                       <dd>
@@ -233,8 +219,8 @@ export default function Home() {
                     </div>
                     {career.projects.length > 0 && (
                       <div className={styles['project-list']}>
-                        {career.projects.map((project, projectIndex) => (
-                          <div key={`project-${projectIndex}`} className={styles['project-item']}>
+                        {career.projects.map((project) => (
+                          <div key={`project-${career.id}-${project.id}`} className={styles['project-item']}>
                             <dt>{project.project_name}</dt>
                             <dd>
                               <time>{project.start_date} ~ {project.end_date}</time>
