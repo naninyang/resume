@@ -251,6 +251,7 @@ export const ArrayContainer = styled.div({
       display: 'flex',
       flexDirection: 'column',
       gap: Rem(15),
+      paddingBottom: Rem(15),
       border: `${Rem(1)} solid ${hex.light}`,
       borderRight: 0,
       borderLeft: 0,
@@ -258,6 +259,65 @@ export const ArrayContainer = styled.div({
         position: 'relative',
         paddingTop: Rem(25),
         borderTop: `${Rem(1)} solid ${hex.light}`,
+        '& form fieldset > div:last-of-type': {
+          '& > button': {
+            backgroundColor: hex.yellow,
+          },
+          '& div button': {
+            color: hex.yellow,
+          },
+        },
+        '& .project-list': {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: Rem(15),
+          backdropFilter: 'saturate(1.8) blur(20px)',
+          backgroundColor: `rgba(${rgba.dark70})`,
+          borderRadius: Rem(5),
+          marginBottom: Rem(15),
+          padding: `0 ${Rem(25)}`,
+        },
+        '& .project-item': {
+          position: 'relative',
+          paddingTop: Rem(25),
+          borderTop: `${Rem(1)} solid rgba(${rgba.light50})`,
+          '& form fieldset > div:last-of-type': {
+            '& > button': {
+              backgroundColor: 'transparent',
+              color: hex.yellow,
+              border: `${Rem(2)} solid ${hex.yellow}`,
+            },
+          },
+          '&:first-of-type': {
+            borderTop: 0,
+          },
+          '&:last-of-type': {
+            paddingBottom: Rem(25),
+          },
+          '& .view': {
+            '& dl': {
+              width: 'auto',
+            },
+          },
+          '& .item-management': {
+            top: Rem(25),
+            right: Rem(0),
+            '& button': {
+              width: Rem(45),
+              height: Rem(30),
+              '&.edit': {
+                backgroundColor: hex.light,
+                color: hex.dark,
+                fontSize: Rem(14),
+              },
+              '&.del': {
+                backgroundColor: hex.light,
+                color: hex.danger,
+                fontSize: Rem(14),
+              },
+            },
+          },
+        },
         '&:first-of-type': {
           borderTop: 0,
         },
@@ -266,7 +326,7 @@ export const ArrayContainer = styled.div({
           flexDirection: 'column',
           gap: Rem(15),
           position: 'absolute',
-          top: Rem(15),
+          top: Rem(25),
           right: 0,
           '& button': {
             borderRadius: Rem(2),
@@ -283,6 +343,13 @@ export const ArrayContainer = styled.div({
               backgroundColor: hex.danger,
               color: hex.light,
             },
+          },
+        },
+        '& > .view ~ div:not(.project-list)': {
+          '& button': {
+            backgroundColor: 'transparent',
+            border: `${Rem(2)} solid ${hex.mint}`,
+            color: hex.light,
           },
         },
       },
