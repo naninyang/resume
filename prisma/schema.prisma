@@ -124,16 +124,17 @@ model reference {
 }
 
 model career {
-  id         Int       @id @default(autoincrement())
-  org_name   String
-  team       String
-  role       String
-  occupation String
-  start_date String
-  end_date   String?
-  userId     Int?
-  user       user?     @relation(fields: [userId], references: [id])
-  projects   project[]
+  id          Int       @id @default(autoincrement())
+  org_name    String
+  team        String
+  role        String
+  occupation  String
+  start_date  String
+  end_date    String?
+  description String?
+  userId      Int?
+  user        user?     @relation(fields: [userId], references: [id])
+  projects    project[]
 }
 
 model project {
