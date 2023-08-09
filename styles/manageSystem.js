@@ -71,7 +71,7 @@ export const FormGroup = styled.div({
   flexDirection: 'column',
   '& > div': {
     display: 'flex',
-    gap: Rem(15),
+    gap: Rem(10),
     '& > div': {
       ...mixin.col,
     },
@@ -143,12 +143,14 @@ export const FieldGroup = styled.div({
 })
 
 export const DefinitionGroup = styled.dl({
-  display: 'flex',
-  flexDirection: 'column',
-  width: `calc(100vw - ${Rem(50)})`,
-  '& > div': {
+  '&:not(.profile-definition)': {
     display: 'flex',
-    gap: Rem(15),
+    flexDirection: 'column',
+    width: `calc(100vw - ${Rem(50)})`,
+    '& > div': {
+      display: 'flex',
+      gap: Rem(15),
+    },
   },
 })
 
@@ -239,9 +241,11 @@ export const ArrayContainer = styled.div({
     gap: Rem(50),
   },
   '& .form-group': {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: Rem(25),
+    '&:not(.militaryService-group)': {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: Rem(25),
+    },
   },
   '& .data-group': {
     display: 'flex',

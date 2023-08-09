@@ -84,7 +84,7 @@ export default function Home() {
           </section>
           <section>
             <h2>병역사항</h2>
-            {resumeData.military_services.length > 0 ? (
+            {resumeData.military_services[0] ? (
               <dl className='array'>
                 {resumeData.military_services[0] &&
                   <dl>

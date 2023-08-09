@@ -16,15 +16,16 @@ const CheckboxGroup = styled.div({
   gap: Rem(15),
   '& div': {
     display: 'flex',
-    gap: Rem(2),
+    gap: Rem(5),
     alignItems: 'center',
   },
   '& input': {
     appearance: 'none',
+    margin: 0,
+    border: `${Rem(1)} solid ${hex.light}`,
+    borderRadius: Rem(5),
     width: Rem(16),
     height: Rem(16),
-    borderRadius: Rem(5),
-    border: `${Rem(1)} solid ${hex.light}`,
     '&:checked': {
       borderColor: hex.mint,
       background: `${hex.mint} url('data:image/svg+xml,%3Csvg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M20.293 5.29297L9 16.5859L4.70703 12.293L3.29297 13.707L9 19.4141L21.707 6.70703L20.293 5.29297Z" fill="%23171717"/%3E%3C/svg%3E%0A') no-repeat 50% 50%/contain`,

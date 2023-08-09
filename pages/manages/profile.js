@@ -38,7 +38,7 @@ export default function Profile() {
               <title>레주메 {pageTitle}</title>
             </Head>
             <h1>{pageTitle}</h1>
-            <DefinitionGroup>
+            <DefinitionGroup className='profile-definition'>
               <ItemGroup>
                 <dt>이름</dt>
                 <dd>

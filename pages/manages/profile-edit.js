@@ -3,11 +3,41 @@ import Head from 'next/head'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import styled from '@emotion/styled';
 import { useAuth } from '@/components/hooks/authContext'
 import useConfirm from '@/components/hooks/useConfirm';
 import { ButtonGroup, Container, Content, FieldGroup, FormGroup, ManagementContainer } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
 import Confirm from '@/components/features/confirm';
+import { Rem, hex } from '@/styles/designSystem';
+
+const CheckboxGroup = styled.div({
+  paddingBottom: Rem(25),
+  display: 'flex',
+  gap: Rem(15),
+  '& div': {
+    display: 'flex',
+    gap: Rem(5),
+    alignItems: 'center',
+  },
+  '& input': {
+    appearance: 'none',
+    margin: 0,
+    border: `${Rem(1)} solid ${hex.light}`,
+    borderRadius: Rem(5),
+    width: Rem(16),
+    height: Rem(16),
+    '&:checked': {
+      borderColor: hex.mint,
+      background: `${hex.mint} url('data:image/svg+xml,%3Csvg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M20.293 5.29297L9 16.5859L4.70703 12.293L3.29297 13.707L9 19.4141L21.707 6.70703L20.293 5.29297Z" fill="%23171717"/%3E%3C/svg%3E%0A') no-repeat 50% 50%/contain`,
+    },
+  },
+  '& label': {
+    fontSize: Rem(16),
+    lineHeight: 1,
+    color: hex.light,
+  },
+})
 
 export default function Profile() {
   const router = useRouter();
@@ -116,15 +146,18 @@ export default function Profile() {
                       required
                     />
                     <label htmlFor='username'>이름</label>
-                    <p>
-                      <input
-                        type="checkbox"
-                        id='username_show'
-                        checked={usernameShow}
-                        onChange={() => setUsernameShow(!usernameShow)}
-                      />
-                      <label htmlFor='username_show'>이력서에 이름 공개</label>
-                    </p>
+                    <CheckboxGroup>
+                      <div>
+                        <input
+                          type="checkbox"
+                          name='username_show'
+                          id='username_show'
+                          checked={usernameShow}
+                          onChange={() => setUsernameShow(!usernameShow)}
+                        />
+                        <label htmlFor='username_show'>이력서에 이름 공개</label>
+                      </div>
+                    </CheckboxGroup>
                   </FieldGroup>
                   <FieldGroup>
                     <input
@@ -136,15 +169,18 @@ export default function Profile() {
                       required
                     />
                     <label htmlFor='username'>이메일</label>
-                    <p>
-                      <input
-                        type="checkbox"
-                        id='email_show'
-                        checked={emailShow}
-                        onChange={() => setEmailShow(!emailShow)}
-                      />
-                      <label htmlFor='email_show'>이력서에 이메일 공개</label>
-                    </p>
+                    <CheckboxGroup>
+                      <div>
+                        <input
+                          type="checkbox"
+                          name='email_show'
+                          id='email_show'
+                          checked={emailShow}
+                          onChange={() => setEmailShow(!emailShow)}
+                        />
+                        <label htmlFor='email_show'>이력서에 이메일 공개</label>
+                      </div>
+                    </CheckboxGroup>
                   </FieldGroup>
                   <FieldGroup>
                     <input
