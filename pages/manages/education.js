@@ -123,7 +123,11 @@ export default function Education() {
             <Head>
               <title>레주메 {pageTitle}</title>
             </Head>
-            <h1>{pageTitle}</h1>
+            <h1>
+              {pageTitle}
+              {' '}
+              <strong>입학/졸업일 상관없이 추가하시면 됩니다. 이력서에서는 자동으로 가장 오래된 학력 기준으로 보여집니다.</strong>
+            </h1>
             <div className='data-group'>
               <div className='list'>
                 {educations.map((edu) => (

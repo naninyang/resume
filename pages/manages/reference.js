@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '@/components/hooks/authContext'
 import useModal from '@/components/hooks/useModal';
 import Modal from '@/components/features/modal';
-import { ArrayContainer, ButtonGroup, Container, Content, FieldGroup, FormGroup } from '@/styles/manageSystem';
+import { ButtonGroup, Container, Content, FieldGroup, FormGroup, ManagementContainer } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
 import { Rem, hex } from '@/styles/designSystem';
 
@@ -83,7 +83,7 @@ export default function Reference() {
         {!loggedIn ? (
           <IsNotSession />
         ) : (
-          <ArrayContainer>
+          <ManagementContainer>
             <Head>
               <title>레주메 {pageTitle}</title>
             </Head>
@@ -91,7 +91,7 @@ export default function Reference() {
             <form onSubmit={handleSubmit}>
               <fieldset>
                 <legend>레퍼런스 수정 양식</legend>
-                <FormGroup className='form-group reference-group'>
+                <FormGroup>
                   <FieldGroup>
                     <input
                       type="text"
@@ -131,7 +131,7 @@ export default function Reference() {
                 <p>{errResponseStats} {errResponseStatsTxt}</p>
               </div>
             </Modal>
-          </ArrayContainer>
+          </ManagementContainer>
         )}
       </Content>
     </Container>

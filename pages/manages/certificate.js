@@ -119,7 +119,11 @@ export default function Certificate() {
             <Head>
               <title>레주메 {pageTitle}</title>
             </Head>
-            <h1>{pageTitle}</h1>
+            <h1>
+              {pageTitle}
+              {' '}
+              <strong>발행일자 상관없이 추가하시면 됩니다. 이력서에서는 자동으로 가장 오래된 자격증 기준으로 보여집니다.</strong>
+            </h1>
             <div className='data-group'>
               <div className='list'>
                 {certificates.map((cer) => (
@@ -167,15 +171,15 @@ export default function Certificate() {
                               </FieldGroup>
                               <FieldGroup>
                                 <input
-                                  type="text"
+                                  type="date"
                                   name="issue_date"
                                   id={`issue_date-${cer.id}`}
-                                  value={certificateEdit.skill_level}
+                                  value={certificateEdit.issue_date}
                                   onChange={handleEditChange}
-                                  placeholder="발행처"
+                                  placeholder="발행일자"
                                   required
                                 />
-                                <label htmlFor={`issue_date-${cer.id}`}>발행처</label>
+                                <label htmlFor={`issue_date-${cer.id}`}>발행일자</label>
                               </FieldGroup>
                             </div>
                           </FormGroup>

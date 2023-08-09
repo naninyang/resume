@@ -43,11 +43,9 @@ export default function Home() {
   }
 
   function RenderActivityTime({ activity }) {
-    // 조건 4: start_time이 존재하지만 end_time이 없는 경우
     const defaultEndTime = "18:00";
     const endTime = activity.end_time || defaultEndTime;
 
-    // 조건 2: start_date와 end_date가 동일한 경우
     if (activity.start_date === activity.end_date) {
       return (
         <time>
@@ -58,7 +56,6 @@ export default function Home() {
       );
     }
 
-    // 조건 3: end_date와 end_time 둘 다 없는 경우
     if (!activity.end_date && !activity.end_time) {
       return (
         <time>
@@ -89,7 +86,6 @@ export default function Home() {
       );
     }
 
-    // 조건 1: 기본 출력
     return (
       <time>
         {activity.start_date} {activity.start_time && activity.start_time}
@@ -199,7 +195,7 @@ export default function Home() {
             <section className={styles.education}>
               <h2>학력사항</h2>
               <ul className={styles.array}>
-                {resumeData?.educations?.map((education) => (
+                {resumeData?.educations?.sort((a, b) => a.start_date.localeCompare(b.start_date)).map((education) => (
                   <li key={education.id}>
                     <p>
                       <strong>{education.school} {education.major} {education.degree} {education.stats}</strong>
@@ -225,7 +221,7 @@ export default function Home() {
             <section className={styles.certificate}>
               <h2>자격증</h2>
               <dl>
-                {resumeData?.certificates?.map((certificate) => (
+                {resumeData?.certificates?.sort((a, b) => a.issue_date.localeCompare(b.issue_date)).map((certificate) => (
                   <div key={certificate.id}>
                     <div>
                       <dt>자격증명</dt>
@@ -252,7 +248,12 @@ export default function Home() {
             <section className={styles.language}>
               <h2>외국어능력</h2>
               <dl>
-                {resumeData?.languages?.map((language) => (
+                {resumeData?.languages?.sort((a, b) => {
+                  if (a.point !== b.point) {
+                    return parseFloat(b.point) - parseFloat(a.point);
+                  }
+                  return a.lang_name.localeCompare(b.lang_name);
+                }).map((language) => (
                   <div key={language.id}>
                     <div>
                       <dt>외국어명</dt>
@@ -275,7 +276,7 @@ export default function Home() {
             <section className={styles.award}>
               <h2>수상기록</h2>
               <dl>
-                {resumeData?.awards?.map((award) => (
+                {resumeData?.awards?.sort((a, b) => a.issue_date.localeCompare(b.issue_date)).map((award) => (
                   <div key={award.id}>
                     <div>
                       <dt>수상명</dt>
@@ -352,7 +353,7 @@ export default function Home() {
             <section className={styles.activity}>
               <h2>대외활동</h2>
               <dl>
-                {resumeData?.activities?.map((activity) => (
+                {resumeData?.activities?.sort((b, a) => a.start_date.localeCompare(b.start_date)).map((activity) => (
                   <div key={activity.id}>
                     <div className={styles['activity-info']}>
                       <dt>{activity.organization}</dt>
@@ -371,7 +372,7 @@ export default function Home() {
             <section className={styles.career}>
               <h2>경력사항</h2>
               <dl>
-                {resumeData?.careers?.map((career) => (
+                {resumeData?.careers?.sort((b, a) => a.start_date.localeCompare(b.start_date)).map((career) => (
                   <div key={`career-${career.id}`}>
                     <div className={styles['career-item']}>
                       <dt>{career.org_name}</dt>
@@ -384,7 +385,7 @@ export default function Home() {
                     </div>
                     {career.projects.length > 0 && (
                       <div className={styles['project-list']}>
-                        {career.projects.map((project) => (
+                        {career.projects.sort((b, a) => a.start_date.localeCompare(b.start_date)).map((project) => (
                           <div key={`project-${career.id}-${project.id}`} className={styles['project-item']}>
                             <dt>{project.project_name}</dt>
                             <dd>

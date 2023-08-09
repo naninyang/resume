@@ -118,7 +118,11 @@ export default function Language() {
             <Head>
               <title>레주메 {pageTitle}</title>
             </Head>
-            <h1>{pageTitle}</h1>
+            <h1>
+              {pageTitle}
+              {' '}
+              <strong>점수 상관없이 추가하시면 됩니다. 이력서에서는 자동으로 점수 기준 내림차순으로 보여집니다. (동일한 경우 외국어명 오름차순 기준)</strong>
+            </h1>
             <div className='data-group'>
               <div className='list'>
                 {languages.map((lan) => (

@@ -234,6 +234,14 @@ export const ArrayContainer = styled.div({
     fontSize: Rem(32),
     fontWeight: '900',
     color: hex.light,
+    '& strong': {
+      fontSize: Rem(16),
+      color: hex.yellow,
+      '&::before': {
+        content: "'* '",
+        paddingLeft: Rem(10),
+      },
+    },
   },
   '& fieldset': {
     display: 'flex',
@@ -241,7 +249,7 @@ export const ArrayContainer = styled.div({
     gap: Rem(50),
   },
   '& .form-group': {
-    '&:not(.militaryService-group)': {
+    '&:not(.single-group)': {
       display: 'flex',
       flexDirection: 'column',
       gap: Rem(25),

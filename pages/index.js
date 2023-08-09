@@ -132,7 +132,7 @@ export default function Home() {
             <h2>학력사항</h2>
             {resumeData?.educations?.length > 0 ? (
               <dl className='array'>
-                {resumeData?.educations?.map((education) => (
+                {resumeData?.educations?.sort((a, b) => a.start_date.localeCompare(b.start_date)).map((education) => (
                   <Fragment key={education.id}>
                     <dt>학교명</dt>
                     <dd>{education.school}</dd>
@@ -179,7 +179,7 @@ export default function Home() {
             <h2>자격증</h2>
             {resumeData?.certificates?.length > 0 ? (
               <dl className='array'>
-                {resumeData?.certificates?.map((certificate) => (
+                {resumeData?.certificates?.sort((a, b) => a.issue_date.localeCompare(b.issue_date)).map((certificate) => (
                   <Fragment key={certificate.id}>
                     <dt>자격증명</dt>
                     <dd>{certificate.certificate_name}</dd>
@@ -200,7 +200,12 @@ export default function Home() {
             <h2>외국어능력</h2>
             {resumeData?.languages?.length > 0 ? (
               <dl className='array'>
-                {resumeData?.languages?.map((language) => (
+                {resumeData?.languages?.sort((a, b) => {
+                  if (a.point !== b.point) {
+                    return parseFloat(b.point) - parseFloat(a.point);
+                  }
+                  return a.lang_name.localeCompare(b.lang_name);
+                }).map((language) => (
                   <Fragment key={language.id}>
                     <dt>외국어명</dt>
                     <dd>{language.lang_name}</dd>
@@ -219,7 +224,7 @@ export default function Home() {
             <h2>수상기록</h2>
             {resumeData?.awards?.length > 0 ? (
               <dl className='array'>
-                {resumeData?.awards?.map((award) => (
+                {resumeData?.awards?.sort((a, b) => a.issue_date.localeCompare(b.issue_date)).map((award) => (
                   <Fragment key={award.id}>
                     <dt>수상명</dt>
                     <dd>{award.award_name}</dd>
@@ -280,7 +285,7 @@ export default function Home() {
             <h2>대외활동</h2>
             {resumeData?.activities?.length > 0 ? (
               <dl className='array'>
-                {resumeData?.activities?.map((activity) => (
+                {resumeData?.activities?.sort((b, a) => a.start_date.localeCompare(b.start_date)).map((activity) => (
                   <Fragment key={activity.id}>
                     <dt>기관명</dt>
                     <dd>{activity.organization}</dd>
@@ -321,7 +326,7 @@ export default function Home() {
             <h2>경력사항</h2>
             {resumeData?.careers?.length > 0 ? (
               <dl className='array'>
-                {resumeData?.careers?.map((career) => (
+                {resumeData?.careers?.sort((b, a) => a.start_date.localeCompare(b.start_date)).map((career) => (
                   <Fragment key={`career-${career.id}`} className='array'>
                     <div className='array'>
                       <dt>회사/단체/팀명</dt>
@@ -345,10 +350,18 @@ export default function Home() {
                       <dd>{career.occupation}</dd>
                       <dt>역할</dt>
                       <dd>{career.role}</dd>
+                      <dt>프로젝트 설명</dt>
+                      <dd>
+                        {career.description ? (
+                          <RenderDescription description={career.description} />
+                        ) : (
+                          <p><strong>설명이 없습니다</strong></p>
+                        )}
+                      </dd>
                     </div>
                     {career.projects.length > 0 && (
                       <div className='projects-list'>
-                        {career.projects.map((project) => (
+                        {career.projects.sort((b, a) => a.start_date.localeCompare(b.start_date)).map((project) => (
                           <Fragment key={`project-${career.id}-${project.id}`}>
                             <dt>프로젝트명</dt>
                             <dd>{project.project_name}</dd>
