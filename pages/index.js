@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Head from 'next/head'
 import axios from 'axios';
 import { useAuth } from '@/components/hooks/authContext'
 import LinkButton from '@/components/hooks/linkButton';
@@ -44,6 +45,9 @@ export default function Home() {
     <Container className='css-0'>
       {loggedIn ? (
         <>
+          <Head>
+            <title>이력서 정보</title>
+          </Head>
           <h1>이력서 정보</h1>
           <blockquote>
             <p>프린트는 프린트 전용 화면으로 이동하신 뒤에 프린트 해주세요.</p>
@@ -84,7 +88,7 @@ export default function Home() {
           </section>
           <section>
             <h2>병역사항</h2>
-            {resumeData.military_services[0] ? (
+            {resumeData?.military_services?.length > 0 ? (
               <dl className='array'>
                 {resumeData.military_services[0] &&
                   <dl>
@@ -382,7 +386,12 @@ export default function Home() {
           </section>
         </>
       ) : (
-        <IsNotSession><p>개인정보를 다루는 페이지이므로 로그인이 필요합니다</p></IsNotSession>
+        <>
+          <Head>
+            <title>이력서 정보 확인권한 없음</title>
+          </Head>
+          <IsNotSession><p>개인정보를 다루는 페이지이므로 로그인이 필요합니다</p></IsNotSession>
+        </>
       )}
     </Container>
   )

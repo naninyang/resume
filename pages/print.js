@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import axios from 'axios';
 import { useAuth } from '@/components/hooks/authContext'
@@ -40,6 +40,66 @@ export default function Home() {
     } else {
       return <div>{description}</div>;
     }
+  }
+
+  function RenderActivityTime({ activity }) {
+    // 조건 4: start_time이 존재하지만 end_time이 없는 경우
+    const defaultEndTime = "18:00";
+    const endTime = activity.end_time || defaultEndTime;
+
+    // 조건 2: start_date와 end_date가 동일한 경우
+    if (activity.start_date === activity.end_date) {
+      return (
+        <time>
+          {activity.start_date} {activity.start_time && activity.start_time}
+          {' ~ '}
+          {endTime}
+        </time>
+      );
+    }
+
+    // 조건 3: end_date와 end_time 둘 다 없는 경우
+    if (!activity.end_date && !activity.end_time) {
+      return (
+        <time>
+          {activity.start_date}
+          {' ~ '}
+          {'활동 중'}
+        </time>
+      );
+    }
+
+    if (activity.start_time && !activity.end_time) {
+      return (
+        <time>
+          {activity.start_date} {activity.start_time && activity.start_time}
+          {' ~ '}
+          {endTime}
+        </time>
+      );
+    }
+
+    if (!activity.start_time && activity.end_time) {
+      return (
+        <time>
+          {activity.start_date}
+          {' ~ '}
+          {activity.end_date}
+        </time>
+      );
+    }
+
+    // 조건 1: 기본 출력
+    return (
+      <time>
+        {activity.start_date} {activity.start_time && activity.start_time}
+        {' ~ '}
+        {activity.end_date && !activity.end_time ?
+          `${activity.end_date}` :
+          `${activity.end_date} ${activity.end_time}`
+        }
+      </time>
+    );
   }
 
   return (
@@ -99,6 +159,42 @@ export default function Home() {
               }
             </dl>
           </section>
+          {resumeData?.military_services?.length > 0 &&
+            resumeData.military_services[0].military_show === true &&
+            (
+              <section className={styles.militery}>
+                <h2>병역사항</h2>
+                <dl>
+                  <dt>병역여부</dt>
+                  <dd>{resumeData.military_services[0].military_stats ? '군필' : '미필'}</dd>
+                  {resumeData.military_services[0].military_stats === false ?
+                    <>
+                      <dt>면제 사유</dt>
+                      <dd>{resumeData.military_services[0].conscription_exemption ? resumeData.military_services[0].conscription_exemption : '면제사유 미입력'}</dd>
+                    </>
+                    :
+                    <>
+                      <dt>군별</dt>
+                      <dd>{resumeData.military_services[0].military_group ? resumeData.military_services[0].military_group : '-'}</dd>
+                      <dt>병과</dt>
+                      <dd>{resumeData.military_services[0].branch ? resumeData.military_services[0].branch : '-'}</dd>
+                      <dt>계급</dt>
+                      <dd>{resumeData.military_services[0].rank ? resumeData.military_services[0].rank : '-'}</dd>
+                      <dt>병역</dt>
+                      <dd>{resumeData.military_services[0].discharge ? resumeData.military_services[0].discharge : '-'}</dd>
+                      <dt>복무 시작일</dt>
+                      <dd>{resumeData.military_services[0].start_date ? resumeData.military_services[0].start_date : '?'}</dd>
+                      {resumeData.military_services[0].end_date &&
+                        <>
+                          <dt>전역/제대일</dt>
+                          <dd>{resumeData.military_services[0].end_date}</dd>
+                        </>
+                      }
+                    </>
+                  }
+                </dl>
+              </section>
+            )}
           {resumeData?.educations?.length > 0 && (
             <section className={styles.education}>
               <h2>학력사항</h2>
@@ -146,6 +242,56 @@ export default function Home() {
                     <div>
                       <dt>발행일자</dt>
                       <dd>{certificate.issue_date}</dd>
+                    </div>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
+          {resumeData?.languages?.length > 0 && (
+            <section className={styles.language}>
+              <h2>외국어능력</h2>
+              <dl>
+                {resumeData?.languages?.map((language) => (
+                  <div key={language.id}>
+                    <div>
+                      <dt>외국어명</dt>
+                      <dd>{language.lang_name}</dd>
+                    </div>
+                    <div>
+                      <dt>시험명</dt>
+                      <dd>{language.exam_name}</dd>
+                    </div>
+                    <div>
+                      <dt>점수</dt>
+                      <dd>{language.point}</dd>
+                    </div>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
+          {resumeData?.awards?.length > 0 && (
+            <section className={styles.award}>
+              <h2>수상기록</h2>
+              <dl>
+                {resumeData?.awards?.map((award) => (
+                  <div key={award.id}>
+                    <div>
+                      <dt>수상명</dt>
+                      <dd>{award.award_name}</dd>
+                    </div>
+                    <div>
+                      <dt>수상내용</dt>
+                      <dd>{award.description}</dd>
+                    </div>
+                    <div>
+                      <dt>발행기관</dt>
+                      <dd>{award.organization}</dd>
+                    </div>
+                    <div>
+                      <dt>취득일</dt>
+                      <dd>{award.issue_date}</dd>
                     </div>
                   </div>
                 ))}
@@ -202,6 +348,25 @@ export default function Home() {
               </dl>
             </section>
           )}
+          {resumeData?.activities?.length > 0 && (
+            <section className={styles.activity}>
+              <h2>대외활동</h2>
+              <dl>
+                {resumeData?.activities?.map((activity) => (
+                  <div key={activity.id}>
+                    <div className={styles['activity-info']}>
+                      <dt>{activity.organization}</dt>
+                      <dd>
+                        {activity.position} / {activity.classification}
+                        <span>{activity.description}</span>
+                        <RenderActivityTime activity={activity} />
+                      </dd>
+                    </div>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
           {resumeData?.careers?.length > 0 && (
             <section className={styles.career}>
               <h2>경력사항</h2>
@@ -224,7 +389,7 @@ export default function Home() {
                             <dt>{project.project_name}</dt>
                             <dd>
                               <time>{project.start_date} ~ {project.end_date}</time>
-                              {project.description && <p>{project.description}</p>}
+                              {project.description && <p><RenderDescription description={project.description} /></p>}
                             </dd>
                           </div>
                         ))}
@@ -237,7 +402,12 @@ export default function Home() {
           )}
         </>
       ) : (
-        <IsNotSession><p>개인정보를 다루는 페이지이므로 로그인이 필요합니다</p></IsNotSession>
+        <>
+          <Head>
+            <title>이력서 접근권한 없음</title>
+          </Head>
+          <IsNotSession><p>개인정보를 다루는 페이지이므로 로그인이 필요합니다</p></IsNotSession>
+        </>
       )}
     </Container>
   )
