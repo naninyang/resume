@@ -238,6 +238,7 @@ export default function Career() {
                         end_date: (editCareers[career.id] || career).end_date,
                         occupation: (editCareers[career.id] || career).occupation,
                         role: (editCareers[career.id] || career).role,
+                        description: (editCareers[career.id] || career).description,
                       };
                       return (
                         <div key={career.id} className='item'>
@@ -316,6 +317,18 @@ export default function Career() {
                                       <label htmlFor='role'>역할</label>
                                     </FieldGroup>
                                   </div>
+                                  <div>
+                                    <FieldGroup>
+                                      <textarea
+                                        name="description"
+                                        id="description"
+                                        placeholder='회사 개요 / 사업 개요 / 주요 업무 설명'
+                                        value={careerForEdit.description}
+                                        onChange={handleCareerEditChange(career.id)}
+                                      />
+                                      <label htmlFor='description'>회사 개요 / 사업 개요 / 주요 업무 설명</label>
+                                    </FieldGroup>
+                                  </div>
                                 </FormGroup>
                                 <ButtonGroup>
                                   <button type="submit">{pageTitle} 수정</button>
@@ -369,6 +382,14 @@ export default function Career() {
                                       <dt>역할</dt>
                                       <dd>
                                         <span>{career.role}</span>
+                                      </dd>
+                                    </ItemGroup>
+                                  </div>
+                                  <div>
+                                    <ItemGroup>
+                                      <dt>회사 개요 / 사업 개요 / 주요 업무 설명</dt>
+                                      <dd>
+                                        <span>{career.description}</span>
                                       </dd>
                                     </ItemGroup>
                                   </div>
@@ -665,6 +686,18 @@ export default function Career() {
                             onChange={handleCareerChange}
                           />
                           <label htmlFor='role'>역할</label>
+                        </FieldGroup>
+                      </div>
+                      <div>
+                        <FieldGroup>
+                          <textarea
+                            name="description"
+                            id="description"
+                            placeholder='회사 개요 / 사업 개요 / 주요 업무 설명'
+                            value={editingValueCareer.description}
+                            onChange={handleCareerChange}
+                          />
+                          <label htmlFor='description'>회사 개요 / 사업 개요 / 주요 업무 설명</label>
                         </FieldGroup>
                       </div>
                     </FormGroup>
