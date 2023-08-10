@@ -457,15 +457,16 @@
           display: flex
           flex-direction: column
           padding-top: 25px
+          border-top: 1px solid
 
           &:first-of-type
             padding-top: 0
+            border-top: 0
 
           .career-item
             display: flex
             flex-wrap: wrap
             flex-direction: column
-            border-bottom: 2px solid
             position: relative
             padding-bottom: 10px
 
@@ -487,14 +488,19 @@
               position: absolute
               top: 10px
               right: 0
+              font-weight: 700
 
           .project-list
-            margin-left: 170px
+            margin-left: 70px
+            border-top: 1px solid
 
             .project-item
               position: relative
               padding: 5px 0
               border-bottom: 1px solid
+
+              &:last-of-type
+                border-bottom: 0
 
               dt
                 padding: 5px 0

@@ -24,20 +24,37 @@ export default function Home() {
     fetchResume();
   }, []);
 
+  const careerDescription = (value) => {
+    switch (value) {
+      case 1:
+        return '1년 미만';
+      case 2:
+        return '1년 이상 3년 미만';
+      case 3:
+        return '3년 이상 5년 미만';
+      case 4:
+        return '5년 이상 10년 미만';
+      case 5:
+        return '10년 이상';
+      default:
+        return '경험 미선택';
+    }
+  };
+
   function RenderDescription({ description }) {
     if (description.includes('\n')) {
       return (
-        <div>
+        <p>aslkfjsalkfdjasklfjfsklfjklj
           {description.split('\n').map((line, index) => (
             <React.Fragment key={index}>
               {line}
               <br />
             </React.Fragment>
           ))}
-        </div>
+        </p>
       );
     } else {
-      return <div>{description}</div>;
+      return <p>{description}</p>;
     }
   }
 
@@ -212,7 +229,7 @@ export default function Home() {
                     <dt>시험명</dt>
                     <dd>{language.exam_name}</dd>
                     <dt>점수</dt>
-                    <dd>{language.point}</dd>
+                    <dd>{language.point} 점</dd>
                   </Fragment>
                 ))}
               </dl>
@@ -245,14 +262,19 @@ export default function Home() {
             <h2>보유기술</h2>
             {resumeData?.skills?.length > 0 ? (
               <dl className='array'>
-                {resumeData?.skills.map((skill) => (
+                {resumeData?.skills?.sort((a, b) => {
+                  if (a.skill_level !== b.skill_level) {
+                    return parseFloat(a.skill_level) - parseFloat(b.skill_level);
+                  }
+                  return a.skill_career - b.skill_career;
+                }).map((skill) => (
                   <Fragment key={skill.id}>
                     <dt>기술명</dt>
                     <dd>{skill.skill_name}</dd>
                     <dt>숙련도</dt>
-                    <dd>{skill.skill_level}</dd>
+                    <dd>Lv. {skill.skill_level}</dd>
                     <dt>경험</dt>
-                    <dd>{skill.skill_career}</dd>
+                    <dd>{careerDescription(skill.skill_career)}</dd>
                   </Fragment>
                 ))}
               </dl>

@@ -151,15 +151,44 @@ export default function Education() {
                                 <label htmlFor={`school-${edu.id}`}>학교명</label>
                               </FieldGroup>
                               <FieldGroup>
-                                <input
-                                  type="text"
+                                <select
                                   name="category"
                                   id={`category-${edu.id}`}
                                   value={educationEdit.category}
                                   onChange={handleEditChange}
-                                  placeholder="분류"
+                                  defaultValue=''
                                   required
-                                />
+                                >
+                                  <option value='' disabled hidden>분류 선택</option>
+                                  <option value='초등학교'>초등학교</option>
+                                  <option value='특성화 중학교'>특성화 중학교</option>
+                                  <option value='일반계 고등학교'>일반계 고등학교</option>
+                                  <option value='특성화 고등학교'>특성화 고등학교</option>
+                                  <option value='특수목적 고등학교'>특수목적 고등학교</option>
+                                  <option value='과학중점 고등학교'>과학중점 고등학교</option>
+                                  <option value='자율형 고등학교'>자율형 고등학교</option>
+                                  <option value='State School'>State School</option>
+                                  <option value='Public School'>Public School</option>
+                                  <option value='Secondary School'>Secondary School</option>
+                                  <option value='Sixth Form Collage'>Sixth Form Collage</option>
+                                  <option value='국제학교'>국제학교</option>
+                                  <option value='전문대학'>전문대학</option>
+                                  <option value='교육대학'>교육대학</option>
+                                  <option value='기술대학'>기술대학</option>
+                                  <option value='산업대학'>산업대학</option>
+                                  <option value='원격대학'>원격대학</option>
+                                  <option value='기능대학'>기능대학</option>
+                                  <option value='특수대학'>특수대학</option>
+                                  <option value='대학원'>대학원</option>
+                                  <option value='대학교'>대학교</option>
+                                  <option value='전문대학원'>전문대학원</option>
+                                  <option value='특수대학원'>특수대학원</option>
+                                  <option value='대학원대학'>대학원대학</option>
+                                  <option value='평생교육'>평생교육</option>
+                                  <option value='영재학교'>영재학교</option>
+                                  <option value='외국인학교'>외국인학교</option>
+                                  <option value='대안학교'>대안학교</option>
+                                </select>
                                 <label htmlFor={`category-${edu.id}`}>분류</label>
                               </FieldGroup>
                               <FieldGroup>
@@ -210,15 +239,20 @@ export default function Education() {
                                 <label htmlFor={`degree_num-${edu.id}`}>학위등록번호</label>
                               </FieldGroup>
                               <FieldGroup>
-                                <input
+                                <select
                                   type="text"
                                   name="stats"
                                   id={`stats-${edu.id}`}
                                   value={educationEdit.stats}
                                   onChange={handleEditChange}
-                                  placeholder="상태"
+                                  defaultValue=''
                                   required
-                                />
+                                >
+                                  <option value='' disabled hidden>상태</option>
+                                  <option value='졸업'>졸업</option>
+                                  <option value='중퇴'>중퇴</option>
+                                  <option value='재학 중'>재학 중</option>
+                                </select>
                                 <label htmlFor={`stats-${edu.id}`}>상태</label>
                               </FieldGroup>
                               <FieldGroup>
@@ -367,15 +401,46 @@ export default function Education() {
                           <label htmlFor='school'>학교명</label>
                         </FieldGroup>
                         <FieldGroup>
-                          <input
+                          <select
                             type="text"
                             name="category"
                             id="category"
                             value={education.category}
                             onChange={handleAddChange}
+                            defaultValue=''
                             placeholder="분류"
                             required
-                          />
+                          >
+                            <option value='' disabled selected hidden>분류</option>
+                            <option value='초등학교'>초등학교</option>
+                            <option value='특성화 중학교'>특성화 중학교</option>
+                            <option value='일반계 고등학교'>일반계 고등학교</option>
+                            <option value='특성화 고등학교'>특성화 고등학교</option>
+                            <option value='특수목적 고등학교'>특수목적 고등학교</option>
+                            <option value='과학중점 고등학교'>과학중점 고등학교</option>
+                            <option value='자율형 고등학교'>자율형 고등학교</option>
+                            <option value='State School'>State School</option>
+                            <option value='Public School'>Public School</option>
+                            <option value='Secondary School'>Secondary School</option>
+                            <option value='Sixth Form Collage'>Sixth Form Collage</option>
+                            <option value='국제학교'>국제학교</option>
+                            <option value='전문대학'>전문대학</option>
+                            <option value='교육대학'>교육대학</option>
+                            <option value='기술대학'>기술대학</option>
+                            <option value='산업대학'>산업대학</option>
+                            <option value='원격대학'>원격대학</option>
+                            <option value='기능대학'>기능대학</option>
+                            <option value='특수대학'>특수대학</option>
+                            <option value='대학원'>대학원</option>
+                            <option value='대학교'>대학교</option>
+                            <option value='전문대학원'>전문대학원</option>
+                            <option value='특수대학원'>특수대학원</option>
+                            <option value='대학원대학'>대학원대학</option>
+                            <option value='평생교육'>평생교육</option>
+                            <option value='영재학교'>영재학교</option>
+                            <option value='외국인학교'>외국인학교</option>
+                            <option value='대안학교'>대안학교</option>
+                          </select>
                           <label htmlFor='category'>분류</label>
                         </FieldGroup>
                         <FieldGroup>
@@ -426,15 +491,20 @@ export default function Education() {
                           <label htmlFor='degree_num'>학위등록번호</label>
                         </FieldGroup>
                         <FieldGroup>
-                          <input
+                          <select
                             type="text"
                             name="stats"
                             id="stats"
                             value={education.stats}
                             onChange={handleAddChange}
-                            placeholder="상태"
+                            defaultValue=''
                             required
-                          />
+                          >
+                            <option value='' disabled hidden>상태</option>
+                            <option value='졸업'>졸업</option>
+                            <option value='중퇴'>중퇴</option>
+                            <option value='재학 중'>재학 중</option>
+                          </select>
                           <label htmlFor='stats'>상태</label>
                         </FieldGroup>
                         <FieldGroup>

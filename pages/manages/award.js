@@ -259,6 +259,7 @@ export default function Award() {
                             value={award.award_name}
                             onChange={handleAddChange}
                             placeholder="수상명"
+                            required
                           />
                           <label htmlFor='award_name'>수상명</label>
                         </FieldGroup>
@@ -270,6 +271,7 @@ export default function Award() {
                             value={award.description}
                             onChange={handleAddChange}
                             placeholder="수상내용"
+                            required
                           />
                           <label htmlFor='description'>수상내용</label>
                         </FieldGroup>
@@ -281,6 +283,7 @@ export default function Award() {
                             value={award.organization}
                             onChange={handleAddChange}
                             placeholder="발행기관"
+                            required
                           />
                           <label htmlFor='organization'>발행기관</label>
                         </FieldGroup>
@@ -291,7 +294,8 @@ export default function Award() {
                             id="issue_date"
                             value={award.issue_date}
                             onChange={handleAddChange}
-                            placeholder="경험"
+                            placeholder="취득일"
+                            required
                           />
                           <label htmlFor='award_career'>취득일</label>
                         </FieldGroup>

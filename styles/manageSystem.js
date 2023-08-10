@@ -84,15 +84,31 @@ export const FieldGroup = styled.div({
   gap: Rem(5),
   position: 'relative',
   height: Rem(97),
-  '& > input': {
+  '& > input, & > select': {
     height: Rem(60),
+  },
+  '& > select': {
+    background: `url('data:image/svg+xml,%3Csvg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M7.42969 9.5L5.92969 11L12 17.0703L18.0703 11L16.5703 9.5L12 14.0703L7.42969 9.5Z" fill="black"/%3E%3C/svg%3E%0A') no-repeat calc(100% - ${Rem(10)}) 50%/${Rem(24)} ${Rem(24)}`,
+    '&:focus, &:not(:required:invalid)': {
+      backgroundPosition: `calc(100% - ${Rem(10)}) calc(100% - ${Rem(6)})`,
+      padding: `${Rem(28)} ${Rem(15)} ${Rem(6)}`,
+      '& ~ label': {
+        padding: `${Rem(8)} ${Rem(15)}`,
+        transform: `scale(.5) translateY(-.${Rem(10)})`,
+        fontSize: Rem(12),
+        color: `rgba(${rgba.dark70})`,
+      },
+    },
+    '& ~ label': {
+      color: 'transparent',
+    },
   },
   '& > textarea': {
     height: Rem(270),
   },
-  '& > input, & > textarea': {
+  '& > input, & > textarea, & > select': {
     backgroundColor: hex.light,
-    padding: `${Rem(18)} ${Rem(15)}`,
+    padding: `${Rem(17)} ${Rem(15)}`,
     borderRadius: Rem(5),
     border: `1px rgba(${rgba.light20}) solid`,
     width: '100%',
@@ -102,6 +118,8 @@ export const FieldGroup = styled.div({
     color: hex.dark,
     transition: 'all .15s ease-in-out,box-shadow .15s ease-in-out',
     appearance: 'none',
+  },
+  '& > input, & > textarea': {
     '&::placeholder': {
       color: 'transparent',
     },

@@ -25,20 +25,37 @@ export default function Home() {
     fetchResume();
   }, []);
 
+  const careerDescription = (value) => {
+    switch (value) {
+      case 1:
+        return '1년 미만';
+      case 2:
+        return '1년 이상 3년 미만';
+      case 3:
+        return '3년 이상 5년 미만';
+      case 4:
+        return '5년 이상 10년 미만';
+      case 5:
+        return '10년 이상';
+      default:
+        return '경험 미선택';
+    }
+  };
+
   function RenderDescription({ description }) {
     if (description.includes('\n')) {
       return (
-        <div>
+        <p>aslkfjsalkfdjasklfjfsklfjklj
           {description.split('\n').map((line, index) => (
             <React.Fragment key={index}>
               {line}
               <br />
             </React.Fragment>
           ))}
-        </div>
+        </p>
       );
     } else {
-      return <div>{description}</div>;
+      return <p>{description}</p>;
     }
   }
 
@@ -178,14 +195,12 @@ export default function Home() {
                       <dd>{resumeData.military_services[0].rank ? resumeData.military_services[0].rank : '-'}</dd>
                       <dt>병역</dt>
                       <dd>{resumeData.military_services[0].discharge ? resumeData.military_services[0].discharge : '-'}</dd>
-                      <dt>복무 시작일</dt>
-                      <dd>{resumeData.military_services[0].start_date ? resumeData.military_services[0].start_date : '?'}</dd>
-                      {resumeData.military_services[0].end_date &&
-                        <>
-                          <dt>전역/제대일</dt>
-                          <dd>{resumeData.military_services[0].end_date}</dd>
-                        </>
-                      }
+                      <dt>복무기간</dt>
+                      <dd>
+                        {resumeData.military_services[0].start_date ? resumeData.military_services[0].start_date : '?'}
+                        {' ~ '}
+                        {resumeData.military_services[0].end_date ? resumeData.military_services[0].end_date : '복무 중'}
+                      </dd>
                     </>
                   }
                 </dl>
@@ -265,7 +280,7 @@ export default function Home() {
                     </div>
                     <div>
                       <dt>점수</dt>
-                      <dd>{language.point}</dd>
+                      <dd>{language.point} 점</dd>
                     </div>
                   </div>
                 ))}
@@ -303,7 +318,12 @@ export default function Home() {
             <section className={styles.skill}>
               <h2>기술</h2>
               <dl className={styles.array}>
-                {resumeData?.skills.map((skill) => (
+                {resumeData?.skills?.sort((a, b) => {
+                  if (a.skill_level !== b.skill_level) {
+                    return parseFloat(a.skill_level) - parseFloat(b.skill_level);
+                  }
+                  return a.skill_career - b.skill_career;
+                }).map((skill) => (
                   <div key={skill.id}>
                     <div>
                       <dt>기술명</dt>
@@ -312,14 +332,16 @@ export default function Home() {
                     <div>
                       <dt>숙련도</dt>
                       <dd>
-                        {skill.skill_level === '초급' && <span><i className={styles.circle} /><i /><i /></span>}
-                        {skill.skill_level === '중급' && <span><i className={styles.circle} /><i className={styles.circle} /><i /></span>}
-                        {skill.skill_level === '고급' && <span><i className={styles.circle} /><i className={styles.circle} /><i className={styles.circle} /></span>}
+                        {skill.skill_level === 1 && <span><i className={styles.circle} /><i /><i /><i /><i /></span>}
+                        {skill.skill_level === 2 && <span><i className={styles.circle} /><i className={styles.circle} /><i /><i /><i /></span>}
+                        {skill.skill_level === 3 && <span><i className={styles.circle} /><i className={styles.circle} /><i className={styles.circle} /><i /><i /></span>}
+                        {skill.skill_level === 4 && <span><i className={styles.circle} /><i className={styles.circle} /><i className={styles.circle} /><i className={styles.circle} /><i /></span>}
+                        {skill.skill_level === 5 && <span><i className={styles.circle} /><i className={styles.circle} /><i className={styles.circle} /><i className={styles.circle} /><i className={styles.circle} /></span>}
                       </dd>
                     </div>
                     <div>
                       <dt>경험</dt>
-                      <dd>{skill.skill_career}</dd>
+                      <dd>{careerDescription(skill.skill_career)}</dd>
                     </div>
                   </div>
                 ))}
@@ -353,7 +375,7 @@ export default function Home() {
             <section className={styles.activity}>
               <h2>대외활동</h2>
               <dl>
-                {resumeData?.activities?.sort((b, a) => a.start_date.localeCompare(b.start_date)).map((activity) => (
+                {resumeData?.activities?.sort((a, b) => b.start_date.localeCompare(a.start_date)).map((activity) => (
                   <div key={activity.id}>
                     <div className={styles['activity-info']}>
                       <dt>{activity.organization}</dt>
@@ -372,25 +394,27 @@ export default function Home() {
             <section className={styles.career}>
               <h2>경력사항</h2>
               <dl>
-                {resumeData?.careers?.sort((b, a) => a.start_date.localeCompare(b.start_date)).map((career) => (
+                {resumeData?.careers?.sort((a, b) => b.start_date.localeCompare(a.start_date)).map((career) => (
                   <div key={`career-${career.id}`}>
                     <div className={styles['career-item']}>
                       <dt>{career.org_name}</dt>
                       <dd>
-                        <span>{career.team} {career.role}</span>
+                        <span>{career.team} / {career.role}</span>
                         {' '}
                         {career.occupation}
+                        {' '}
+                        {career.description && <RenderDescription description={career.description} />}
                         <time>{career.start_date} ~ {career.end_date}</time>
                       </dd>
                     </div>
                     {career.projects.length > 0 && (
                       <div className={styles['project-list']}>
-                        {career.projects.sort((b, a) => a.start_date.localeCompare(b.start_date)).map((project) => (
+                        {career.projects.sort((a, b) => b.start_date.localeCompare(a.start_date)).map((project) => (
                           <div key={`project-${career.id}-${project.id}`} className={styles['project-item']}>
                             <dt>{project.project_name}</dt>
                             <dd>
                               <time>{project.start_date} ~ {project.end_date}</time>
-                              {project.description && <p><RenderDescription description={project.description} /></p>}
+                              {project.description && <RenderDescription description={project.description} />}
                             </dd>
                           </div>
                         ))}

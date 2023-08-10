@@ -134,32 +134,103 @@ export default function Language() {
                           <FormGroup>
                             <div>
                               <FieldGroup>
-                                <input
+                                <select
                                   type="text"
                                   name="lang_name"
                                   id={`lang_name-${lan.id}`}
                                   value={languageEdit.lang_name}
                                   onChange={handleEditChange}
-                                  placeholder="외국어명"
+                                  defaultValue=''
                                   required
-                                />
+                                >
+                                  <option value='' disabled hidden>외국어명</option>
+                                  <option value='영어'>영어</option>
+                                  <option value='중국어'>중국어</option>
+                                  <option value='일본어'>일본어</option>
+                                  <option value='프랑스어'>프랑스어</option>
+                                  <option value='독일어'>독일어</option>
+                                  <option value='네덜란드어'>네덜란드어</option>
+                                  <option value='스페인어'>스페인어</option>
+                                  <option value='포르투칼어'>포르투칼어</option>
+                                  <option value='이탈리아어'>이탈리아어</option>
+                                  <option value='스웨덴어'>스웨덴어</option>
+                                  <option value='다국어'>다국어</option>
+                                </select>
                                 <label htmlFor={`lang_name-${lan.id}`}>외국어명</label>
                               </FieldGroup>
                               <FieldGroup>
-                                <input
+                                <select
                                   type="text"
                                   name="exam_name"
                                   id={`exam_name-${lan.id}`}
                                   value={languageEdit.exam_name}
                                   onChange={handleEditChange}
-                                  placeholder="시험명"
+                                  defaultValue=''
                                   required
-                                />
+                                >
+                                  <option value='' disabled hidden>시험명</option>
+                                  <optgroup label="영어">
+                                    <option> G-TELP</option>
+                                    <option value='IELTS'>IELTS</option>
+                                    <option value='MATE'>MATE</option>
+                                    <option value='STEP'>STEP</option>
+                                    <option value='TEPS'>TEPS</option>
+                                    <option value='TOEFL'>TOEFL</option>
+                                    <option value='TOEIC'>TOEIC</option>
+                                    <option value='TOSEL'>TOSEL</option>
+                                  </optgroup>
+                                  <optgroup label='중국어'>
+                                    <option value='BCT'>BCT</option>
+                                    <option value='HSK'>HSK</option>
+                                    <option value='TOCFL'>TOCFL</option>
+                                    <option value='TSC'>TSC</option>
+                                  </optgroup>
+                                  <optgroup label='일본어'>
+                                    <option value='BJT'>BJT</option>
+                                    <option value='EJU'>EJU</option>
+                                    <option value='JLPT'>JLPT</option>
+                                    <option value='JPT'>JPT</option>
+                                  </optgroup>
+                                  <optgroup label='프랑스어'>
+                                    <option value='DALF'>DALF</option>
+                                    <option value='DELF'>DELF</option>
+                                    <option value='TFI'>TFI</option>
+                                  </optgroup>
+                                  <optgroup label='독일어'>
+                                    <option value='GZD'>GZD</option>
+                                    <option value='KMK'>KMK</option>
+                                  </optgroup>
+                                  <optgroup label='네덜란드어'>
+                                    <option value='CNaVT'>CNaVT</option>
+                                  </optgroup>
+                                  <optgroup label='스페인어'>
+                                    <option value='DELE'>DELE</option>
+                                    <option value='SLELE'>SLELE</option>
+                                  </optgroup>
+                                  <optgroup label='포르투칼어'>
+                                    <option value='CAPLE'>CAPLE</option>
+                                    <option value='CELPE-Bras'>CELPE-Bras</option>
+                                  </optgroup>
+                                  <optgroup label='이탈리아어'>
+                                    <option value='CELI'>CELI</option>
+                                    <option value='CILS'>CILS</option>
+                                    <option value='PLIDA'>PLIDA</option>
+                                  </optgroup>
+                                  <optgroup label='스웨덴어'>
+                                    <option value='TISUS'>TISUS</option>
+                                  </optgroup>
+                                  <optgroup label='다국어'>
+                                    <option value='FLEX'>FLEX</option>
+                                    <option value='OPIc'>OPIc</option>
+                                    <option value='SNULT'>SNULT</option>
+                                    <option value='TELC'>TELC</option>
+                                  </optgroup>
+                                </select>
                                 <label htmlFor={`exam_name-${lan.id}`}>시험명</label>
                               </FieldGroup>
                               <FieldGroup>
                                 <input
-                                  type="text"
+                                  type="number"
                                   name="point"
                                   id={`point-${lan.id}`}
                                   value={languageEdit.point}
@@ -236,32 +307,105 @@ export default function Language() {
                     <FormGroup>
                       <div>
                         <FieldGroup>
-                          <input
+                          <select
                             type="text"
                             name="lang_name"
                             id='lang_name'
                             value={language.lang_name}
                             onChange={handleAddChange}
                             placeholder="외국어명"
+                            defaultValue=''
                             required
-                          />
+                          >
+                            <option value='' disabled hidden>외국어명</option>
+                            <option value='영어'>영어</option>
+                            <option value='중국어'>중국어</option>
+                            <option value='일본어'>일본어</option>
+                            <option value='프랑스어'>프랑스어</option>
+                            <option value='독일어'>독일어</option>
+                            <option value='네덜란드어'>네덜란드어</option>
+                            <option value='스페인어'>스페인어</option>
+                            <option value='포르투칼어'>포르투칼어</option>
+                            <option value='이탈리아어'>이탈리아어</option>
+                            <option value='스웨덴어'>스웨덴어</option>
+                            <option value='다국어'>다국어</option>
+                          </select>
                           <label htmlFor='lang_name'>외국어명</label>
                         </FieldGroup>
                         <FieldGroup>
-                          <input
+                          <select
                             type="text"
                             name="exam_name"
                             id="exam_name"
                             value={language.exam_name}
                             onChange={handleAddChange}
                             placeholder="시험명"
+                            defaultValue=''
                             required
-                          />
+                          >
+                            <option value='' disabled hidden>시험명</option>
+                            <optgroup label="영어">
+                              <option> G-TELP</option>
+                              <option value='IELTS'>IELTS</option>
+                              <option value='MATE'>MATE</option>
+                              <option value='STEP'>STEP</option>
+                              <option value='TEPS'>TEPS</option>
+                              <option value='TOEFL'>TOEFL</option>
+                              <option value='TOEIC'>TOEIC</option>
+                              <option value='TOSEL'>TOSEL</option>
+                            </optgroup>
+                            <optgroup label='중국어'>
+                              <option value='BCT'>BCT</option>
+                              <option value='HSK'>HSK</option>
+                              <option value='TOCFL'>TOCFL</option>
+                              <option value='TSC'>TSC</option>
+                            </optgroup>
+                            <optgroup label='일본어'>
+                              <option value='BJT'>BJT</option>
+                              <option value='EJU'>EJU</option>
+                              <option value='JLPT'>JLPT</option>
+                              <option value='JPT'>JPT</option>
+                            </optgroup>
+                            <optgroup label='프랑스어'>
+                              <option value='DALF'>DALF</option>
+                              <option value='DELF'>DELF</option>
+                              <option value='TFI'>TFI</option>
+                            </optgroup>
+                            <optgroup label='독일어'>
+                              <option value='GZD'>GZD</option>
+                              <option value='KMK'>KMK</option>
+                            </optgroup>
+                            <optgroup label='네덜란드어'>
+                              <option value='CNaVT'>CNaVT</option>
+                            </optgroup>
+                            <optgroup label='스페인어'>
+                              <option value='DELE'>DELE</option>
+                              <option value='SLELE'>SLELE</option>
+                            </optgroup>
+                            <optgroup label='포르투칼어'>
+                              <option value='CAPLE'>CAPLE</option>
+                              <option value='CELPE-Bras'>CELPE-Bras</option>
+                            </optgroup>
+                            <optgroup label='이탈리아어'>
+                              <option value='CELI'>CELI</option>
+                              <option value='CILS'>CILS</option>
+                              <option value='PLIDA'>PLIDA</option>
+                            </optgroup>
+                            <optgroup label='스웨덴어'>
+                              <option value='TISUS'>TISUS</option>
+                            </optgroup>
+                            <optgroup label='다국어'>
+                              <option value='FLEX'>FLEX</option>
+                              <option value='OPIc'>OPIc</option>
+                              <option value='SNULT'>SNULT</option>
+                              <option value='TELC'>TELC</option>
+                            </optgroup>
+                          </select>
                           <label htmlFor='exam_name'>시험명</label>
                         </FieldGroup>
                         <FieldGroup>
                           <input
-                            type="text"
+                            type="number"
                             name="point"
                             id="point"
                             value={language.point}

@@ -106,6 +106,23 @@ export default function Skill() {
     setEditingSkill(false);
   }
 
+  const careerDescription = (value) => {
+    switch (value) {
+      case 1:
+        return '1년 미만';
+      case 2:
+        return '1년 이상 3년 미만';
+      case 3:
+        return '3년 이상 5년 미만';
+      case 4:
+        return '5년 이상 10년 미만';
+      case 5:
+        return '10년 이상';
+      default:
+        return '경험 미선택';
+    }
+  };
+
   const pageTitle = '보유기술'
 
   return (
@@ -141,29 +158,45 @@ export default function Skill() {
                                   value={skillEdit.skill_name}
                                   onChange={handleEditChange}
                                   placeholder="기술명"
+                                  required
                                 />
                                 <label htmlFor={`skill_name-${ski.id}`}>기술명</label>
                               </FieldGroup>
                               <FieldGroup>
-                                <input
+                                <select
                                   type="text"
                                   name="skill_level"
                                   id={`skill_level-${ski.id}`}
                                   value={skillEdit.skill_level}
                                   onChange={handleEditChange}
-                                  placeholder="숙련도"
-                                />
+                                  defaultValue=''
+                                  required
+                                >
+                                  <option value='' disabled hidden>숙련도</option>
+                                  <option value='초급'>초급</option>
+                                  <option value='중급'>중급</option>
+                                  <option value='고급'>고급</option>
+                                  <option value='특급'>특급</option>
+                                </select>
                                 <label htmlFor={`skill_level-${ski.id}`}>숙련도</label>
                               </FieldGroup>
                               <FieldGroup>
-                                <input
+                                <select
                                   type="text"
                                   name="skill_career"
                                   id={`skill_career-${ski.id}`}
                                   value={skillEdit.skill_career}
                                   onChange={handleEditChange}
-                                  placeholder="경험"
-                                />
+                                  defaultValue=''
+                                  required
+                                >
+                                  <option value='' disabled hidden>경험</option>
+                                  <option value='1'>1년 미만</option>
+                                  <option value='2'>1년 이상 3년 미만</option>
+                                  <option value='3'>3년 이상 5년 미만</option>
+                                  <option value='4'>5년 이상 10년 미만</option>
+                                  <option value='5'>10년 이상</option>
+                                </select>
                                 <label htmlFor={`skill_career-${ski.id}`}>경험</label>
                               </FieldGroup>
                             </div>
@@ -198,7 +231,7 @@ export default function Skill() {
                             <ItemGroup>
                               <dt>경험</dt>
                               <dd>
-                                <span>{ski.skill_career}</span>
+                                <span>{careerDescription(ski.skill_career)}</span>
                               </dd>
                             </ItemGroup>
                           </div>
@@ -240,29 +273,45 @@ export default function Skill() {
                             value={skill.skill_name}
                             onChange={handleAddChange}
                             placeholder="기술명"
+                            required
                           />
                           <label htmlFor='skill_name'>기술명</label>
                         </FieldGroup>
                         <FieldGroup>
-                          <input
+                          <select
                             type="text"
                             name="skill_level"
                             id="skill_level"
                             value={skill.skill_level}
                             onChange={handleAddChange}
-                            placeholder="숙련도"
-                          />
+                            defaultValue=''
+                            required
+                          >
+                            <option value='' disabled hidden>숙련도</option>
+                            <option value='초급'>초급</option>
+                            <option value='중급'>중급</option>
+                            <option value='고급'>고급</option>
+                            <option value='특급'>특급</option>
+                          </select>
                           <label htmlFor='skill_level'>숙련도</label>
                         </FieldGroup>
                         <FieldGroup>
-                          <input
+                          <select
                             type="text"
                             name="skill_career"
                             id="skill_career"
                             value={skill.skill_career}
                             onChange={handleAddChange}
-                            placeholder="경험"
-                          />
+                            defaultValue=''
+                            required
+                          >
+                            <option value='' disabled hidden>경험</option>
+                            <option value='1'>1년 미만</option>
+                            <option value='2'>1년 이상 3년 미만</option>
+                            <option value='3'>3년 이상 5년 미만</option>
+                            <option value='4'>5년 이상 10년 미만</option>
+                            <option value='5'>10년 이상</option>
+                          </select>
                           <label htmlFor='skill_career'>경험</label>
                         </FieldGroup>
                       </div>
