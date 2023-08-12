@@ -1,6 +1,6 @@
 @media print
   @page
-    margin: 0
+    margin: 32px 0
 
 .print-only
   display: flex
@@ -39,17 +39,23 @@
       color: black
 
   section
-    padding: 10px 0
     display: flex
     gap: 25px
+    page-break-before: auto
+    page-break-inside: avoid
 
     h2
       flex: 0 0 auto
-      border-bottom: 2px solid
-      padding: 10px
+      border: 1px solid
+      border-right: 0
+      border-left: 0
+      padding: 20px 10px 10px
       width: 150px
       font-size: 16px
       line-height: 1
+
+    dl
+      padding-top: 10px
 
     &:last-of-type
       h2
@@ -62,7 +68,6 @@
       display: flex
       flex-direction: column
       padding: 50px 0 50px !important
-      border-bottom: 2px solid
 
       .essay-header
         display: flex
@@ -84,6 +89,9 @@
             a
               color: white
               white-space: nowrap
+
+              @media print
+                color: black
 
       h2
         flex: none
@@ -130,10 +138,15 @@
         line-height: 1.42857143
 
     &.profile
+      border-top: 2px solid
+
+      h2
+        border-top: 0
+
       dl
         display: flex
         flex-wrap: wrap
-        border-bottom: 2px solid
+        border-bottom: 1px solid
 
         dt, dd
           padding: 10px 0
@@ -155,7 +168,9 @@
       dl
         display: flex
         flex-wrap: wrap
-        border-bottom: 2px solid
+        border: 1px solid
+        border-right: 0
+        border-left: 0
 
         dt, dd
           padding: 10px 0
@@ -176,7 +191,10 @@
     &.education
       ul
         flex: 1 0 0%
-        border-bottom: 2px solid
+        border: 1px solid
+        border-right: 0
+        border-left: 0
+        padding-top: 10px
 
         li
           border-bottom: 1px solid
@@ -219,7 +237,10 @@
         display: flex
         flex: 1 0 0%
         flex-direction: column
-        border-bottom: 2px solid
+        border: 1px solid
+        border-right: 0
+        border-left: 0
+        padding-top: 10px
 
         > div
           display: flex
@@ -275,6 +296,10 @@
         flex: 1 0 0%
         flex-direction: column
         border-bottom: 2px solid
+        border: 1px solid
+        border-right: 0
+        border-left: 0
+        padding-top: 10px
 
         > div
           display: flex
@@ -329,7 +354,10 @@
         display: flex
         flex: 1 0 0%
         flex-direction: column
-        border-bottom: 2px solid
+        border: 1px solid
+        border-right: 0
+        border-left: 0
+        padding-top: 10px
 
         > div
           display: flex
@@ -385,6 +413,10 @@
         flex: 1 0 0%
         flex-direction: column
         border-bottom: 2px solid
+        border: 1px solid
+        border-right: 0
+        border-left: 0
+        padding-top: 10px
 
         > div
           display: flex
@@ -440,7 +472,10 @@
         display: flex
         flex: 1 0 0%
         flex-direction: column
-        border-bottom: 2px solid
+        border: 1px solid
+        border-right: 0
+        border-left: 0
+        padding-top: 10px
 
         > div
           display: flex
@@ -481,29 +516,19 @@
             .activity-info
               border-bottom: 0
 
-    &:first-of-type
-      padding-top: 15px
-      border-top: 5px solid
-
-    &:last-of-type
-      padding-bottom: 15px
-      border-bottom: 5px solid
-
     &.career
       > dl
         display: flex
         flex: 1 0 0%
         flex-direction: column
+        border-top: 1px solid
+        padding-top: 10px
 
         > div
           display: flex
           flex-direction: column
           padding-top: 25px
           border-top: 1px solid
-
-          &:first-of-type
-            padding-top: 0
-            border-top: 0
 
           .career-item
             display: flex
@@ -555,6 +580,10 @@
                 position: absolute
                 top: 10px
                 right: 0
+
+          &:first-of-type
+            padding-top: 0
+            border-top: 0
 
           &:last-of-type
             .project-list .project-item
