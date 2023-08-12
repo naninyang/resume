@@ -152,32 +152,86 @@ export default function Home({ mdx }) {
                   <h3>{resumeData.essays[0].eng_occupation}</h3>
                 </div>
               </div>
+              {resumeData?.references?.length > 0 && (
+                <div className={styles.reference}>
+                  <ul>
+                    {resumeData?.references?.[0].github && (
+                      <li>
+                        <LinkButton href={`https://github.com/${resumeData?.references?.[0].github}`}>{`https://github.com/${resumeData?.references?.[0].github}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].velog && (
+                      <li>
+                        <LinkButton href={`https://velog.io/@${resumeData?.references?.[0].velog}`}>{`https://velog.io/@${resumeData?.references?.[0].velog}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].instagram && (
+                      <li>
+                        <LinkButton href={`https://www.instagram.com/${resumeData?.references?.[0].instagram}`}>{`https://www.instagram.com/${resumeData?.references?.[0].instagram}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].twitter && (
+                      <li>
+                        <LinkButton href={`https://twitter.com/${resumeData?.references?.[0].twitter}`}>{`https://twitter.com/${resumeData?.references?.[0].twitter}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].facebook && (
+                      <li>
+                        <LinkButton href={`https://www.facebook.com/${resumeData?.references?.[0].facebook}`}>{`https://www.facebook.com/${resumeData?.references?.[0].facebook}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].leadme && (
+                      <li>
+                        <LinkButton href={`https://www.leadme.today/@${resumeData?.references?.[0].leadme}`}>{`https://www.leadme.today/@${resumeData?.references?.[0].leadme}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].brunch && (
+                      <li>
+                        <LinkButton href={`https://brunch.co.kr/@${resumeData?.references?.[0].brunch}`}>{`https://brunch.co.kr/@${resumeData?.references?.[0].brunch}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].tistory && (
+                      <li>
+                        <LinkButton href={`https://${resumeData?.references?.[0].tistory}.tistory.com`}>{`https://${resumeData?.references?.[0].tistory}.tistory.com`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].pinterest && (
+                      <li>
+                        <LinkButton href={`https://www.pinterest.co.kr/${resumeData?.references?.[0].pinterest}`}>{`https://www.pinterest.co.kr/${resumeData?.references?.[0].pinterest}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].linkedin && (
+                      <li>
+                        <LinkButton href={`https://kr.linkedin.com/in/${encodeURIComponent(resumeData?.references?.[0].linkedin)}`}>{`https://kr.linkedin.com/in/${encodeURIComponent(resumeData?.references?.[0].linkedin)}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].dribble && (
+                      <li>
+                        <LinkButton href={`https://dribbble.com/${resumeData?.references?.[0].dribble}`}>{`https://dribbble.com/${resumeData?.references?.[0].dribble}`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].postype && (
+                      <li>
+                        <LinkButton href={`https://${resumeData?.references?.[0].postype}.postype.com/`}>{`https://${resumeData?.references?.[0].postype}.postype.com/`}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].blog && (
+                      <li>
+                        <LinkButton href={`${encodeURIComponent(resumeData?.references?.[0].blog)}`}>{resumeData?.references?.[0].blog}</LinkButton>
+                      </li>
+                    )}
+                    {resumeData?.references?.[0].homepage && (
+                      <li>
+                        <LinkButton href={`${encodeURIComponent(resumeData?.homepage?.[0].blog)}`}>{resumeData?.references?.[0].homepage}</LinkButton>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              )}
               <h4>{resumeData.essays[0].title} {resumeData.username} 입니다</h4>
               <div className={styles['essay-bio']}>
                 {mdx && <MDXRemote {...mdx} />}
               </div>
-            </section>
-          )}
-          {resumeData?.references?.length > 0 && (
-            <section className={styles.reference}>
-              <dl>
-                {resumeData?.references?.[0].github && (
-                  <>
-                    <dt>깃헙</dt>
-                    <dd>
-                      <LinkButton href={`https://github.com/${resumeData?.references?.[0].github}`}>{`https://github.com/${resumeData?.references?.[0].github}`}</LinkButton>
-                    </dd>
-                  </>
-                )}
-                {resumeData?.references?.[0].blog && (
-                  <>
-                    <dt>블로그</dt>
-                    <dd>
-                      <LinkButton href={resumeData?.references?.[0].blog}>{resumeData?.references?.[0].blog}</LinkButton>
-                    </dd>
-                  </>
-                )}
-              </dl>
             </section>
           )}
           <section className={styles.profile}>

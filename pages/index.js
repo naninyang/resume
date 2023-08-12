@@ -208,7 +208,7 @@ export default function Home({ mdx }) {
               <dt>블로그</dt>
               <dd>
                 {resumeData?.references?.[0].blog ? (
-                  <LinkButton href={resumeData?.references?.[0].blog}>{resumeData?.references?.[0].blog}</LinkButton>
+                  <LinkButton href={`${encodeURIComponent(resumeData?.references?.[0].blog)}`}>{resumeData?.references?.[0].blog}</LinkButton>
                 ) : (
                   <p>아직 블로그 주소를 등록하지 않으셨습니다</p>
                 )}
@@ -216,7 +216,7 @@ export default function Home({ mdx }) {
               <dt>홈페이지</dt>
               <dd>
                 {resumeData?.references?.[0].homepage ? (
-                  <LinkButton href={resumeData?.references?.[0].homepage}>{resumeData?.references?.[0].homepage}</LinkButton>
+                  <LinkButton href={`${encodeURIComponent(resumeData?.homepage?.[0].blog)}`}>{resumeData?.references?.[0].homepage}</LinkButton>
                 ) : (
                   <p>아직 홈페이지 주소를 등록하지 않으셨습니다</p>
                 )}
