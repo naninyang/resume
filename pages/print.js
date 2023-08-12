@@ -212,7 +212,7 @@ export default function Home({ mdx }) {
                     )}
                     {resumeData?.references?.[0].postype && (
                       <li>
-                        <LinkButton href={`https://${resumeData?.references?.[0].postype}.postype.com/`}>{`https://${resumeData?.references?.[0].postype}.postype.com/`}</LinkButton>
+                        <LinkButton href={`https://${resumeData?.references?.[0].postype}.postype.com`}>{`https://${resumeData?.references?.[0].postype}.postype.com`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].blog && (

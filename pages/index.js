@@ -200,7 +200,7 @@ export default function Home({ mdx }) {
               <dt>포스타입</dt>
               <dd>
                 {resumeData?.references?.[0].postype ? (
-                  <LinkButton href={`https:/${resumeData?.references?.[0].postype}.postype.com/`}>{`https://${resumeData?.references?.[0].postype}.postype.com/`}</LinkButton>
+                  <LinkButton href={`https://${resumeData?.references?.[0].postype}.postype.com`}>{`https://${resumeData?.references?.[0].postype}.postype.com`}</LinkButton>
                 ) : (
                   <p>아직 포스타입 계정 이름을 등록하지 않으셨습니다</p>
                 )}
