@@ -67,20 +67,44 @@ export const Container = styled.main({
       '& dd': {
         ...mixin.colAuto,
         width: `calc(100% - ${Rem(170)})`,
+        '&.essays': {
+          '& h1, & h2, & h3, & h4, & h5, & h6': {
+            margin: `${Rem(20)} 0`,
+            fontSize: Rem(20),
+            fontWeight: '900',
+            lineHeight: 1.3,
+          },
+          '& p': {
+            margin: `${Rem(16)} 0`,
+            fontSize: Rem(16),
+            fontWeight: '400',
+            lineHeight: 1.375,
+          },
+          '& :first-of-type': {
+            marginTop: 0,
+          },
+          '& :last-of-type': {
+            marginBottom: 0,
+          },
+        },
       },
     },
     '& section > dl': {
       padding: `${Rem(5)} 0`,
       borderTop: `${Rem(5)} solid ${hex.yellow}`,
       borderBottom: `${Rem(5)} solid ${hex.yellow}`,
-      '& strong': {
-        display: 'inline-block',
-        paddingLeft: Rem(25),
-        fontWeight: '700',
-        color: hex.warning,
-      },
-      '& p strong': {
-        textIndent: Rem(-25),
+      '& dd': {
+        '&:not(.essays)': {
+          '& strong': {
+            display: 'inline-block',
+            paddingLeft: Rem(25),
+            fontWeight: '700',
+            color: hex.warning,
+          },
+          '& p strong': {
+            textIndent: Rem(-25),
+          },
+        },
       },
     },
   },
@@ -106,10 +130,12 @@ export const Fragment = styled.div({
     '& dd': {
       ...mixin.colAuto,
       width: `calc(100% - ${Rem(170)})`,
-      '& strong': {
-        paddingLeft: Rem(25),
-        fontWeight: '700',
-        color: hex.warning,
+      '&:not(.essays)': {
+        '& strong': {
+          paddingLeft: Rem(25),
+          fontWeight: '700',
+          color: hex.warning,
+        },
       },
     },
   },
@@ -129,7 +155,7 @@ export const Fragment = styled.div({
       '& dd': {
         ...mixin.colAuto,
         width: `calc(100% - ${Rem(170)})`,
-        '& strong': {
+        '&:not(.essays) strong': {
           paddingLeft: Rem(25),
           fontWeight: '700',
           color: hex.warning,

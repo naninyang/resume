@@ -1,25 +1,28 @@
 import React, { useState, useContext, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);  // 추가된 부분
+  const [user, setUser] = useState(null);
 
-  const login = (token, user) => {  // 인자가 하나 추가됨
+  const login = (token, user) => {
     localStorage.setItem('token', token);
+    Cookies.set('token', token, { expires: 14 });
     setLoggedIn(true);
-    setUser(user);  // 추가된 부분
+    setUser(user);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    Cookies.remove('token');
     setLoggedIn(false);
-    setUser(null);  // 추가된 부분
+    setUser(null);
   };
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('token') && Cookies.get('token')) {
       setLoggedIn(true);
     } else {
       setLoggedIn(false);

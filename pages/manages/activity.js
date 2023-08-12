@@ -126,7 +126,7 @@ export default function Activity() {
             <h1>
               {pageTitle}
               {' '}
-              <strong>시작일시 상관없이 추가하시면 됩니다. 이력서에서는 자동으로 가장 최근 활동 기준으로 보여집니다. (동일한 경우 종료일시 기준)</strong>
+              <strong>시작일시 상관없이 추가하시면 됩니다. 이력서에서는 자동으로 가장 최근 활동 기준으로 보여집니다.</strong>
             </h1>
             <div className='data-group'>
               <div className='list'>

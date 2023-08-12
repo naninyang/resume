@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import axios from 'axios';
+import Image from 'next/image';
+import { MDXRemote } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
 import { useAuth } from '@/components/hooks/authContext'
 import LinkButton from '@/components/hooks/linkButton';
 import { Container, Fragment, IsNotSession } from '@/styles/serviceSystem';
 
-export default function Home() {
+export default function Home({ mdx }) {
   const { loggedIn } = useAuth();
 
   const [resumeData, setResumeData] = useState('');
@@ -44,7 +47,7 @@ export default function Home() {
   function RenderDescription({ description }) {
     if (description.includes('\n')) {
       return (
-        <p>aslkfjsalkfdjasklfjfsklfjklj
+        <p>
           {description.split('\n').map((line, index) => (
             <React.Fragment key={index}>
               {line}
@@ -100,6 +103,123 @@ export default function Home() {
               <dt>장애대상</dt>
               <dd>
                 {resumeData.disability ? resumeData.disability : <strong>장애대상 여부를 입력하지 않아 프린트 할 때 공개되지 않습니다</strong>}
+              </dd>
+            </dl>
+          </section>
+          <section>
+            <h2>레퍼런스</h2>
+            <dl>
+              <dt>깃헙</dt>
+              <dd>
+                {resumeData?.references?.[0].github ? (
+                  <LinkButton href={`https://github.com/${resumeData?.references?.[0].github}`}>{`https://github.com/${resumeData?.references?.[0].github}`}</LinkButton>
+                ) : (
+                  <p>아직 깃헙 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>벨로그</dt>
+              <dd>
+                {resumeData?.references?.[0].velog ? (
+                  <LinkButton href={`https://velog.io/@${resumeData?.references?.[0].velog}`}>{`https://velog.io/@${resumeData?.references?.[0].velog}`}</LinkButton>
+                ) : (
+                  <p>아직 벨로그 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>인스타그램</dt>
+              <dd>
+                {resumeData?.references?.[0].instagram ? (
+                  <LinkButton href={`https://www.instagram.com/${resumeData?.references?.[0].instagram}`}>{`https://www.instagram.com/${resumeData?.references?.[0].instagram}`}</LinkButton>
+                ) : (
+                  <p>아직 인스타그램 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>트위터</dt>
+              <dd>
+                {resumeData?.references?.[0].twitter ? (
+                  <LinkButton href={`https://twitter.com/${resumeData?.references?.[0].twitter}`}>{`https://twitter.com/${resumeData?.references?.[0].twitter}`}</LinkButton>
+                ) : (
+                  <p>아직 트위터(엑스 X) 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>페이스북</dt>
+              <dd>
+                {resumeData?.references?.[0].facebook ? (
+                  <LinkButton href={`https://www.facebook.com/${resumeData?.references?.[0].facebook}`}>{`https://www.facebook.com/${resumeData?.references?.[0].facebook}`}</LinkButton>
+                ) : (
+                  <p>아직 페이스북 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>리드미</dt>
+              <dd>
+                {resumeData?.references?.[0].leadme ? (
+                  <LinkButton href={`https://www.leadme.today/@${resumeData?.references?.[0].leadme}`}>{`https://www.leadme.today/@${resumeData?.references?.[0].leadme}`}</LinkButton>
+                ) : (
+                  <p>아직 리드미 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>브런치</dt>
+              <dd>
+                {resumeData?.references?.[0].brunch ? (
+                  <LinkButton href={`https://brunch.co.kr/@${resumeData?.references?.[0].brunch}`}>{`https://brunch.co.kr/@${resumeData?.references?.[0].brunch}`}</LinkButton>
+                ) : (
+                  <p>아직 브런치 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>티스토리</dt>
+              <dd>
+                {resumeData?.references?.[0].tistory ? (
+                  <LinkButton href={`https://${resumeData?.references?.[0].tistory}.tistory.com`}>{`https://${resumeData?.references?.[0].tistory}.tistory.com`}</LinkButton>
+                ) : (
+                  <p>아직 티스토리 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>핀터레스트</dt>
+              <dd>
+                {resumeData?.references?.[0].pinterest ? (
+                  <LinkButton href={`https://www.pinterest.co.kr/${resumeData?.references?.[0].pinterest}`}>{`https://www.pinterest.co.kr/${resumeData?.references?.[0].pinterest}`}</LinkButton>
+                ) : (
+                  <p>아직 핀터레스트 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>링크드인</dt>
+              <dd>
+                {resumeData?.references?.[0].linkedin ? (
+                  <LinkButton href={`https://kr.linkedin.com/in/${encodeURIComponent(resumeData?.references?.[0].linkedin)}`}>{`https://kr.linkedin.com/in/${encodeURIComponent(resumeData?.references?.[0].linkedin)}`}</LinkButton>
+                ) : (
+                  <p>아직 링크드인 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>드리블</dt>
+              <dd>
+                {resumeData?.references?.[0].dribble ? (
+                  <LinkButton href={`https://dribbble.com/${resumeData?.references?.[0].dribble}`}>{`https://dribbble.com/${resumeData?.references?.[0].dribble}`}</LinkButton>
+                ) : (
+                  <p>아직 드리블 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>포스타입</dt>
+              <dd>
+                {resumeData?.references?.[0].postype ? (
+                  <LinkButton href={`https:/${resumeData?.references?.[0].postype}.postype.com/`}>{`https://${resumeData?.references?.[0].postype}.postype.com/`}</LinkButton>
+                ) : (
+                  <p>아직 포스타입 계정 이름을 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>블로그</dt>
+              <dd>
+                {resumeData?.references?.[0].blog ? (
+                  <LinkButton href={resumeData?.references?.[0].blog}>{resumeData?.references?.[0].blog}</LinkButton>
+                ) : (
+                  <p>아직 블로그 주소를 등록하지 않으셨습니다</p>
+                )}
+              </dd>
+              <dt>홈페이지</dt>
+              <dd>
+                {resumeData?.references?.[0].homepage ? (
+                  <LinkButton href={resumeData?.references?.[0].homepage}>{resumeData?.references?.[0].homepage}</LinkButton>
+                ) : (
+                  <p>아직 홈페이지 주소를 등록하지 않으셨습니다</p>
+                )}
               </dd>
             </dl>
           </section>
@@ -264,9 +384,9 @@ export default function Home() {
               <dl className='array'>
                 {resumeData?.skills?.sort((a, b) => {
                   if (a.skill_level !== b.skill_level) {
-                    return parseFloat(a.skill_level) - parseFloat(b.skill_level);
+                    return parseFloat(b.skill_level) - parseFloat(a.skill_level);
                   }
-                  return a.skill_career - b.skill_career;
+                  return b.skill_career - a.skill_career;
                 }).map((skill) => (
                   <Fragment key={skill.id}>
                     <dt>기술명</dt>
@@ -281,27 +401,6 @@ export default function Home() {
             ) : (
               <p>아직 기술을 등록하지 않으셨습니다</p>
             )}
-          </section>
-          <section>
-            <h2>레퍼런스</h2>
-            <dl>
-              <dt>깃헙</dt>
-              <dd>
-                {resumeData?.references?.[0].github ? (
-                  <LinkButton href={`https://github.com/${resumeData?.references?.[0].github}`}>{`https://github.com/${resumeData?.references?.[0].github}`}</LinkButton>
-                ) : (
-                  <p>아직 Github 계정 이름을 등록하지 않으셨습니다</p>
-                )}
-              </dd>
-              <dt>블로그</dt>
-              <dd>
-                {resumeData?.references?.[0].blog ? (
-                  <LinkButton href={resumeData?.references?.[0].blog}>{resumeData?.references?.[0].blog}</LinkButton>
-                ) : (
-                  <p>아직 블로그 주소를 등록하지 않으셨습니다</p>
-                )}
-              </dd>
-            </dl>
           </section>
           <section>
             <h2>대외활동</h2>
@@ -419,6 +518,37 @@ export default function Home() {
               <p>아직 경력사항을 등록하지 않으셨습니다</p>
             )}
           </section>
+          <section>
+            <h2>자기소개서</h2>
+            {resumeData?.essays?.length > 0 ? (
+              <dl className='array'>
+                {resumeData.essays[0] &&
+                  <dl>
+                    {!resumeData.username_show &&
+                      <>
+                        <dt>주의사항</dt>
+                        <dd>이름이 비공개 상태입니다. 비공개 상태에서는 프린트되지 않습니다</dd>
+                      </>
+                    }
+                    <dt>등록된 사진</dt>
+                    <dd>{resumeData.essays[0].avatar_path ? <Image src={resumeData.essays[0].avatar_path} alt="사진 미리보기" width='100' height='100' /> : '등록된 사진이 없습니다'}</dd>
+                    <dt>영문 이름</dt>
+                    <dd>{resumeData.essays[0].eng_name}</dd>
+                    <dt>영문 직업</dt>
+                    <dd>{resumeData.essays[0].eng_occupation}</dd>
+                    <dt>자기소개서 제목</dt>
+                    <dd>{resumeData.essays[0].title} {resumeData.username} 입니다</dd>
+                    <dt>자기소개서 내용</dt>
+                    <dd className='essays'>
+                      {mdx && <MDXRemote {...mdx} />}
+                    </dd>
+                  </dl>
+                }
+              </dl>
+            ) : (
+              <p>아직 자기소개서를 등록하지 않으셨습니다</p>
+            )}
+          </section>
         </>
       ) : (
         <>
@@ -430,4 +560,19 @@ export default function Home() {
       )}
     </Container>
   )
+}
+
+export async function getServerSideProps(context) {
+  const token = context.req.cookies.token;
+  const response = await axios.get('http://localhost:3002/api/resume', { headers: { Authorization: `Bearer ${token}` } });
+  const data = response.data;
+  const mdxSource = data.essays?.[0]?.bio;
+
+  if (!mdxSource) {
+    return { props: {} };
+  }
+
+  const mdx = await serialize(mdxSource);
+
+  return { props: { mdx } };
 }

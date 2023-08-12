@@ -31,6 +31,7 @@ model user {
   skills            skill[]
   references        reference[]
   careers           career[]
+  essays            essay[]
 }
 
 model education {
@@ -116,11 +117,23 @@ model skill {
 }
 
 model reference {
-  id     Int    @id @default(autoincrement())
-  github String
-  blog   String
-  userId Int?   @unique
-  user   user?  @relation(fields: [userId], references: [id])
+  id        Int     @id @default(autoincrement())
+  github    String?
+  velog     String?
+  instagram String?
+  twitter   String?
+  facebook  String?
+  leadme    String?
+  brunch    String?
+  tistory   String?
+  pinterest String?
+  linkedin  String?
+  dribble   String?
+  postype   String?
+  blog      String?
+  homepage  String?
+  userId    Int?    @unique
+  user      user?   @relation(fields: [userId], references: [id])
 }
 
 model career {
@@ -145,4 +158,18 @@ model project {
   description  String?
   careerId     Int?
   career       career? @relation(fields: [careerId], references: [id])
+}
+
+model essay {
+  id             Int      @id @default(autoincrement())
+  avatar_name    String?
+  avatar_path    String?
+  avatar_type    String?
+  eng_name       String?
+  eng_occupation String?
+  title          String
+  bio            String
+  show           Boolean? @default(false)
+  userId         Int?     @unique
+  user           user?    @relation(fields: [userId], references: [id])
 }

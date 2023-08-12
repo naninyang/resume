@@ -35,6 +35,7 @@ export default async function handler(req, res) {
         certificates: true,
         skills: true,
         references: true,
+        essays: true,
         careers: {
           include: {
             projects: true

@@ -135,7 +135,7 @@ export default function Profile() {
             <form onSubmit={handleSubmit}>
               <fieldset>
                 <legend>{pageTitle} 양식</legend>
-                <FormGroup>
+                <FormGroup className='form-group single-group'>
                   <FieldGroup>
                     <input
                       type="text"

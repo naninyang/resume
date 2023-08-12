@@ -228,7 +228,7 @@ export default function Career() {
             <h1>
               {pageTitle}
               {' '}
-              <strong>입사일 상관없이 추가하시면 됩니다. 이력서에서는 자동으로 가장 최근 경력 기준으로 보여집니다. (동일한 경우 퇴사일 기준)</strong>
+              <strong>입사일 상관없이 추가하시면 됩니다. 이력서에서는 자동으로 가장 최근 경력 기준으로 보여집니다.</strong>
             </h1>
             <div className='data-group'>
               <div className='list'>

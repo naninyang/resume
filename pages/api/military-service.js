@@ -8,7 +8,6 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       const militaryServices = await prisma.military_service.findMany();
-      console.log(militaryServices)
       res.status(200).json(militaryServices);
     } catch (error) {
       console.error('Failed to fetch military services:', error);

@@ -24,7 +24,10 @@ export default async function handler(req, res) {
 
       const payload = verify(token, JWT_SECRET);
 
-      const { github, blog } = req.body;
+      const {
+        github, blog, velog, instagram, twitter, facebook, leadme, brunch,
+        tistory, pinterest, linkedin, dribble, postype, homepage
+      } = req.body;
 
       const reference = await prisma.reference.findUnique({
         where: { userId: payload.id },
@@ -33,8 +36,8 @@ export default async function handler(req, res) {
       if (!reference) {
         await prisma.reference.create({
           data: {
-            github,
-            blog,
+            github, blog, velog, instagram, twitter, facebook, leadme, brunch,
+            tistory, pinterest, linkedin, dribble, postype, homepage,
             user: { connect: { id: payload.id } },
           },
         });
@@ -42,8 +45,8 @@ export default async function handler(req, res) {
         await prisma.reference.update({
           where: { userId: payload.id },
           data: {
-            github,
-            blog,
+            github, blog, velog, instagram, twitter, facebook, leadme, brunch,
+            tistory, pinterest, linkedin, dribble, postype, homepage,
           },
         });
       }

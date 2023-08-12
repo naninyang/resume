@@ -15,7 +15,19 @@ export default function Reference() {
   const { isOpen, handleOpen, handleClose } = useModal();
 
   const [github, setGithub] = useState('');
+  const [velog, setVelog] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [facebook, setFacebook] = useState('');
+  const [leadme, setLeadme] = useState('');
+  const [brunch, setBrunch] = useState('');
+  const [tistory, setTistory] = useState('');
+  const [pinterest, setPinterest] = useState('');
+  const [linkedin, setLinkedin] = useState('');
+  const [dribble, setDribble] = useState('');
+  const [postype, setPostype] = useState('');
   const [blog, setBlog] = useState('');
+  const [homepage, setHomepage] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [errResponseData, setErrResponseData] = useState('');
   const [errResponseStats, setErrResponseStats] = useState('');
@@ -48,7 +60,10 @@ export default function Reference() {
     } else {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('/api/reference', { github, blog }, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.post('/api/reference', {
+          github, velog, instagram, twitter, facebook, leadme, brunch,
+          tistory, pinterest, linkedin, dribble, postype, blog, homepage
+        }, { headers: { Authorization: `Bearer ${token}` } });
         if (response.status === 200) {
           toast.success('레퍼런스 갱신에 성공했습니다', {
             position: toast.POSITION.TOP_CENTER,
@@ -105,6 +120,127 @@ export default function Reference() {
                   </FieldGroup>
                   <FieldGroup>
                     <input
+                      type="text"
+                      id='velog'
+                      value={velog}
+                      onChange={(e) => setVelog(e.target.value)}
+                      placeholder="Velog"
+                    />
+                    <label htmlFor='velog'>Velog</label>
+                    <p>Velog 계정 이름만 입력하세요 (@ 제외)</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='instagram'
+                      value={instagram}
+                      onChange={(e) => setInstagram(e.target.value)}
+                      placeholder="Instagram"
+                    />
+                    <label htmlFor='instagram'>Instagram</label>
+                    <p>instagram 계정 이름만 입력하세요</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='twitter'
+                      value={twitter}
+                      onChange={(e) => setTwitter(e.target.value)}
+                      placeholder="Twitter"
+                    />
+                    <label htmlFor='twitter'>Twitter</label>
+                    <p>Twitter(X) 계정 이름만 입력하세요</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='facebook'
+                      value={facebook}
+                      onChange={(e) => setFacebook(e.target.value)}
+                      placeholder="Facebook"
+                    />
+                    <label htmlFor='facebook'>Facebook</label>
+                    <p>Facebook 계정 이름만 입력하세요</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='leadme'
+                      value={leadme}
+                      onChange={(e) => setLeadme(e.target.value)}
+                      placeholder="LeadMe"
+                    />
+                    <label htmlFor='leadme'>LeadMe</label>
+                    <p>LeadMe 계정 이름만 입력하세요</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='brunch'
+                      value={brunch}
+                      onChange={(e) => setBrunch(e.target.value)}
+                      placeholder="Brunch"
+                    />
+                    <label htmlFor='brunch'>Brunch</label>
+                    <p>Brunch 계정 이름만 입력하세요 (@ 제외)</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='tistory'
+                      value={tistory}
+                      onChange={(e) => setTistory(e.target.value)}
+                      placeholder="Tistory"
+                    />
+                    <label htmlFor='tistory'>Tistory</label>
+                    <p>Tistory 계정 이름만 입력하세요</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='pinterest'
+                      value={pinterest}
+                      onChange={(e) => setPinterest(e.target.value)}
+                      placeholder="Pinterest"
+                    />
+                    <label htmlFor='pinterest'>Pinterest</label>
+                    <p>Pinterest 계정 이름만 입력하세요</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='linkedin'
+                      value={linkedin}
+                      onChange={(e) => setLinkedin(e.target.value)}
+                      placeholder="LinkedIn"
+                    />
+                    <label htmlFor='linkedin'>LinkedIn</label>
+                    <p>LinkedIn 계정 이름만 입력하세요</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='dribble'
+                      value={dribble}
+                      onChange={(e) => setDribble(e.target.value)}
+                      placeholder="Dribble"
+                    />
+                    <label htmlFor='dribble'>Dribble</label>
+                    <p>Dribble 계정 이름만 입력하세요</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="text"
+                      id='postype'
+                      value={postype}
+                      onChange={(e) => setPostype(e.target.value)}
+                      placeholder="Postype"
+                    />
+                    <label htmlFor='postype'>Postype</label>
+                    <p>Postype 계정 이름만 입력하세요</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
                       type="url"
                       id='blog'
                       value={blog}
@@ -112,7 +248,18 @@ export default function Reference() {
                       placeholder="blog"
                     />
                     <label htmlFor='blog'>블로그</label>
-                    <p>블로그 주소 전체를 입력하세요</p>
+                    <p>블로그 주소 전체를 입력하세요 (https:// 포함할것)</p>
+                  </FieldGroup>
+                  <FieldGroup>
+                    <input
+                      type="url"
+                      id='homepage'
+                      value={homepage}
+                      onChange={(e) => setHomepage(e.target.value)}
+                      placeholder="homepage"
+                    />
+                    <label htmlFor='homepage'>홈페이지</label>
+                    <p>홈페이지 주소 전체를 입력하세요 (https:// 포함할것)</p>
                   </FieldGroup>
                 </FormGroup>
                 <ButtonGroup>

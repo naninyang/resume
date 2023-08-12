@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '@/components/hooks/authContext'
 import useModal from '@/components/hooks/useModal';
 import Modal from '@/components/features/modal';
-import { ArrayContainer, ButtonGroup, Container, Content, FieldGroup, FormGroup } from '@/styles/manageSystem';
+import { ButtonGroup, Container, Content, FieldGroup, FormGroup, ManagementContainer } from '@/styles/manageSystem';
 import IsNotSession from './isNotSession';
 import { Rem, hex } from '@/styles/designSystem';
 import styled from '@emotion/styled';
@@ -85,7 +85,6 @@ export default function MilitaryService() {
         setDischarge(militaryServices[0].discharge);
         setBranch(militaryServices[0].branch);
       }
-      console.log('militaryServices: ', militaryServices)
     } catch (error) {
       console.error('Failed to fetch militaryServices:', error);
     }
@@ -139,7 +138,7 @@ export default function MilitaryService() {
         {!loggedIn ? (
           <IsNotSession />
         ) : (
-          <ArrayContainer>
+          <ManagementContainer>
             <Head>
               <title>레주메 {pageTitle}</title>
             </Head>
@@ -147,7 +146,7 @@ export default function MilitaryService() {
             <form onSubmit={handleSubmit}>
               <fieldset>
                 <legend>{pageTitle} 양식</legend>
-                <FormGroup className='form-group militaryService-group'>
+                <FormGroup className='form-group single-group'>
                   <CheckboxGroup>
                     <div>
                       <input
@@ -274,7 +273,7 @@ export default function MilitaryService() {
                 <p>{errResponseStats} {errResponseStatsTxt}</p>
               </div>
             </Modal>
-          </ArrayContainer>
+          </ManagementContainer>
         )}
       </Content>
     </Container>

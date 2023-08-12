@@ -19,21 +19,47 @@ export const Nav = styled.nav({
     display: 'flex',
     justifyContent: 'space-between',
   },
-  '& li': {
-    '& p': {
-      display: 'flex',
-      alignItems: 'center',
-      padding: `0 ${Rem(25)}`,
-      height: '100%',
-      fontSize: Rem(16),
-      color: hex.yellow,
+  '& > ol': {
+    maxWidth: Rem(1200),
+    width: '100%',
+    '& > li': {
+      position: 'relative',
+      '&:nth-of-type(5)': {
+        '& > ol': {
+          left: 'auto',
+          right: 0,
+        },
+      },
+      '& p': {
+        display: 'flex',
+        alignItems: 'center',
+        padding: `0 ${Rem(25)}`,
+        height: '100%',
+        fontSize: Rem(16),
+        color: hex.yellow,
+      },
+      '& > ol': {
+        position: 'absolute',
+        top: `calc(100% + ${Rem(15)})`,
+        left: 0,
+        display: 'none',
+        height: Rem(52),
+        borderRadius: Rem(52),
+        backdropFilter: 'saturate(1.8) blur(20px)',
+        backgroundColor: `rgba(${rgba.yellow70})`,
+        '& a': {
+          color: hex.dark,
+          whiteSpace: 'nowrap',
+          color: `rgba(${rgba.dark70})`,
+        },
+      },
     },
   },
   '& a, & button': {
     padding: `0 ${Rem(25)}`,
     height: '100%',
     fontSize: Rem(16),
-    color: hex.light,
+    color: `rgba(${rgba.light70})`,
   },
   '& a': {
     display: 'flex',
@@ -52,7 +78,10 @@ export const Container = styled.main({
 })
 
 export const Content = styled.div({
-  padding: `${Rem(50)} ${Rem(25)}`,
+  padding: `${Rem(125)} ${Rem(25)}`,
+  '&.essay': {
+    width: Rem(770),
+  },
 })
 
 export const ManagementContainer = styled.div({
@@ -63,6 +92,11 @@ export const ManagementContainer = styled.div({
     fontSize: Rem(32),
     fontWeight: '900',
     color: hex.light,
+  },
+  '& fieldset': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: Rem(50),
   },
 })
 
@@ -83,9 +117,29 @@ export const FieldGroup = styled.div({
   flexDirection: 'column',
   gap: Rem(5),
   position: 'relative',
-  height: Rem(97),
+  '&:not(.content-editable)': {
+    height: Rem(97),
+  },
   '& > input, & > select': {
     height: Rem(60),
+  },
+  '&.content-editable > textarea': {
+    minHeight: Rem(270),
+    '&:focus, &:not(:empty)': {
+      backgroundPosition: `calc(100% - ${Rem(10)}) calc(100% - ${Rem(6)})`,
+      padding: `${Rem(6)} ${Rem(15)}`,
+      fontSize: Rem(16),
+      '& ~ label': {
+        padding: `${Rem(8)} ${Rem(15)}`,
+        transform: `scale(.5) translateY(-.${Rem(10)})`,
+        fontSize: Rem(12),
+        color: `rgba(${rgba.dark70})`,
+        opacity: 0,
+      },
+    },
+    '& ~ label': {
+      color: hex.dark,
+    },
   },
   '& > select': {
     background: `url('data:image/svg+xml,%3Csvg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M7.42969 9.5L5.92969 11L12 17.0703L18.0703 11L16.5703 9.5L12 14.0703L7.42969 9.5Z" fill="black"/%3E%3C/svg%3E%0A') no-repeat calc(100% - ${Rem(10)}) 50%/${Rem(24)} ${Rem(24)}`,
@@ -106,7 +160,7 @@ export const FieldGroup = styled.div({
   '& > textarea': {
     height: Rem(270),
   },
-  '& > input, & > textarea, & > select': {
+  '& > input, & > textarea, & > select, > .textarea': {
     backgroundColor: hex.light,
     padding: `${Rem(17)} ${Rem(15)}`,
     borderRadius: Rem(5),

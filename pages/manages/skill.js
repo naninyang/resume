@@ -138,7 +138,7 @@ export default function Skill() {
             <h1>
               {pageTitle}
               {' '}
-              <strong>기술명 상관없이 추가하시면 됩니다. 이력서에서는 자동으로 경험 기준 내림차순으로 보여집니다. (동일한 경우 기술명 오름차순 기준)</strong>
+              <strong>기술명 상관없이 추가하시면 됩니다. 이력서에서는 자동으로 숙련도 기준 내림차순으로 보여집니다. (동일한 경우 경험 내림차순 정렬)</strong>
             </h1>
             <div className='data-group'>
               <div className='list'>

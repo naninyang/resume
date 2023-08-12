@@ -38,7 +38,6 @@ export default async function handler(req, res) {
 
     case 'POST':
       try {
-        console.log('req.body: ', req.body)
         const createdLanguage = await prisma.language.create({
           data: {
             ...req.body,

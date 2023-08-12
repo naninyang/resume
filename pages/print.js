@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import axios from 'axios';
+import Image from 'next/image';
+import { MDXRemote } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
 import { useAuth } from '@/components/hooks/authContext'
 import LinkButton from '@/components/hooks/linkButton';
 import { Container, IsNotSession } from '@/styles/serviceSystem';
 import styles from '@/styles/print.module.sass';
+import styled from '@emotion/styled';
+import { Rem } from '@/styles/designSystem';
 
-export default function Home() {
+const Avatar = styled.div({
+  width: Rem(100),
+  height: Rem(100),
+  borderRadius: Rem(100),
+  overflow: 'hidden',
+})
+
+export default function Home({ mdx }) {
   const { loggedIn } = useAuth();
 
   const [resumeData, setResumeData] = useState('');
@@ -131,6 +143,43 @@ export default function Home() {
             <p>사용하실 때는 웹브라우저의 <code>인쇄</code> 기능을 사용해 주세요. <code>Mac: command + p / xWin: ctrl + p</code></p>
             <LinkButton href='/'>이전 화면으로 이동</LinkButton>
           </blockquote>
+          {resumeData?.essays?.length > 0 && resumeData.essays[0] && resumeData.essays[0].show && resumeData.username_show && (
+            <section className={styles.essay}>
+              <div className={styles['essay-header']}>
+                {resumeData.essays[0].avatar_path && <Avatar><Image src={resumeData.essays[0].avatar_path} alt="사진" width='100' height='100' /></Avatar>}
+                <div className={styles['essay-header-summary']}>
+                  <h2>{resumeData.essays[0].eng_name}</h2>
+                  <h3>{resumeData.essays[0].eng_occupation}</h3>
+                </div>
+              </div>
+              <h4>{resumeData.essays[0].title} {resumeData.username} 입니다</h4>
+              <div className={styles['essay-bio']}>
+                {mdx && <MDXRemote {...mdx} />}
+              </div>
+            </section>
+          )}
+          {resumeData?.references?.length > 0 && (
+            <section className={styles.reference}>
+              <dl>
+                {resumeData?.references?.[0].github && (
+                  <>
+                    <dt>깃헙</dt>
+                    <dd>
+                      <LinkButton href={`https://github.com/${resumeData?.references?.[0].github}`}>{`https://github.com/${resumeData?.references?.[0].github}`}</LinkButton>
+                    </dd>
+                  </>
+                )}
+                {resumeData?.references?.[0].blog && (
+                  <>
+                    <dt>블로그</dt>
+                    <dd>
+                      <LinkButton href={resumeData?.references?.[0].blog}>{resumeData?.references?.[0].blog}</LinkButton>
+                    </dd>
+                  </>
+                )}
+              </dl>
+            </section>
+          )}
           <section className={styles.profile}>
             <h2>인적사항</h2>
             <dl>
@@ -316,13 +365,13 @@ export default function Home() {
           )}
           {resumeData?.skills?.length > 0 && (
             <section className={styles.skill}>
-              <h2>기술</h2>
+              <h2>보유기술</h2>
               <dl className={styles.array}>
                 {resumeData?.skills?.sort((a, b) => {
                   if (a.skill_level !== b.skill_level) {
-                    return parseFloat(a.skill_level) - parseFloat(b.skill_level);
+                    return parseFloat(b.skill_level) - parseFloat(a.skill_level);
                   }
-                  return a.skill_career - b.skill_career;
+                  return b.skill_career - a.skill_career;
                 }).map((skill) => (
                   <div key={skill.id}>
                     <div>
@@ -345,29 +394,6 @@ export default function Home() {
                     </div>
                   </div>
                 ))}
-              </dl>
-            </section>
-          )}
-          {resumeData?.references?.length > 0 && (
-            <section className={styles.reference}>
-              <h2>레퍼런스</h2>
-              <dl>
-                {resumeData?.references?.[0].github && (
-                  <>
-                    <dt>깃헙</dt>
-                    <dd>
-                      <LinkButton href={`https://github.com/${resumeData?.references?.[0].github}`}>{`https://github.com/${resumeData?.references?.[0].github}`}</LinkButton>
-                    </dd>
-                  </>
-                )}
-                {resumeData?.references?.[0].blog && (
-                  <>
-                    <dt>블로그</dt>
-                    <dd>
-                      <LinkButton href={resumeData?.references?.[0].blog}>{resumeData?.references?.[0].blog}</LinkButton>
-                    </dd>
-                  </>
-                )}
               </dl>
             </section>
           )}
@@ -436,4 +462,19 @@ export default function Home() {
       )}
     </Container>
   )
+}
+
+export async function getServerSideProps(context) {
+  const token = context.req.cookies.token;
+  const response = await axios.get('http://localhost:3002/api/resume', { headers: { Authorization: `Bearer ${token}` } });
+  const data = response.data;
+  const mdxSource = data.essays?.[0]?.bio;
+
+  if (!mdxSource) {
+    return { props: {} };
+  }
+
+  const mdx = await serialize(mdxSource);
+
+  return { props: { mdx } };
 }
