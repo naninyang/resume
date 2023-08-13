@@ -56,6 +56,7 @@ export default function Career() {
     occupation: '',
     start_date: '',
     end_date: '',
+    description: '',
   });
 
   const handleCareerChange = (e) => {
@@ -67,31 +68,31 @@ export default function Career() {
 
   const [editCareers, setEditCareers] = useState({});
 
-  const initialCareerState = {
-    org_name: '',
-    team: '',
-    role: '',
-    occupation: '',
-    start_date: '',
-    end_date: '',
-  };
+  useEffect(() => {
+    const initialEditCareers = careers.reduce((acc, career) => {
+      acc[career.id] = career;
+      return acc;
+    }, {});
+    setEditCareers(initialEditCareers);
+  }, [careers]);
 
   const handleCareerEditChange = (id) => (event) => {
     const { name, value } = event.target;
-    setEditCareers({
-      ...editCareers,
+    setEditCareers((prevEditCareers) => ({
+      ...prevEditCareers,
       [id]: {
-        ...(editCareers[id] || initialCareerState),
+        ...prevEditCareers[id],
         [name]: value,
       },
-    });
+    }));
   };
 
   const handleEditCareerSubmit = async (e, career, careerForEdit) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.patch(`/api/career/${career.id}`, careerForEdit, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.put(`/api/career/${career.id}`, careerForEdit, { headers: { Authorization: `Bearer ${token}` } });
+      console.log('careerForEdit: ', careerForEdit)
       setEditingCareer(false);
       fetchCareers();
       toast.success('경력 정보가 성공적으로 갱신되었습니다', {
@@ -390,7 +391,7 @@ export default function Career() {
                                     </ItemGroup>
                                   </div>
                                   <div>
-                                    <ItemGroup>
+                                    <ItemGroup className='career-description'>
                                       <dt>회사 개요 / 사업 개요 / 주요 업무 설명</dt>
                                       <dd>
                                         <span>{career.description}</span>

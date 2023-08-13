@@ -233,8 +233,13 @@ export const ItemGroup = styled.div({
   ...mixin.col,
   position: 'relative',
   height: Rem(97),
-  '& dt, & dd': {
-    whiteSpace: 'nowrap',
+  '&.career-description': {
+    height: 'auto',
+    '& dd': {
+      paddingBottom: Rem(37),
+      height: 'auto',
+      lineHeight: 1.33333333,
+    },
   },
   '& dt': {
     position: 'absolute',

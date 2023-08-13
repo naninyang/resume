@@ -14,8 +14,8 @@ export default async function handler(req, res) {
   }
 
   switch (req.method) {
-    case 'PATCH':
-      await handlePatch(req, res, userId, careerId);
+    case 'PUT':
+      await handlePut(req, res, userId, careerId);
       break;
     case 'POST':
       await handlePost(req, res, userId);
@@ -36,7 +36,7 @@ const getUserId = (req) => {
   return payload.id;
 };
 
-const handlePatch = async (req, res, userId, careerId) => {
+const handlePut = async (req, res, userId, careerId) => {
   try {
     const updatedCareer = await prisma.career.update({
       where: { id: parseInt(careerId) },
@@ -47,6 +47,7 @@ const handlePatch = async (req, res, userId, careerId) => {
         occupation: req.body.occupation,
         start_date: req.body.start_date,
         end_date: req.body.end_date,
+        description: req.body.description,
         userId,
       },
     });
