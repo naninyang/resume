@@ -43,7 +43,19 @@ export default function Reference() {
       const references = response.data;
       if (references.length > 0) {
         setGithub(references[0].github);
+        setVelog(references[0].velog);
+        setInstagram(references[0].instagram);
+        setTwitter(references[0].twitter);
+        setFacebook(references[0].facebook);
+        setLeadme(references[0].leadme);
+        setBrunch(references[0].brunch);
+        setTistory(references[0].tistory);
+        setPinterest(references[0].pinterest);
+        setLinkedin(references[0].linkedin);
+        setDribble(references[0].dribble);
+        setPostype(references[0].postype);
         setBlog(references[0].blog);
+        setHomepage(references[0].homepage);
       }
     } catch (error) {
       console.error('Failed to fetch references:', error);
