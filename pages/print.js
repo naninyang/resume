@@ -156,72 +156,72 @@ export default function Home({ mdx }) {
                 <div className={styles.reference}>
                   <ul>
                     {resumeData?.references?.[0].github && (
-                      <li>
-                        <LinkButton href={`https://github.com/${resumeData?.references?.[0].github}`}>{`https://github.com/${resumeData?.references?.[0].github}`}</LinkButton>
+                      <li className={styles.github}>
+                        <LinkButton href={`https://github.com/${resumeData?.references?.[0].github}`}>{`/${resumeData?.references?.[0].github}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].velog && (
-                      <li>
-                        <LinkButton href={`https://velog.io/@${resumeData?.references?.[0].velog}`}>{`https://velog.io/@${resumeData?.references?.[0].velog}`}</LinkButton>
+                      <li className={styles.velog}>
+                        <LinkButton href={`https://velog.io/@${resumeData?.references?.[0].velog}`}>{`@${resumeData?.references?.[0].velog}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].instagram && (
-                      <li>
-                        <LinkButton href={`https://www.instagram.com/${resumeData?.references?.[0].instagram}`}>{`https://www.instagram.com/${resumeData?.references?.[0].instagram}`}</LinkButton>
+                      <li className={styles.instagram}>
+                        <LinkButton href={`https://www.instagram.com/${resumeData?.references?.[0].instagram}`}>{`/${resumeData?.references?.[0].instagram}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].twitter && (
-                      <li>
-                        <LinkButton href={`https://twitter.com/${resumeData?.references?.[0].twitter}`}>{`https://twitter.com/${resumeData?.references?.[0].twitter}`}</LinkButton>
+                      <li className={styles.twitter}>
+                        <LinkButton href={`https://twitter.com/${resumeData?.references?.[0].twitter}`}>{`/${resumeData?.references?.[0].twitter}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].facebook && (
-                      <li>
-                        <LinkButton href={`https://www.facebook.com/${resumeData?.references?.[0].facebook}`}>{`https://www.facebook.com/${resumeData?.references?.[0].facebook}`}</LinkButton>
+                      <li className={styles.facebook}>
+                        <LinkButton href={`https://www.facebook.com/${resumeData?.references?.[0].facebook}`}>{`/${resumeData?.references?.[0].facebook}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].leadme && (
-                      <li>
-                        <LinkButton href={`https://www.leadme.today/@${resumeData?.references?.[0].leadme}`}>{`https://www.leadme.today/@${resumeData?.references?.[0].leadme}`}</LinkButton>
+                      <li className={styles.leadme}>
+                        <LinkButton href={`https://www.leadme.today/@${resumeData?.references?.[0].leadme}`}>{`@${resumeData?.references?.[0].leadme}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].brunch && (
-                      <li>
-                        <LinkButton href={`https://brunch.co.kr/@${resumeData?.references?.[0].brunch}`}>{`https://brunch.co.kr/@${resumeData?.references?.[0].brunch}`}</LinkButton>
+                      <li className={styles.brunch}>
+                        <LinkButton href={`https://brunch.co.kr/@${resumeData?.references?.[0].brunch}`}>{`@${resumeData?.references?.[0].brunch}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].tistory && (
-                      <li>
-                        <LinkButton href={`https://${resumeData?.references?.[0].tistory}.tistory.com`}>{`https://${resumeData?.references?.[0].tistory}.tistory.com`}</LinkButton>
+                      <li className={styles.tistory}>
+                        <LinkButton href={`https://${resumeData?.references?.[0].tistory}.tistory.com`}>{`${resumeData?.references?.[0].tistory}.tistory.com`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].pinterest && (
-                      <li>
-                        <LinkButton href={`https://www.pinterest.co.kr/${resumeData?.references?.[0].pinterest}`}>{`https://www.pinterest.co.kr/${resumeData?.references?.[0].pinterest}`}</LinkButton>
+                      <li className={styles.pinterest}>
+                        <LinkButton href={`https://www.pinterest.co.kr/${resumeData?.references?.[0].pinterest}`}>{`/${resumeData?.references?.[0].pinterest}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].linkedin && (
-                      <li>
-                        <LinkButton href={`https://kr.linkedin.com/in/${encodeURIComponent(resumeData?.references?.[0].linkedin)}`}>{`https://kr.linkedin.com/in/${encodeURIComponent(resumeData?.references?.[0].linkedin)}`}</LinkButton>
+                      <li className={styles.linkedin}>
+                        <LinkButton href={`https://kr.linkedin.com/in/${encodeURIComponent(resumeData?.references?.[0].linkedin)}`}>{`in/${encodeURIComponent(resumeData?.references?.[0].linkedin)}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].dribble && (
-                      <li>
-                        <LinkButton href={`https://dribbble.com/${resumeData?.references?.[0].dribble}`}>{`https://dribbble.com/${resumeData?.references?.[0].dribble}`}</LinkButton>
+                      <li className={styles.dribble}>
+                        <LinkButton href={`https://dribbble.com/${resumeData?.references?.[0].dribble}`}>{`/${resumeData?.references?.[0].dribble}`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].postype && (
-                      <li>
-                        <LinkButton href={`https://${resumeData?.references?.[0].postype}.postype.com`}>{`https://${resumeData?.references?.[0].postype}.postype.com`}</LinkButton>
+                      <li className={styles.postype}>
+                        <LinkButton href={`https://${resumeData?.references?.[0].postype}.postype.com`}>{`${resumeData?.references?.[0].postype}.postype.com`}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].blog && (
-                      <li>
+                      <li className={styles.blog}>
                         <LinkButton href={`${encodeURIComponent(resumeData?.references?.[0].blog)}`}>{resumeData?.references?.[0].blog}</LinkButton>
                       </li>
                     )}
                     {resumeData?.references?.[0].homepage && (
-                      <li>
+                      <li className={styles.homepage}>
                         <LinkButton href={`${encodeURIComponent(resumeData?.homepage?.[0].blog)}`}>{resumeData?.references?.[0].homepage}</LinkButton>
                       </li>
                     )}
