@@ -24,7 +24,7 @@ export default async function handler(req, res) {
           where: { id: req.body.id },
           data: {
             skill_name: req.body.skill_name,
-            skill_level: req.body.skill_level,
+            skill_level: parseInt(req.body.skill_level, 10),
             skill_career: req.body.skill_career,
             userId: userId,
           },
