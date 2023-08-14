@@ -395,6 +395,7 @@ export default function Career() {
                                       <dt>회사 개요 / 사업 개요 / 주요 업무 설명</dt>
                                       <dd>
                                         <span>{career.description}</span>
+                                        <p>줄바꿈이 적용이 안되어 보이지만 실제로는 디비에 제대로 저장되어 있으니 안심하세요. 이력서에서는 줄바꿈 처리됩니다.</p>
                                       </dd>
                                     </ItemGroup>
                                   </div>
@@ -500,10 +501,11 @@ export default function Career() {
                                               </ItemGroup>
                                             </div>
                                             <div>
-                                              <ItemGroup>
+                                              <ItemGroup className='career-description'>
                                                 <dt>프로젝트 설명</dt>
                                                 <dd>
                                                   <span>{project.description}</span>
+                                                  <p>줄바꿈이 적용이 안되어 보이지만 실제로는 디비에 제대로 저장되어 있으니 안심하세요. 이력서에서는 줄바꿈 처리됩니다.</p>
                                                 </dd>
                                               </ItemGroup>
                                             </div>

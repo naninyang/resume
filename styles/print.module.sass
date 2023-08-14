@@ -257,6 +257,17 @@
           width: calc(100% - 170px)
 
     &.education
+      &:is(:first-of-type)
+        h2, ul
+          border-top: 0
+          padding-top: 0
+
+        ul li:first-of-type
+          padding-top: 0
+
+          p
+            padding-top: 0
+
       ul
         flex: 1 0 0%
         border: 1px solid
@@ -601,6 +612,8 @@
           flex-direction: column
           padding-top: 25px
           border-top: 1px solid
+          page-break-before: auto
+          page-break-inside: avoid
 
           .career-item
             display: flex

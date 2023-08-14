@@ -57,7 +57,7 @@ export default function Home({ mdx }) {
   function RenderDescription({ description }) {
     if (description.includes('\n')) {
       return (
-        <p>aslkfjsalkfdjasklfjfsklfjklj
+        <p>
           {description.split('\n').map((line, index) => (
             <React.Fragment key={index}>
               {line}
@@ -234,47 +234,49 @@ export default function Home({ mdx }) {
               </div>
             </section>
           )}
-          <section className={styles.profile}>
-            <h2>인적사항</h2>
-            <dl>
-              {resumeData.username_show &&
-                <>
-                  <dt>성명</dt>
-                  <dd>{resumeData.username}</dd>
-                </>
-              }
-              {resumeData.username_show &&
-                <>
-                  <dt>이메일</dt>
-                  <dd>{resumeData.email}</dd>
-                </>
-              }
-              {resumeData.address &&
-                <>
-                  <dt>주소</dt>
-                  <dd>{resumeData.address}</dd>
-                </>
-              }
-              {resumeData.telephone &&
-                <>
-                  <dt>연락처</dt>
-                  <dd>{resumeData.telephone}</dd>
-                </>
-              }
-              {resumeData.veteran &&
-                <>
-                  <dt>보훈대상</dt>
-                  <dd>{resumeData.veteran}</dd>
-                </>
-              }
-              {resumeData.disability &&
-                <>
-                  <dt>장애대상</dt>
-                  <dd>{resumeData.disability}</dd>
-                </>
-              }
-            </dl>
-          </section>
+          {resumeData.username_show && resumeData.address && resumeData.telephone && resumeData.veteran && resumeData.disability && (
+            <section className={styles.profile}>
+              <h2>인적사항</h2>
+              <dl>
+                {resumeData.username_show &&
+                  <>
+                    <dt>성명</dt>
+                    <dd>{resumeData.username}</dd>
+                  </>
+                }
+                {resumeData.username_show &&
+                  <>
+                    <dt>이메일</dt>
+                    <dd>{resumeData.email}</dd>
+                  </>
+                }
+                {resumeData.address &&
+                  <>
+                    <dt>주소</dt>
+                    <dd>{resumeData.address}</dd>
+                  </>
+                }
+                {resumeData.telephone &&
+                  <>
+                    <dt>연락처</dt>
+                    <dd>{resumeData.telephone}</dd>
+                  </>
+                }
+                {resumeData.veteran &&
+                  <>
+                    <dt>보훈대상</dt>
+                    <dd>{resumeData.veteran}</dd>
+                  </>
+                }
+                {resumeData.disability &&
+                  <>
+                    <dt>장애대상</dt>
+                    <dd>{resumeData.disability}</dd>
+                  </>
+                }
+              </dl>
+            </section>
+          )}
           {resumeData?.military_services?.length > 0 &&
             resumeData.military_services[0].military_show === true &&
             (

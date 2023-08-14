@@ -239,6 +239,9 @@ export const ItemGroup = styled.div({
       paddingBottom: Rem(37),
       height: 'auto',
       lineHeight: 1.33333333,
+      '& p': {
+        bottom: Rem(10),
+      },
     },
   },
   '& dt': {

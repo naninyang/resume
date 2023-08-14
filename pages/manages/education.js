@@ -156,7 +156,6 @@ export default function Education() {
                                   id={`category-${edu.id}`}
                                   value={educationEdit.category}
                                   onChange={handleEditChange}
-                                  defaultValue=''
                                   required
                                 >
                                   <option value='' disabled hidden>분류 선택</option>
@@ -245,7 +244,6 @@ export default function Education() {
                                   id={`stats-${edu.id}`}
                                   value={educationEdit.stats}
                                   onChange={handleEditChange}
-                                  defaultValue=''
                                   required
                                 >
                                   <option value='' disabled hidden>상태</option>
@@ -407,7 +405,6 @@ export default function Education() {
                             id="category"
                             value={education.category}
                             onChange={handleAddChange}
-                            defaultValue=''
                             placeholder="분류"
                             required
                           >
@@ -497,7 +494,6 @@ export default function Education() {
                             id="stats"
                             value={education.stats}
                             onChange={handleAddChange}
-                            defaultValue=''
                             required
                           >
                             <option value='' disabled hidden>상태</option>

@@ -163,21 +163,17 @@ export default function Skill() {
                                 <label htmlFor={`skill_name-${ski.id}`}>기술명</label>
                               </FieldGroup>
                               <FieldGroup>
-                                <select
-                                  type="text"
+                                <input
+                                  type="number"
                                   name="skill_level"
                                   id={`skill_level-${ski.id}`}
                                   value={skillEdit.skill_level}
                                   onChange={handleEditChange}
-                                  defaultValue=''
+                                  min={1}
+                                  max={5}
+                                  placeholder="숙련도"
                                   required
-                                >
-                                  <option value='' disabled hidden>숙련도</option>
-                                  <option value='초급'>초급</option>
-                                  <option value='중급'>중급</option>
-                                  <option value='고급'>고급</option>
-                                  <option value='특급'>특급</option>
-                                </select>
+                                />
                                 <label htmlFor={`skill_level-${ski.id}`}>숙련도</label>
                               </FieldGroup>
                               <FieldGroup>
@@ -187,7 +183,6 @@ export default function Skill() {
                                   id={`skill_career-${ski.id}`}
                                   value={skillEdit.skill_career}
                                   onChange={handleEditChange}
-                                  defaultValue=''
                                   required
                                 >
                                   <option value='' disabled hidden>경험</option>
@@ -225,7 +220,7 @@ export default function Skill() {
                             <ItemGroup>
                               <dt>숙련도</dt>
                               <dd>
-                                <span>{ski.skill_level}</span>
+                                <span>Lv. {ski.skill_level}</span>
                               </dd>
                             </ItemGroup>
                             <ItemGroup>
@@ -278,21 +273,17 @@ export default function Skill() {
                           <label htmlFor='skill_name'>기술명</label>
                         </FieldGroup>
                         <FieldGroup>
-                          <select
-                            type="text"
+                          <input
+                            type="number"
                             name="skill_level"
                             id="skill_level"
                             value={skill.skill_level}
                             onChange={handleAddChange}
-                            defaultValue=''
+                            min={1}
+                            max={5}
+                            placeholder="숙련도"
                             required
-                          >
-                            <option value='' disabled hidden>숙련도</option>
-                            <option value='초급'>초급</option>
-                            <option value='중급'>중급</option>
-                            <option value='고급'>고급</option>
-                            <option value='특급'>특급</option>
-                          </select>
+                          />
                           <label htmlFor='skill_level'>숙련도</label>
                         </FieldGroup>
                         <FieldGroup>
@@ -302,7 +293,6 @@ export default function Skill() {
                             id="skill_career"
                             value={skill.skill_career}
                             onChange={handleAddChange}
-                            defaultValue=''
                             required
                           >
                             <option value='' disabled hidden>경험</option>

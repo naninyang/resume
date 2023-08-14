@@ -140,7 +140,6 @@ export default function Language() {
                                   id={`lang_name-${lan.id}`}
                                   value={languageEdit.lang_name}
                                   onChange={handleEditChange}
-                                  defaultValue=''
                                   required
                                 >
                                   <option value='' disabled hidden>외국어명</option>
@@ -165,7 +164,6 @@ export default function Language() {
                                   id={`exam_name-${lan.id}`}
                                   value={languageEdit.exam_name}
                                   onChange={handleEditChange}
-                                  defaultValue=''
                                   required
                                 >
                                   <option value='' disabled hidden>시험명</option>
@@ -314,7 +312,6 @@ export default function Language() {
                             value={language.lang_name}
                             onChange={handleAddChange}
                             placeholder="외국어명"
-                            defaultValue=''
                             required
                           >
                             <option value='' disabled hidden>외국어명</option>
@@ -340,7 +337,6 @@ export default function Language() {
                             value={language.exam_name}
                             onChange={handleAddChange}
                             placeholder="시험명"
-                            defaultValue=''
                             required
                           >
                             <option value='' disabled hidden>시험명</option>
